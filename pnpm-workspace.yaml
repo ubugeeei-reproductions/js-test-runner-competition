@@ -1,7 +1,12 @@
+allowBuilds:
+  # Jest's dependencies; their prebuilt binaries come as optional dependencies.
+  "@parcel/watcher": false
+  unrs-resolver: false
 minimumReleaseAgeExclude:
   - vite@8.3.4
   - "@happy-dom/global-registrator@20.14.6"
   - happy-dom@20.14.6
+  - "@happy-dom/jest-environment@20.14.6"
 patchedDependencies:
   "@vitest/browser-playwright@5.0.3": patches/@vitest__browser-playwright@5.0.3.patch
   "@vitest/browser@5.0.3": patches/@vitest__browser@5.0.3.patch

@@ -2,10 +2,13 @@
 //
 // Nothing loads this file at run time. Each runner supplies "#host" in its own way:
 //
-//   Vitest, Vite+  host/vitest/plugin.ts  compile time: "#host" → "vitest", `host.` → `vi.`
-//   Rstest         host/rstest/plugin.ts  compile time: "#host" → "@rstest/core", `host.` → `rs.`
-//   Bun            host/bun/host.ts       run time, through the "bun" condition
-//   uf             host/uf/host.ts        run time, through the "repro-uf" condition
+//   Vitest, Vite+  host/vitest/plugin.ts   compile time: "#host" → "vitest", `host.` → `vi.`
+//   Rstest         host/rstest/plugin.ts   compile time: "#host" → "@rstest/core", `host.` → `rs.`
+//   Jest           host/jest/transform.ts  compile time: "#host" → "@jest/globals", `host.` → `jest.`
+//   Bun            host/bun/host.ts        run time, through the "bun" condition
+//   Node           host/node/host.ts       run time, through the "repro-node" condition
+//   Deno           host/deno/host.ts       run time, through the "deno" condition (no module mocks)
+//   uf             host/uf/host.ts         run time, through the "repro-uf" condition
 //
 // Only what every runner supports with the same meaning is part of it.
 type Vitest = typeof import("vitest");

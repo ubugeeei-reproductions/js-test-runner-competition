@@ -1,11 +1,13 @@
 {
-  "name": "vitest-mock-is-too-slow",
+  "name": "js-test-runner-competition",
   "private": true,
   "type": "module",
   "imports": {
     "#host": {
       "types": "./host/types.ts",
       "bun": "./host/bun/host.ts",
+      "deno": "./host/deno/host.ts",
+      "repro-node": "./host/node/host.ts",
       "repro-uf": "./host/uf/host.ts",
       "default": "./host/types.ts"
     },
@@ -20,17 +22,30 @@
     "test:bun": "bun test --parallel ./fixture/tests/",
     "test:uf": "node scripts/uf.ts test fixture/tests/",
     "typecheck": "node scripts/generate.ts && tsc -p tsconfig.json",
-    "postinstall": "node scripts/generate.ts"
+    "postinstall": "node scripts/generate.ts",
+    "test:jest": "jest --config jest.config.ts",
+    "test:node": "node --test --experimental-test-module-mocks --conditions=repro-node --import=./host/node/setup.ts \"fixture/tests/**/*.test.ts\"",
+    "test:deno": "deno test -A --no-check --parallel --preload=./host/deno/setup.ts fixture/tests/"
   },
   "devDependencies": {
+    "@babel/core": "8.0.7",
+    "@babel/preset-env": "8.0.7",
+    "@babel/preset-typescript": "8.0.7",
     "@happy-dom/global-registrator": "20.14.6",
+    "@happy-dom/jest-environment": "20.14.6",
+    "@jest/globals": "30.5.2",
     "@rstest/browser": "0.12.3",
     "@rstest/core": "0.12.3",
+    "@std/expect": "jsr:^1",
+    "@std/testing": "jsr:^1",
     "@types/bun": "^1.4.2",
     "@types/node": "^26.6.4",
     "@uniflowed/test": "0.36.0",
     "@vitest/browser-playwright": "5.0.3",
+    "babel-jest": "30.5.2",
+    "expect": "30.5.2",
     "happy-dom": "20.14.6",
+    "jest": "30.5.2",
     "playwright": "1.63.0",
     "typescript": "^7.0.2",
     "vite": "8.3.4",

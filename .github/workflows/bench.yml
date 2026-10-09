@@ -34,7 +34,7 @@ concurrency:
 jobs:
   bench:
     runs-on: ubuntu-24.04
-    timeout-minutes: 350
+    timeout-minutes: 355
     steps:
       - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@v31
@@ -44,10 +44,14 @@ jobs:
       - run: nix develop --command pnpm install --frozen-lockfile
       - run: nix develop --command pnpm typecheck
 
-      - name: Benchmark (every runner × browser / happy-dom × nomock / mock × isolate, + experimental patches)
+      - name: Benchmark (every runner × browser / happy-dom × nomock / mock × isolate, + experiments)
+        # A time limit of its own: if it is hit, the results so far are still committed below.
+        timeout-minutes: 270
         run: nix develop --command node scripts/bench.ts --repeat "${{ inputs.repeat || '3' }}" --experiments --out ci --readme results
 
       - name: Profile (browser mode, profiling patches + V8 CPU profile, one round)
+        if: always()
+        timeout-minutes: 60
         run: nix develop --command node scripts/bench.ts --envs browser --isolate true --experiments --profile --cpu-prof --out ci-profile --readme profile
 
       - name: Job summary
@@ -62,7 +66,7 @@ jobs:
           retention-days: 30
 
       - name: Commit results
-        if: github.ref == 'refs/heads/main'
+        if: always() && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

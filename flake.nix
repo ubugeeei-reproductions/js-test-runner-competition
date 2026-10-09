@@ -1,5 +1,5 @@
 {
-  description = "vitest-mock-is-too-slow: the pinned environment the benchmark runs in";
+  description = "js-test-runner-competition: the pinned environment the benchmark runs in";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
@@ -81,6 +81,7 @@
               pkgs.nodejs_26
               pkgs.pnpm
               pkgs.bun
+              pkgs.deno
               own.uf
               # `time -p`: total CPU time of a benchmark run, waited-for child processes included
               pkgs.time
@@ -92,6 +93,7 @@
             PLAYWRIGHT_DRIVER_VERSION = pkgs.playwright-driver.version;
             # scripts/bench.ts runs these instead of looking for its own copies.
             REPRO_BUN = "${pkgs.bun}/bin/bun";
+            REPRO_DENO = "${pkgs.deno}/bin/deno";
             REPRO_UF = "${own.uf}/bin/uf";
             REPRO_TIME = "${pkgs.time}/bin/time";
             REPRO_ENVIRONMENT = "nix";

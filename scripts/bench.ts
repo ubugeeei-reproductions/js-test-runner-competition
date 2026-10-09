@@ -22,17 +22,34 @@ import { summarizeCpuProfile, type CpuProfileSummary } from "./cpuprofile.ts";
 import { summarizeProfileDir, type ProfileSummary } from "./profile.ts";
 import { ensureUf, UF_VERSION, ufNodeOptions } from "./uf.ts";
 
-type Runner = "vitest" | "vp" | "rstest" | "bun" | "uf";
+type Runner = "vitest" | "vp" | "rstest" | "jest" | "bun" | "node" | "deno" | "uf";
 type Env = "browser" | "happy-dom";
 type Suite = "nomock" | "mock" | "mixed";
 
 /** What each runner can be asked to do. */
-const SUPPORT: Record<Runner, { envs: Env[]; isolate: boolean[] }> = {
+interface Support {
+  envs: Env[];
+  isolate: boolean[];
+  /** Why the suites with mocks are not run, if they are not. */
+  noMocks?: (isolate: boolean) => string | undefined;
+}
+const SUPPORT: Record<Runner, Support> = {
   vitest: { envs: ["browser", "happy-dom"], isolate: [true, false] },
   vp: { envs: ["browser", "happy-dom"], isolate: [true, false] },
   rstest: { envs: ["browser", "happy-dom"], isolate: [true, false] },
+  // Jest always gives every test file a fresh module registry.
+  jest: { envs: ["happy-dom"], isolate: [true] },
   // `bun test` has no browser mode. isolate: `--parallel` (isolated workers) / `--no-isolate`.
   bun: { envs: ["happy-dom"], isolate: [true, false] },
+  // isolate: `--test-isolation=process` / `none`. Without isolation a module mock registered by one
+  // file is still registered for the next ("The module is already mocked").
+  node: {
+    envs: ["happy-dom"],
+    isolate: [true, false],
+    noMocks: (isolate) => (isolate ? undefined : "mocks persist across files"),
+  },
+  // `deno test` has no module mocking, and runs every test file in a worker of its own.
+  deno: { envs: ["happy-dom"], isolate: [true], noMocks: () => "no module mocking" },
   // `uf test --browser` cannot mock modules, and uf always resets the module registry between files.
   uf: { envs: ["happy-dom"], isolate: [true] },
 };
@@ -40,7 +57,7 @@ const SUPPORT: Record<Runner, { envs: Env[]; isolate: boolean[] }> = {
 const cpus = os.availableParallelism();
 const { values: args } = parseArgs({
   options: {
-    runners: { type: "string", default: "vitest,vp,rstest,bun,uf" },
+    runners: { type: "string", default: "vitest,vp,rstest,jest,bun,node,deno,uf" },
     envs: { type: "string", default: "browser,happy-dom" },
     suites: { type: "string", default: "nomock,mock" },
     isolate: { type: "string", default: "true,false" },
@@ -77,8 +94,9 @@ interface Run {
   passed?: number;
   failed?: number;
   /**
-   * CPU time (user + sys) of the whole run, from `time -p`, and the part of it Chromium used,
-   * from sampling the process tree (`ps`) twice a second.
+   * CPU time (user + sys) of the whole run and the part of it Chromium used. The total is the
+   * larger of `time -p` (exact, but it only counts child processes that were waited for) and the
+   * process tree sampled with `ps` twice a second (which misses processes shorter than that).
    */
   cpuSec: { total: number; browser: number };
   /** The Chromium executable(s) Playwright launched (browser runs). */
@@ -108,6 +126,7 @@ for (const env of list(args.envs) as Env[]) {
       if (!SUPPORT[runner].envs.includes(env) || !SUPPORT[runner].isolate.includes(isolate))
         continue;
       for (const suite of list(args.suites) as Suite[]) {
+        if (suite !== "nomock" && SUPPORT[runner].noMocks?.(isolate)) continue;
         const c = { runner, env, suite, isolate };
         cases.push({ ...c, id: caseId(c), vars: {} });
       }
@@ -146,6 +165,7 @@ if (args.experiments) {
 
 // Inside `nix develop` these come from flake.nix; elsewhere from PATH (uf: a downloaded release).
 const BUN = process.env.REPRO_BUN ?? "bun";
+const DENO = process.env.REPRO_DENO ?? "deno";
 const TIME = process.env.REPRO_TIME ?? "/usr/bin/time";
 let ufBin = process.env.REPRO_UF ?? "";
 function command(c: Case): string[] {
@@ -191,6 +211,31 @@ function command(c: Case): string[] {
         ...(c.isolate ? [] : ["--no-isolate"]),
         `./${filter}`,
       ];
+    case "jest":
+      return [join(BIN, "jest"), "--config", "jest.config.ts", `--maxWorkers=${w}`, filter];
+    case "node":
+      return [
+        process.execPath,
+        "--test",
+        "--experimental-test-module-mocks",
+        "--conditions=repro-node",
+        "--import=./host/node/setup.ts",
+        `--test-isolation=${c.isolate ? "process" : "none"}`,
+        `--test-concurrency=${w}`,
+        "--test-reporter=spec",
+        `${filter}**/*.test.ts`,
+      ];
+    case "deno":
+      // workers: DENO_JOBS (runnerEnv)
+      return [
+        DENO,
+        "test",
+        "-A",
+        "--no-check",
+        "--parallel",
+        "--preload=./host/deno/setup.ts",
+        filter,
+      ];
     case "uf":
       return [ufBin, "test", "--color", "never", "-j", w, filter];
   }
@@ -204,6 +249,7 @@ function runnerEnv(c: Case, extraNodeOptions = ""): Record<string, string> {
     FORCE_COLOR: "0",
     NO_COLOR: "1",
   };
+  if (c.runner === "deno") vars.DENO_JOBS = String(WORKERS);
   // Playwright logs the executable it launches; recorded to show every runner used the same Chromium.
   if (c.env === "browser") vars.DEBUG = [process.env.DEBUG, "pw:browser"].filter(Boolean).join(",");
   const nodeOptions = [process.env.NODE_OPTIONS ?? "", extraNodeOptions];
@@ -276,7 +322,9 @@ const environment = {
     "vite-plus's vitest": pkgVersion("vitest", "vite-plus"),
     "vite-plus's core": vitePlusCore(),
     "@rstest/core": pkgVersion("@rstest/core"),
+    jest: pkgVersion("jest"),
     bun: binVersion(BUN, /(\d+\.\d+\.\d+)/),
+    deno: binVersion(DENO, /deno (\S+)/),
     uf: process.env.REPRO_UF ? binVersion(process.env.REPRO_UF, /uf (\S+)/) : UF_VERSION,
     playwright: pkgVersion("playwright"),
     "chromium (headless shell)": chromiumVersion(),
@@ -366,9 +414,14 @@ function runOnce(
       clearTimeout(timeout);
       writeFileSync(logFile, output);
       let browser = 0;
-      for (const p of seen.values()) if (p.browser) browser += p.cpu;
+      let sampled = 0;
+      for (const p of seen.values()) {
+        sampled += p.cpu;
+        if (p.browser) browser += p.cpu;
+      }
       const last = (re: RegExp) => Number([...output.matchAll(re)].at(-1)?.[1] ?? NaN);
-      const total = last(/^user\s+([\d.]+)$/gm) + last(/^sys\s+([\d.]+)$/gm);
+      const timed = last(/^user\s+([\d.]+)$/gm) + last(/^sys\s+([\d.]+)$/gm);
+      const total = Math.max(Number.isFinite(timed) ? timed : 0, sampled);
       const num = (...res: RegExp[]) => {
         for (const re of res) {
           const m = output.match(re);
@@ -381,13 +434,29 @@ function runOnce(
         round,
         wallSec: +wallSec.toFixed(2),
         exitCode: code,
-        // Vitest / vp / Rstest, then Bun, then uf
-        passed: num(
-          /Tests\s+(?:\d+ failed \| )?(\d+) passed/,
-          /^\s*(\d+) pass$/m,
-          /^\s*passed\s+(\d+)$/m,
-        ),
-        failed: num(/Tests\s+(\d+) failed/, /^\s*(\d+) fail$/m, /^\s*failed\s+(\d+)$/m) ?? 0,
+        // Vitest / vp / Rstest, Jest, Bun, Node, uf; Deno reports each `describe` as a test and its
+        // `it`s (plus the `describe` itself) as steps.
+        passed:
+          c.runner === "deno"
+            ? (([, describes, steps]) => Number(steps) - Number(describes))(
+                output.match(/(\d+) passed \((\d+) steps\)/) ?? [],
+              ) || undefined
+            : num(
+                /Tests\s+(?:\d+ failed \| )?(\d+) passed/,
+                /Tests:\s+(?:\d+ failed, )?(\d+) passed/,
+                /^\s*(\d+) pass$/m,
+                /^ℹ pass (\d+)$/m,
+                /^\s*passed\s+(\d+)$/m,
+              ),
+        failed:
+          num(
+            /Tests\s+(\d+) failed/,
+            /Tests:\s+(\d+) failed/,
+            /^\s*(\d+) fail$/m,
+            /^ℹ fail (\d+)$/m,
+            /^\s*failed\s+(\d+)$/m,
+            /\| (\d+) failed/,
+          ) ?? 0,
         cpuSec: { total: +total.toFixed(1), browser: +Math.min(browser, total).toFixed(1) },
         browserExecutables:
           c.env === "browser"
@@ -431,18 +500,26 @@ async function main(): Promise<void> {
       .join(", ")}`,
   );
 
-  // Warm-up (not measured): Vite's dependency optimizer cache, uf's timing cache, the OS file cache.
+  // Warm-up (not measured). Without a browser the whole fixture runs once, because Jest and Deno
+  // keep compiled files on disk and the first measured suite would otherwise warm them for the
+  // next. With a browser one feature folder is enough: the runners keep transforms in memory, and
+  // it fills Vite's dependency optimizer cache.
   const warmups = new Map(cases.map((c) => [`${c.env}/${c.runner}`, c]));
   for (const [key, c] of warmups) {
     process.stdout.write(`warm-up ${key} … `);
     const warm: Case = {
       ...c,
       id: `${key}/warm-up`,
-      suite: "mock",
+      suite: SUPPORT[c.runner].noMocks?.(true) ? "nomock" : "mock",
       isolate: true,
       experiment: undefined,
       vars: {},
-      filter: "fixture/tests/mock/feature-00/",
+      filter:
+        c.env === "browser"
+          ? "fixture/tests/mock/feature-00/"
+          : SUPPORT[c.runner].noMocks?.(true)
+            ? "fixture/tests/nomock/"
+            : "fixture/tests/",
     };
     const r = await runOnce(warm, 0, join(OUT, "logs", `${key.replace("/", "_")}-warmup.log`));
     console.log(`${r.wallSec}s (exit ${r.exitCode})`);
@@ -458,7 +535,7 @@ async function main(): Promise<void> {
       const profDir = join(OUT, "profile", `${slug}-r${round}`);
       const profile =
         args.profile && c.env === "browser" && (c.runner === "vitest" || c.runner === "vp");
-      const cpuProf = args["cpu-prof"] && c.runner !== "bun";
+      const cpuProf = args["cpu-prof"] && c.runner !== "bun" && c.runner !== "deno";
       if (profile || cpuProf) rmSync(profDir, { recursive: true, force: true });
       process.stdout.write(`[${round}/${rounds}] ${c.id.padEnd(58)} `);
       const run = await runOnce(c, round, join(OUT, "logs", `${slug}-r${round}.log`), {
@@ -468,6 +545,8 @@ async function main(): Promise<void> {
       if (profile) run.profile = summarizeProfileDir(profDir);
       if (cpuProf) run.cpuProfile = summarizeCpuProfile(join(profDir, "cpu"));
       runs.push(run);
+      // Written after every run, so a run that is cut short (CI time limit) still leaves results.
+      save(runs, false);
       const status = ok(run)
         ? ""
         : `  !! exit ${run.exitCode}, ${run.passed ?? "?"} passed, see results/${args.out}/logs/${slug}-r${round}.log`;
@@ -477,13 +556,24 @@ async function main(): Promise<void> {
     }
   }
 
-  const result = { environment, loadAvgAtEnd: os.loadavg().map((x) => +x.toFixed(2)), cases, runs };
+  console.log("\n" + save(runs, true));
+  if (!runs.every(ok)) process.exitCode = 1;
+}
+
+/** Writes runs.json and summary.md (and the README section with `--readme`); returns the summary. */
+function save(runs: Run[], complete: boolean): string {
+  const result = {
+    environment,
+    complete,
+    loadAvgAtEnd: os.loadavg().map((x) => +x.toFixed(2)),
+    cases,
+    runs,
+  };
   writeFileSync(join(OUT, "runs.json"), JSON.stringify(result, null, 1) + "\n");
   const md = renderSummary(result);
   writeFileSync(join(OUT, "summary.md"), md);
-  console.log("\n" + md);
   if (args.readme) updateReadme(args.readme, md);
-  if (!runs.every(ok)) process.exitCode = 1;
+  return md;
 }
 
 // ---------------------------------------------------------------------------
@@ -499,12 +589,16 @@ const LABEL: Record<Runner, string> = {
   vitest: "Vitest",
   vp: "Vite+ (`vp test`)",
   rstest: "Rstest",
+  jest: "Jest",
   bun: "`bun test`",
+  node: "`node --test`",
+  deno: "`deno test`",
   uf: "`uf test`",
 };
 
 function renderSummary(result: {
   environment: typeof environment;
+  complete: boolean;
   cases: Case[];
   runs: Run[];
 }): string {
@@ -522,6 +616,7 @@ function renderSummary(result: {
   const rounds = Math.max(...result.runs.map((r) => r.round));
 
   const lines: string[] = [
+    ...(result.complete ? [] : ["_Partial results: the benchmark did not finish._", ""]),
     `Each suite: ${fx.testFilesPerSuite} test files / ${fx.testCasesPerSuite.toLocaleString("en-US")} tests over ${fx.sourceModules} source modules; ` +
       `the mock suite adds ${fx.mockCallsInMockSuite.toLocaleString("en-US")} \`host.mock()\` calls (${fmt(fx.mockCallsInMockSuite / fx.testFilesPerSuite)} per file). ` +
       `Every runner gets ${env.workers} parallel workers. Times are the wall clock of the whole CLI run, median of ${rounds} round${rounds > 1 ? "s" : ""}; ` +
@@ -552,8 +647,9 @@ function renderSummary(result: {
           ? `${fmt(total(a))} → ${fmt(total(b))} s (${fmt(cpu(a, "browser"))} → ${fmt(cpu(b, "browser"))} s)`
           : `${fmt(total(a))} → ${fmt(total(b))} s`;
       const cost = Number.isFinite(ratio) ? `**×${ratio.toFixed(2)}**` : "–";
+      const noMocks = SUPPORT[runner].noMocks?.(isolate === "true");
       lines.push(
-        `| ${LABEL[runner]} | ${isolate} | ${cell(a)} | ${cell(b)} | ${cost} | ${cpuCell} |`,
+        `| ${LABEL[runner]} | ${isolate} | ${cell(a)} | ${noMocks ? `n/a (${noMocks})` : cell(b)} | ${cost} | ${cpuCell} |`,
       );
     }
   }
@@ -667,7 +763,6 @@ function updateReadme(section: string, md: string): void {
   const j = readme.indexOf(end);
   if (i < 0 || j < 0) throw new Error(`README.md has no ${section} markers`);
   writeFileSync(path, `${readme.slice(0, i + start.length)}\n\n${md.trim()}\n\n${readme.slice(j)}`);
-  console.log("README.md updated");
 }
 
 await main();
