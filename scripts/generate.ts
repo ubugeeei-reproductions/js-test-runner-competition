@@ -10,6 +10,7 @@
 //   fixture/src/features/<feature>/  api, store, composables, components, page
 //   fixture/tests/nomock/<feature>/  test files without module mocks
 //   fixture/tests/mock/<feature>/    the exact same test files plus `host.mock(...)` calls
+//   fixture/tests/mixed/<feature>/   every other file from mock/, the rest from nomock/
 //
 // Test files import their runner API from "#host" and use `host.mock` / `host.fn` /
 // `host.importActual`. Each runner config rewrites that to `vi.*` (Vitest, Vite+) or `rs.*`
@@ -607,6 +608,8 @@ const TARGETS: Target[] = [
 let testFiles = 0;
 let testCases = 0;
 let mockCalls = 0;
+let mixedMockedFiles = 0;
+let fileIndex = 0;
 
 for (let f = 0; f < FEATURES; f++) {
   const feature = `feature-${String(f).padStart(2, "0")}`;
@@ -821,16 +824,21 @@ ${COMPONENTS.map((c) => `    create${pascal(c)}(),`).join("\n")}
     if (rand() < 0.25) mocks.push(`host.mock("#src/ui/feedback/toggle", { spy: true });`);
 
     const { imports, cases } = testBody(feature, target);
-    for (const variant of ["nomock", "mock"] as const) {
+    // "mixed" is the shape of a real suite: every other file uses mocks (its mocked half is the same
+    // as in "mock", the rest as in "nomock").
+    const mixedMocked = fileIndex++ % 2 === 0;
+    if (mixedMocked) mixedMockedFiles++;
+    for (const variant of ["nomock", "mock", "mixed"] as const) {
+      const mocked = variant === "mock" || (variant === "mixed" && mixedMocked);
       // The last case proves which module the runner actually loaded: the mocked app context
       // reports "Test User", the real one "Guest". Everything else is identical across suites.
-      const contextCase = `  it("reads the app context", async () => {\n    expect(useAppContext().user.name).toBe("${variant === "mock" ? "Test User" : "Guest"}");\n  });\n`;
+      const contextCase = `  it("reads the app context", async () => {\n    expect(useAppContext().user.name).toBe("${mocked ? "Test User" : "Guest"}");\n  });\n`;
       const lines = [
         `import { afterEach, describe, expect, host, it } from "#host";`,
         `import { useAppContext } from "#src/app/context";`,
         ...imports,
         "",
-        ...(variant === "mock" ? [...mocks, ""] : []),
+        ...(mocked ? [...mocks, ""] : []),
         `afterEach(() => {`,
         `  document.body.innerHTML = "";`,
         `});`,
@@ -985,10 +993,11 @@ function testBody(feature: string, target: Target): { imports: string[]; cases: 
 }
 
 const summary = {
-  sourceModules: fileCount - testFiles * 2,
+  sourceModules: fileCount - testFiles * 3,
   testFilesPerSuite: testFiles,
   testCasesPerSuite: testCases,
   mockCallsInMockSuite: mockCalls,
+  mockedFilesInMixedSuite: mixedMockedFiles,
 };
 writeFileSync(
   join(OUT, "summary.json"),
@@ -998,6 +1007,6 @@ writeFileSync(
 rmSync(DEST, { recursive: true, force: true });
 renameSync(OUT, DEST);
 console.log(
-  `fixture: ${summary.sourceModules} source modules, ${testFiles} test files × 2 suites (nomock / mock), ` +
+  `fixture: ${summary.sourceModules} source modules, ${testFiles} test files × 3 suites (nomock / mock / mixed), ` +
     `${testCases} test cases per suite, ${mockCalls} host.mock() calls in the mock suite`,
 );

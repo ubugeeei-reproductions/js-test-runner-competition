@@ -24,7 +24,7 @@ import { ensureUf, UF_VERSION, ufNodeOptions } from "./uf.ts";
 
 type Runner = "vitest" | "vp" | "rstest" | "bun" | "uf";
 type Env = "browser" | "happy-dom";
-type Suite = "nomock" | "mock";
+type Suite = "nomock" | "mock" | "mixed";
 
 /** What each runner can be asked to do. */
 const SUPPORT: Record<Runner, { envs: Env[]; isolate: boolean[] }> = {
@@ -114,21 +114,33 @@ for (const env of list(args.envs) as Env[]) {
     }
   }
 }
+// Extra cases, Vitest in a real browser with `isolate: true`: the experimental patches (patches/),
+// and the mixed suite (every other file mocks), unpatched and with vitest-dev/vitest#11083, which
+// was merged after 5.0.3 and keeps request interception on once a browser context saw a mock.
+const EXPERIMENTS: Record<string, { label: string; vars: Record<string, string> }> = {
+  "parallel-imports": {
+    label: "parallel hoisted imports",
+    vars: { REPRO_EXP_PARALLEL_IMPORTS: "1" },
+  },
+  "keep-cache": { label: "HTTP cache kept while routed", vars: { REPRO_EXP_KEEP_CACHE: "1" } },
+  "parallel-imports+keep-cache": {
+    label: "both",
+    vars: { REPRO_EXP_PARALLEL_IMPORTS: "1", REPRO_EXP_KEEP_CACHE: "1" },
+  },
+  pr11083: { label: "with #11083 (unreleased)", vars: { REPRO_EXP_PR11083: "1" } },
+};
 if (args.experiments) {
-  const experiments: Array<[string, Record<string, string>]> = [
-    ["parallel-imports", { REPRO_EXP_PARALLEL_IMPORTS: "1" }],
-    ["keep-cache", { REPRO_EXP_KEEP_CACHE: "1" }],
-    ["parallel-imports+keep-cache", { REPRO_EXP_PARALLEL_IMPORTS: "1", REPRO_EXP_KEEP_CACHE: "1" }],
+  const extra: Array<[Suite, string | undefined]> = [
+    ["mock", "parallel-imports"],
+    ["mock", "keep-cache"],
+    ["mock", "parallel-imports+keep-cache"],
+    ["mock", "pr11083"],
+    ["mixed", undefined],
+    ["mixed", "pr11083"],
   ];
-  for (const [experiment, vars] of experiments) {
-    const c = {
-      runner: "vitest",
-      env: "browser",
-      suite: "mock",
-      isolate: true,
-      experiment,
-    } as const;
-    cases.push({ ...c, id: caseId(c), vars });
+  for (const [suite, experiment] of extra) {
+    const c = { runner: "vitest", env: "browser", suite, isolate: true, experiment } as const;
+    cases.push({ ...c, id: caseId(c), vars: experiment ? EXPERIMENTS[experiment].vars : {} });
   }
 }
 
@@ -546,23 +558,39 @@ function renderSummary(result: {
     }
   }
 
-  const experiments = result.cases.filter((c) => c.experiment);
-  if (experiments.length) {
-    const unpatched = caseId({ runner: "vitest", env: "browser", suite: "mock", isolate: true });
+  const extra = result.cases.filter((c) => c.experiment || c.suite === "mixed");
+  if (extra.length) {
+    const vitest = (suite: Suite, experiment?: string) =>
+      caseId({ runner: "vitest", env: "browser", suite, isolate: true, experiment });
     lines.push(
       "",
-      "**Vitest in a real browser, mock suite, `isolate: true`, with the experimental patches from [`patches/`](patches) switched on:**",
+      "**Vitest in a real browser, `isolate: true`: the mixed suite (every other file mocks) and the patches from [`patches/`](patches):**",
       "",
-      "| Variant | with mocks | vs. unpatched | CPU |",
-      "| --- | ---: | ---: | ---: |",
-      `| unpatched | ${cell(unpatched)} | – | ${fmt(total(unpatched))} s |`,
+      "| Suite | Variant | time | vs. unpatched | CPU (of which Chromium) |",
+      "| --- | --- | ---: | ---: | ---: |",
     );
-    for (const c of experiments) {
-      const delta = wall(c.id) / wall(unpatched) - 1;
-      const vs = Number.isFinite(delta)
-        ? `${delta > 0 ? "+" : ""}${(delta * 100).toFixed(0)}%`
-        : "–";
-      lines.push(`| ${c.experiment} | ${cell(c.id)} | ${vs} | ${fmt(total(c.id))} s |`);
+    const rows: Array<[Suite, string | undefined]> = [
+      ["nomock", undefined],
+      ["mixed", undefined],
+      ...extra
+        .filter((c) => c.suite === "mixed" && c.experiment)
+        .map((c) => [c.suite, c.experiment] as [Suite, string]),
+      ["mock", undefined],
+      ...extra
+        .filter((c) => c.suite === "mock")
+        .map((c) => [c.suite, c.experiment] as [Suite, string]),
+    ];
+    for (const [suite, experiment] of rows) {
+      const id = vitest(suite, experiment);
+      const delta = wall(id) / wall(vitest(suite)) - 1;
+      const vs =
+        !experiment || !Number.isFinite(delta)
+          ? "–"
+          : `${delta > 0 ? "+" : ""}${(delta * 100).toFixed(0)}%`;
+      const label = experiment ? EXPERIMENTS[experiment].label : "unpatched";
+      lines.push(
+        `| ${suite} | ${label} | ${cell(id)} | ${vs} | ${fmt(total(id))} s (${fmt(cpu(id, "browser"))} s) |`,
+      );
     }
   }
 

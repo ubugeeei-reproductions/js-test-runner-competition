@@ -163,7 +163,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  '@vitest/browser-playwright@5.0.3': a21bf191a4723f217a25974829ee591187c9d8164abcf8565682dfe27d57147d
+  '@vitest/browser-playwright@5.0.3': d9afc0b8608e90545e2967c2791024b4e3573b4d65d5b0b3fd6c3f1660ec3e29
   '@vitest/browser@5.0.3': febc681358ac5303c2fbb6a60a7c6e1bd437907df867d3c30001201c4b49e2f4
   '@vitest/mocker@5.0.3': fb4dc2872ec96546ad14933e6a5850b3eb57004d1c2b11fc2a3b92bfbc5767af
   playwright-core@1.63.0: e88f6e99751f14f0535f14ac71085fb6ef4be7572d5adc802d81ab177ca4a395
@@ -192,7 +192,7 @@ importers:
         version: 0.36.0
       '@vitest/browser-playwright':
         specifier: 5.0.3
-        version: 5.0.3(patch_hash=a21bf191a4723f217a25974829ee591187c9d8164abcf8565682dfe27d57147d)(playwright@1.63.0)(vite@8.3.4(@types/node@26.6.4))(vitest@5.0.3)
+        version: 5.0.3(patch_hash=d9afc0b8608e90545e2967c2791024b4e3573b4d65d5b0b3fd6c3f1660ec3e29)(playwright@1.63.0)(vite@8.3.4(@types/node@26.6.4))(vitest@5.0.3)
       happy-dom:
         specifier: 20.14.6
         version: 20.14.6
@@ -2290,7 +2290,7 @@ snapshots:
       pixelmatch: 7.2.0
       pngjs: 7.0.0
 
-  '@vitest/browser-playwright@5.0.3(patch_hash=a21bf191a4723f217a25974829ee591187c9d8164abcf8565682dfe27d57147d)(playwright@1.63.0)(vite@8.3.4(@types/node@26.6.4))(vitest@5.0.3)':
+  '@vitest/browser-playwright@5.0.3(patch_hash=d9afc0b8608e90545e2967c2791024b4e3573b4d65d5b0b3fd6c3f1660ec3e29)(playwright@1.63.0)(vite@8.3.4(@types/node@26.6.4))(vitest@5.0.3)':
     dependencies:
       '@vitest/browser': 5.0.3(patch_hash=febc681358ac5303c2fbb6a60a7c6e1bd437907df867d3c30001201c4b49e2f4)(vite@8.3.4(@types/node@26.6.4))(vitest@5.0.3)
       '@vitest/mocker': 5.0.3(patch_hash=fb4dc2872ec96546ad14933e6a5850b3eb57004d1c2b11fc2a3b92bfbc5767af)(vite@8.3.4(@types/node@26.6.4))
@@ -2956,7 +2956,7 @@ snapshots:
       vite: '@voidzero-dev/vite-plus-core@1.1.0(@types/node@26.6.4)(typescript@7.0.2)'
       vitest: 5.0.3(@types/node@26.6.4)(@vitest/browser-playwright@5.0.3)(@vitest/browser-preview@5.0.3)(@vitest/ui@5.0.3)(@voidzero-dev/vite-plus-core@1.1.0(@types/node@26.6.4)(typescript@7.0.2))(happy-dom@20.14.6)
     optionalDependencies:
-      '@vitest/browser-playwright': 5.0.3(patch_hash=a21bf191a4723f217a25974829ee591187c9d8164abcf8565682dfe27d57147d)(playwright@1.63.0)(vite@8.3.4(@types/node@26.6.4))(vitest@5.0.3)
+      '@vitest/browser-playwright': 5.0.3(patch_hash=d9afc0b8608e90545e2967c2791024b4e3573b4d65d5b0b3fd6c3f1660ec3e29)(playwright@1.63.0)(vite@8.3.4(@types/node@26.6.4))(vitest@5.0.3)
       '@voidzero-dev/vite-plus-darwin-arm64': 1.1.0
       '@voidzero-dev/vite-plus-darwin-x64': 1.1.0
       '@voidzero-dev/vite-plus-linux-arm64-gnu': 1.1.0
@@ -3029,7 +3029,7 @@ snapshots:
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 26.6.4
-      '@vitest/browser-playwright': 5.0.3(patch_hash=a21bf191a4723f217a25974829ee591187c9d8164abcf8565682dfe27d57147d)(playwright@1.63.0)(vite@8.3.4(@types/node@26.6.4))(vitest@5.0.3)
+      '@vitest/browser-playwright': 5.0.3(patch_hash=d9afc0b8608e90545e2967c2791024b4e3573b4d65d5b0b3fd6c3f1660ec3e29)(playwright@1.63.0)(vite@8.3.4(@types/node@26.6.4))(vitest@5.0.3)
       '@vitest/browser-preview': 5.0.3(@voidzero-dev/vite-plus-core@1.1.0(@types/node@26.6.4)(typescript@7.0.2))(vitest@5.0.3)
       '@vitest/ui': 5.0.3(vitest@5.0.3)
       happy-dom: 20.14.6
@@ -3054,7 +3054,7 @@ snapshots:
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 26.6.4
-      '@vitest/browser-playwright': 5.0.3(patch_hash=a21bf191a4723f217a25974829ee591187c9d8164abcf8565682dfe27d57147d)(playwright@1.63.0)(vite@8.3.4(@types/node@26.6.4))(vitest@5.0.3)
+      '@vitest/browser-playwright': 5.0.3(patch_hash=d9afc0b8608e90545e2967c2791024b4e3573b4d65d5b0b3fd6c3f1660ec3e29)(playwright@1.63.0)(vite@8.3.4(@types/node@26.6.4))(vitest@5.0.3)
       '@vitest/browser-preview': 5.0.3(@voidzero-dev/vite-plus-core@1.1.0(@types/node@26.6.4)(typescript@7.0.2))(vitest@5.0.3)
       '@vitest/ui': 5.0.3(vitest@5.0.3)
       happy-dom: 20.14.6

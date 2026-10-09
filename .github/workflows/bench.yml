@@ -48,7 +48,7 @@ jobs:
         run: nix develop --command node scripts/bench.ts --repeat "${{ inputs.repeat || '3' }}" --experiments --out ci --readme results
 
       - name: Profile (browser mode, profiling patches + V8 CPU profile, one round)
-        run: nix develop --command node scripts/bench.ts --envs browser --isolate true --profile --cpu-prof --out ci-profile --readme profile
+        run: nix develop --command node scripts/bench.ts --envs browser --isolate true --experiments --profile --cpu-prof --out ci-profile --readme profile
 
       - name: Job summary
         if: always()

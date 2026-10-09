@@ -1,5 +1,5 @@
 diff --git a/dist/index.js b/dist/index.js
-index d7ab805a2b671f27fa8d91f3684b0e88aa3009ce..6dbe6d45ddbbe5c4268ca470727b3249f004def6 100644
+index d7ab805a2b671f27fa8d91f3684b0e88aa3009ce..0be990155581930abba963f0a01558a2561c96fb 100644
 --- a/dist/index.js
 +++ b/dist/index.js
 @@ -5,6 +5,43 @@ import c from 'tinyrainbow';
@@ -46,9 +46,52 @@ index d7ab805a2b671f27fa8d91f3684b0e88aa3009ce..6dbe6d45ddbbe5c4268ca470727b3249
  
  const _DRIVE_LETTER_START_RE = /^[A-Za-z]:\//;
  function normalizeWindowsPath(input = "") {
-@@ -1058,11 +1095,12 @@ class PlaywrightBrowserProvider {
+@@ -956,6 +993,8 @@ class PlaywrightBrowserProvider {
+ 	browserName;
+ 	browserPromise = null;
+ 	closing = false;
++	// Experiment (REPRO_EXP_PR11083=1): vitest-dev/vitest#11083, merged after 5.0.3, backported.
++	armedContexts = new WeakMap();
+ 	tracingContexts = new Set();
+ 	pendingTraces = new Map();
+ 	initScripts = [resolve(distRoot, "locators.js")];
+@@ -1057,12 +1096,46 @@ class PlaywrightBrowserProvider {
+ 		})();
  		return this.browserPromise;
  	}
++	// vitest-dev/vitest#11083: at the first vi.mock registration, install one permanent probe route
++	// per browser context, so that the context's route count never drops to zero again (request
++	// interception, and with it the disabled HTTP cache, then stays on for the rest of the run).
++	armInterception(page) {
++		if (this.browserName !== "chromium") return Promise.resolve();
++		const context = page.context();
++		const armed = this.armedContexts.get(context) ?? this.probeInterception(page).catch((error) => {
++			this.armedContexts.delete(context);
++			throw error;
++		});
++		this.armedContexts.set(context, armed);
++		return armed;
++	}
++	async probeInterception(page) {
++		const probeUrl = "/__vitest_interception_probe__";
++		const probePattern = `**${probeUrl}`;
++		const context = page.context();
++		await context.route(probePattern, (route) => route.fulfill({
++			status: 204,
++			headers: { "x-vitest-probe": "1" }
++		}));
++		const deadline = Date.now() + 5e3;
++		while (Date.now() < deadline) {
++			const intercepted = await page.evaluate((url) => fetch(url, {
++				cache: "no-store",
++				signal: AbortSignal.timeout(1e3)
++			}).then((r) => r.headers.has("x-vitest-probe"), () => false), probeUrl).catch(() => false);
++			if (intercepted) return;
++			await new Promise((resolve) => setTimeout(resolve, 10));
++		}
++		await context.unroute(probePattern);
++		throw new Error(`Cannot verify that ${this.browserName} request interception is active after 5s; module mocks would not apply reliably (#8339)`);
++	}
  	createMocker() {
 +		const prof = process.env.REPRO_PROF_DIR ? __reproRoutes() : null;
  		const idPredicates = new Map();
@@ -60,7 +103,7 @@ index d7ab805a2b671f27fa8d91f3684b0e88aa3009ce..6dbe6d45ddbbe5c4268ca470727b3249
  				if (url.searchParams.has("_vitest_original")) {
  					return false;
  				}
-@@ -1085,6 +1123,12 @@ class PlaywrightBrowserProvider {
+@@ -1085,6 +1158,12 @@ class PlaywrightBrowserProvider {
  				}
  				return true;
  			};
@@ -73,7 +116,12 @@ index d7ab805a2b671f27fa8d91f3684b0e88aa3009ce..6dbe6d45ddbbe5c4268ca470727b3249
  			return {
  				url: moduleUrl.href,
  				predicate
-@@ -1100,13 +1144,18 @@ class PlaywrightBrowserProvider {
+@@ -1096,17 +1175,23 @@ class PlaywrightBrowserProvider {
+ 		return {
+ 			register: async (sessionId, module) => {
+ 				const page = this.getPage(sessionId);
++				if (process.env.REPRO_EXP_PR11083) await this.armInterception(page);
+ 				const { url: moduleUrl, predicate } = createPredicate(module.url);
  				const key = predicateKey(sessionId, moduleUrl);
  				const existingPredicate = idPredicates.get(key);
  				if (existingPredicate) {
@@ -92,7 +140,7 @@ index d7ab805a2b671f27fa8d91f3684b0e88aa3009ce..6dbe6d45ddbbe5c4268ca470727b3249
  					if (module.type === "manual") {
  						const exports = Object.keys(await module.resolve());
  						const body = createManualModuleSource(module.url, exports);
-@@ -1156,6 +1205,7 @@ class PlaywrightBrowserProvider {
+@@ -1156,6 +1241,7 @@ class PlaywrightBrowserProvider {
  						});
  					} else ;
  				});
@@ -100,7 +148,7 @@ index d7ab805a2b671f27fa8d91f3684b0e88aa3009ce..6dbe6d45ddbbe5c4268ca470727b3249
  			},
  			delete: async (sessionId, id) => {
  				const page = this.getPage(sessionId);
-@@ -1166,6 +1216,7 @@ class PlaywrightBrowserProvider {
+@@ -1166,6 +1252,7 @@ class PlaywrightBrowserProvider {
  				}
  			},
  			clear: async (sessionId) => {
@@ -108,7 +156,7 @@ index d7ab805a2b671f27fa8d91f3684b0e88aa3009ce..6dbe6d45ddbbe5c4268ca470727b3249
  				const page = this.getPage(sessionId);
  				const ids = sessionIds.get(sessionId) ?? new Set();
  				const promises = Array.from(ids, (id) => {
-@@ -1176,7 +1227,10 @@ class PlaywrightBrowserProvider {
+@@ -1176,7 +1263,10 @@ class PlaywrightBrowserProvider {
  					}
  					return null;
  				});
