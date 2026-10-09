@@ -17,8 +17,17 @@
 // (Rstest) at compile time, so every runner executes byte-identical test sources.
 //
 // Usage: node scripts/generate.ts [--features 50] [--files-per-feature 10] [--tests-per-file 10]
-import { mkdirSync, renameSync, rmSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import {
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
+import { stripTypeScriptTypes } from "node:module";
+import { dirname, join, relative } from "node:path";
 import { parseArgs } from "node:util";
 
 const { values: args } = parseArgs({
@@ -991,6 +1000,39 @@ function testBody(feature: string, target: Target): { imports: string[]; cases: 
     ]);
   return { imports, cases };
 }
+
+// ---------------------------------------------------------------------------
+// fixture/js/: the source and the no-mock suite as JavaScript, for `uf test --browser`, which serves
+// only JavaScript modules and does not resolve package.json "imports" in the page. Types are
+// stripped (node:module) and every "#…" import becomes a relative one; the code is otherwise the same.
+// ---------------------------------------------------------------------------
+const walk = (dir: string): string[] =>
+  readdirSync(dir).flatMap((name) => {
+    const path = join(dir, name);
+    return statSync(path).isDirectory() ? walk(path) : [path];
+  });
+const JS = join(OUT, "js");
+const jsHost = join(JS, "host/uf.js");
+function toJs(code: string, dest: string): string {
+  const rel = (target: string) => {
+    const path = relative(dirname(dest), target);
+    return path.startsWith(".") ? path : `./${path}`;
+  };
+  return stripTypeScriptTypes(code)
+    .replace(/"#src\/([^"]+)"/g, (_, path: string) => `"${rel(join(JS, "src", `${path}.js`))}"`)
+    .replace(/"#host"/g, () => `"${rel(jsHost)}"`)
+    .replace(/("\.{1,2}\/[^"]+)\.ts"/g, '$1.js"');
+}
+for (const file of [...walk(join(OUT, "src")), ...walk(join(OUT, "tests/nomock"))]) {
+  const dest = join(JS, relative(OUT, file)).replace(/\.ts$/, ".js");
+  mkdirSync(dirname(dest), { recursive: true });
+  writeFileSync(dest, toJs(readFileSync(file, "utf8"), dest));
+}
+mkdirSync(dirname(jsHost), { recursive: true });
+writeFileSync(
+  jsHost,
+  toJs(readFileSync(new URL("../host/uf/host.ts", import.meta.url), "utf8"), jsHost),
+);
 
 const summary = {
   sourceModules: fileCount - testFiles * 3,

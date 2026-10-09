@@ -15,17 +15,9 @@
   },
   "scripts": {
     "bench": "node scripts/bench.ts",
-    "generate": "node scripts/generate.ts",
-    "test:vitest": "vitest run --config vitest.config.ts",
-    "test:vp": "vp test run --config vite.config.ts",
-    "test:rstest": "rstest run --config rstest.config.ts",
-    "test:bun": "bun test --parallel ./fixture/tests/",
-    "test:uf": "node scripts/uf.ts test fixture/tests/",
-    "typecheck": "node scripts/generate.ts && tsc -p tsconfig.json",
-    "postinstall": "node scripts/generate.ts",
-    "test:jest": "jest --config jest.config.ts",
-    "test:node": "node --test --experimental-test-module-mocks --conditions=repro-node --import=./host/node/setup.ts \"fixture/tests/**/*.test.ts\"",
-    "test:deno": "deno test -A --no-check --parallel --preload=./host/deno/setup.ts fixture/tests/"
+    "generate": "node --disable-warning=ExperimentalWarning scripts/generate.ts",
+    "typecheck": "node --disable-warning=ExperimentalWarning scripts/generate.ts && tsc -p tsconfig.json",
+    "postinstall": "node --disable-warning=ExperimentalWarning scripts/generate.ts"
   },
   "devDependencies": {
     "@babel/core": "8.0.7",
@@ -40,6 +32,7 @@
     "@std/testing": "jsr:^1",
     "@types/bun": "^1.4.2",
     "@types/node": "^26.6.4",
+    "@uniflowed/host": "0.36.0",
     "@uniflowed/test": "0.36.0",
     "@vitest/browser-playwright": "5.0.3",
     "babel-jest": "30.5.2",

@@ -97,6 +97,12 @@
             REPRO_UF = "${own.uf}/bin/uf";
             REPRO_TIME = "${pkgs.time}/bin/time";
             REPRO_ENVIRONMENT = "nix";
+            # `vp` (Vite+) and the test runners come from the lockfile: installed on first entry, and
+            # node_modules/.bin goes first on PATH, so every command below is `vp …` / `vpr …`.
+            shellHook = ''
+              export PATH="$PWD/node_modules/.bin:$PATH"
+              if [ ! -d node_modules/.pnpm ]; then pnpm install --frozen-lockfile; fi
+            '';
           };
         }
       );

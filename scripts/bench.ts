@@ -20,39 +20,17 @@ import { dirname, join } from "node:path";
 import { parseArgs } from "node:util";
 import { summarizeCpuProfile, type CpuProfileSummary } from "./cpuprofile.ts";
 import { summarizeProfileDir, type ProfileSummary } from "./profile.ts";
-import { ensureUf, UF_VERSION, ufNodeOptions } from "./uf.ts";
-
-type Runner = "vitest" | "vp" | "rstest" | "jest" | "bun" | "node" | "deno" | "uf";
-type Env = "browser" | "happy-dom";
-type Suite = "nomock" | "mock" | "mixed";
-
-/** What each runner can be asked to do. */
-interface Support {
-  envs: Env[];
-  isolate: boolean[];
-  /** Why the suites with mocks are not run, if they are not. */
-  noMocks?: (isolate: boolean) => string | undefined;
-}
-const SUPPORT: Record<Runner, Support> = {
-  vitest: { envs: ["browser", "happy-dom"], isolate: [true, false] },
-  vp: { envs: ["browser", "happy-dom"], isolate: [true, false] },
-  rstest: { envs: ["browser", "happy-dom"], isolate: [true, false] },
-  // Jest always gives every test file a fresh module registry.
-  jest: { envs: ["happy-dom"], isolate: [true] },
-  // `bun test` has no browser mode. isolate: `--parallel` (isolated workers) / `--no-isolate`.
-  bun: { envs: ["happy-dom"], isolate: [true, false] },
-  // isolate: `--test-isolation=process` / `none`. Without isolation a module mock registered by one
-  // file is still registered for the next ("The module is already mocked").
-  node: {
-    envs: ["happy-dom"],
-    isolate: [true, false],
-    noMocks: (isolate) => (isolate ? undefined : "mocks persist across files"),
-  },
-  // `deno test` has no module mocking, and runs every test file in a worker of its own.
-  deno: { envs: ["happy-dom"], isolate: [true], noMocks: () => "no module mocking" },
-  // `uf test --browser` cannot mock modules, and uf always resets the module registry between files.
-  uf: { envs: ["happy-dom"], isolate: [true] },
-};
+import {
+  defaultWorkers,
+  invocation,
+  LABEL,
+  SUPPORT,
+  supports,
+  type Env,
+  type Runner,
+  type Suite,
+} from "./runners.ts";
+import { UF_VERSION } from "./uf.ts";
 
 const cpus = os.availableParallelism();
 const { values: args } = parseArgs({
@@ -61,12 +39,13 @@ const { values: args } = parseArgs({
     envs: { type: "string", default: "browser,happy-dom" },
     suites: { type: "string", default: "nomock,mock" },
     isolate: { type: "string", default: "true,false" },
-    workers: { type: "string", default: String(Math.max(1, Math.min(12, cpus - 1))) },
+    workers: { type: "string", default: String(defaultWorkers()) },
     repeat: { type: "string", default: "1" },
     experiments: { type: "boolean", default: false },
     profile: { type: "boolean", default: false },
     "cpu-prof": { type: "boolean", default: false },
     readme: { type: "string" },
+    "readme-file": { type: "string", default: "README.md" },
     out: { type: "string", default: "local" },
     "timeout-min": { type: "string", default: "30" },
   },
@@ -81,8 +60,8 @@ interface Case {
   isolate: boolean;
   /** Experimental patch switches (see patches/). */
   experiment?: string;
-  /** Test file filter; defaults to the whole suite. */
-  filter?: string;
+  /** A sub-directory of the suite, e.g. "feature-00/"; the whole suite by default. */
+  subset?: string;
   vars: Record<string, string>;
 }
 
@@ -99,7 +78,7 @@ interface Run {
    * process tree sampled with `ps` twice a second (which misses processes shorter than that).
    */
   cpuSec: { total: number; browser: number };
-  /** The Chromium executable(s) Playwright launched (browser runs). */
+  /** The Chromium executable(s) the run launched (browser runs). */
   browserExecutables?: string[];
   profile?: ProfileSummary;
   cpuProfile?: CpuProfileSummary;
@@ -123,10 +102,8 @@ const cases: Case[] = [];
 for (const env of list(args.envs) as Env[]) {
   for (const isolate of list(args.isolate).map((x) => x !== "false")) {
     for (const runner of list(args.runners) as Runner[]) {
-      if (!SUPPORT[runner].envs.includes(env) || !SUPPORT[runner].isolate.includes(isolate))
-        continue;
       for (const suite of list(args.suites) as Suite[]) {
-        if (suite !== "nomock" && SUPPORT[runner].noMocks?.(isolate)) continue;
+        if (!supports(runner, env, suite, isolate)) continue;
         const c = { runner, env, suite, isolate };
         cases.push({ ...c, id: caseId(c), vars: {} });
       }
@@ -167,97 +144,29 @@ if (args.experiments) {
 const BUN = process.env.REPRO_BUN ?? "bun";
 const DENO = process.env.REPRO_DENO ?? "deno";
 const TIME = process.env.REPRO_TIME ?? "/usr/bin/time";
-let ufBin = process.env.REPRO_UF ?? "";
-function command(c: Case): string[] {
-  const filter = c.filter ?? `fixture/tests/${c.suite}/`;
-  const w = String(WORKERS);
-  switch (c.runner) {
-    case "vitest":
-      return [
-        join(BIN, "vitest"),
-        "run",
-        "--config",
-        "vitest.config.ts",
-        `--maxWorkers=${w}`,
-        filter,
-      ];
-    case "vp":
-      return [
-        join(BIN, "vp"),
-        "test",
-        "run",
-        "--config",
-        "vite.config.ts",
-        `--maxWorkers=${w}`,
-        filter,
-      ];
-    case "rstest":
-      return [
-        join(BIN, "rstest"),
-        "run",
-        "--config",
-        "rstest.config.ts",
-        "--reporter",
-        "default",
-        "--pool.maxWorkers",
-        w,
-        filter,
-      ];
-    case "bun":
-      return [
-        BUN,
-        "test",
-        `--parallel=${w}`,
-        ...(c.isolate ? [] : ["--no-isolate"]),
-        `./${filter}`,
-      ];
-    case "jest":
-      return [join(BIN, "jest"), "--config", "jest.config.ts", `--maxWorkers=${w}`, filter];
-    case "node":
-      return [
-        process.execPath,
-        "--test",
-        "--experimental-test-module-mocks",
-        "--conditions=repro-node",
-        "--import=./host/node/setup.ts",
-        `--test-isolation=${c.isolate ? "process" : "none"}`,
-        `--test-concurrency=${w}`,
-        "--test-reporter=spec",
-        `${filter}**/*.test.ts`,
-      ];
-    case "deno":
-      // workers: DENO_JOBS (runnerEnv)
-      return [
-        DENO,
-        "test",
-        "-A",
-        "--no-check",
-        "--parallel",
-        "--preload=./host/deno/setup.ts",
-        filter,
-      ];
-    case "uf":
-      return [ufBin, "test", "--color", "never", "-j", w, filter];
-  }
-}
-
-function runnerEnv(c: Case, extraNodeOptions = ""): Record<string, string> {
-  const vars: Record<string, string> = {
-    ...c.vars,
-    REPRO_ENV: c.env,
-    REPRO_ISOLATE: String(c.isolate),
-    FORCE_COLOR: "0",
-    NO_COLOR: "1",
-  };
-  if (c.runner === "deno") vars.DENO_JOBS = String(WORKERS);
+/** scripts/runners.ts's invocation, with commands resolved and the benchmark's own variables. */
+function resolveCommand(
+  c: Case,
+  extraNodeOptions: string,
+): { argv: string[]; env: Record<string, string> } {
+  const inv = invocation({ ...c, workers: WORKERS });
+  const [cmd, ...rest] = inv.argv;
+  const resolved =
+    cmd === "node"
+      ? process.execPath
+      : cmd === "bun"
+        ? BUN
+        : cmd === "deno"
+          ? DENO
+          : existsSync(join(BIN, cmd))
+            ? join(BIN, cmd)
+            : cmd;
+  const env: Record<string, string> = { ...inv.env, ...c.vars, FORCE_COLOR: "0", NO_COLOR: "1" };
   // Playwright logs the executable it launches; recorded to show every runner used the same Chromium.
-  if (c.env === "browser") vars.DEBUG = [process.env.DEBUG, "pw:browser"].filter(Boolean).join(",");
-  const nodeOptions = [process.env.NODE_OPTIONS ?? "", extraNodeOptions];
-  // uf's workers get the "#host" condition and a setup file; see host/uf/setup.ts.
-  if (c.runner === "uf") nodeOptions.push(ufNodeOptions());
-  const joined = nodeOptions.filter(Boolean).join(" ");
-  if (joined) vars.NODE_OPTIONS = joined;
-  return vars;
+  if (c.env === "browser") env.DEBUG = [process.env.DEBUG, "pw:browser"].filter(Boolean).join(",");
+  const nodeOptions = [process.env.NODE_OPTIONS, extraNodeOptions].filter(Boolean).join(" ");
+  if (nodeOptions) env.NODE_OPTIONS = nodeOptions;
+  return { argv: [resolved, ...rest], env };
 }
 
 // ---------------------------------------------------------------------------
@@ -352,7 +261,7 @@ function parseCpuTime(s: string): number {
   }
   return days * 86400 + s.split(":").reduce((acc, part) => acc * 60 + Number(part), 0);
 }
-type Sample = Map<number, { browser: boolean; cpu: number }>;
+type Sample = Map<number, { browser: boolean; cpu: number; exe?: string }>;
 function sampleTree(root: number, seen: Sample): void {
   let out: string;
   try {
@@ -379,7 +288,11 @@ function sampleTree(root: number, seen: Sample): void {
     const p = procs.get(pid);
     if (p) {
       const browser = /chrom|headless_shell/i.test(p.cmd);
-      seen.set(pid, { browser, cpu: Math.max(p.cpu, seen.get(pid)?.cpu ?? 0) });
+      // the browser's main process: the executable, without a `--type=` (renderer, gpu, …)
+      const first = p.cmd.split(" ")[0];
+      const exe =
+        browser && !p.cmd.includes("--type=") && first.startsWith("/") ? first : undefined;
+      seen.set(pid, { browser, cpu: Math.max(p.cpu, seen.get(pid)?.cpu ?? 0), exe });
     }
     stack.push(...(children.get(pid) ?? []));
   }
@@ -394,9 +307,10 @@ function runOnce(
   logFile: string,
   extra: { vars?: Record<string, string>; nodeOptions?: string } = {},
 ): Promise<Run> {
-  const env = { ...process.env, ...runnerEnv(c, extra.nodeOptions), ...extra.vars };
+  const { argv, env: vars } = resolveCommand(c, extra.nodeOptions ?? "");
+  const env = { ...process.env, ...vars, ...extra.vars };
   const start = performance.now();
-  const child = spawn(TIME, ["-p", ...command(c)], {
+  const child = spawn(TIME, ["-p", ...argv], {
     cwd: ROOT,
     env,
     stdio: ["ignore", "pipe", "pipe"],
@@ -460,7 +374,12 @@ function runOnce(
         cpuSec: { total: +total.toFixed(1), browser: +Math.min(browser, total).toFixed(1) },
         browserExecutables:
           c.env === "browser"
-            ? [...new Set([...output.matchAll(/<launching> (\S+)/g)].map((m) => m[1]))]
+            ? [
+                ...new Set([
+                  ...[...output.matchAll(/<launching> (\S+)/g)].map((m) => m[1]),
+                  ...[...seen.values()].flatMap((p) => (p.exe ? [p.exe] : [])),
+                ]),
+              ]
             : undefined,
       });
     });
@@ -472,9 +391,12 @@ const ok = (r: Run) => r.exitCode === 0 && r.passed === environment.fixture.test
 async function main(): Promise<void> {
   if (!existsSync(join(ROOT, "fixture/summary.json"))) {
     console.log("fixture/ is missing, generating it first");
-    execFileSync(process.execPath, [join(ROOT, "scripts/generate.ts")], { stdio: "inherit" });
+    execFileSync(
+      process.execPath,
+      ["--disable-warning=ExperimentalWarning", join(ROOT, "scripts/generate.ts")],
+      { stdio: "inherit" },
+    );
   }
-  if (cases.some((c) => c.runner === "uf") && !ufBin) ufBin = await ensureUf();
   if (cases.some((c) => c.env === "browser") && !process.env.PLAYWRIGHT_BROWSERS_PATH) {
     execFileSync(join(BIN, "playwright"), ["install", "chromium-headless-shell"], {
       stdio: "inherit",
@@ -500,29 +422,33 @@ async function main(): Promise<void> {
       .join(", ")}`,
   );
 
-  // Warm-up (not measured). Without a browser the whole fixture runs once, because Jest and Deno
-  // keep compiled files on disk and the first measured suite would otherwise warm them for the
-  // next. With a browser one feature folder is enough: the runners keep transforms in memory, and
-  // it fills Vite's dependency optimizer cache.
+  // Warm-up (not measured). Without a browser every suite runs once, because Jest and Deno keep
+  // compiled files on disk and the first measured suite would otherwise warm them for the next.
+  // With a browser one feature folder is enough: the runners keep transforms in memory, and it
+  // fills Vite's dependency optimizer cache (and downloads uf if needed).
   const warmups = new Map(cases.map((c) => [`${c.env}/${c.runner}`, c]));
   for (const [key, c] of warmups) {
-    process.stdout.write(`warm-up ${key} … `);
-    const warm: Case = {
-      ...c,
-      id: `${key}/warm-up`,
-      suite: SUPPORT[c.runner].noMocks?.(true) ? "nomock" : "mock",
-      isolate: true,
-      experiment: undefined,
-      vars: {},
-      filter:
-        c.env === "browser"
-          ? "fixture/tests/mock/feature-00/"
-          : SUPPORT[c.runner].noMocks?.(true)
-            ? "fixture/tests/nomock/"
-            : "fixture/tests/",
-    };
-    const r = await runOnce(warm, 0, join(OUT, "logs", `${key.replace("/", "_")}-warmup.log`));
-    console.log(`${r.wallSec}s (exit ${r.exitCode})`);
+    const isolate = SUPPORT[c.runner].isolate[0];
+    const suites = (["nomock", "mock", "mixed"] as const).filter((suite) =>
+      supports(c.runner, c.env, suite, isolate),
+    );
+    const plan: Suite[] =
+      c.env === "browser" ? [suites.includes("mock") ? "mock" : "nomock"] : suites;
+    for (const suite of plan) {
+      process.stdout.write(`warm-up ${key} ${suite} … `);
+      const warm: Case = {
+        ...c,
+        id: `${key}/${suite}/warm-up`,
+        suite,
+        isolate,
+        experiment: undefined,
+        vars: {},
+        subset: c.env === "browser" ? "feature-00/" : undefined,
+      };
+      const log = join(OUT, "logs", `${key.replace("/", "_")}-${suite}-warmup.log`);
+      const r = await runOnce(warm, 0, log);
+      console.log(`${r.wallSec}s (exit ${r.exitCode})`);
+    }
   }
 
   const runs: Run[] = [];
@@ -585,16 +511,16 @@ const median = (xs: number[]) => {
   return s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2;
 };
 const fmt = (x: number, digits = 1) => (Number.isFinite(x) ? x.toFixed(digits) : "–");
-const LABEL: Record<Runner, string> = {
-  vitest: "Vitest",
-  vp: "Vite+ (`vp test`)",
-  rstest: "Rstest",
-  jest: "Jest",
-  bun: "`bun test`",
-  node: "`node --test`",
-  deno: "`deno test`",
-  uf: "`uf test`",
-};
+
+/** "Vitest, mock, with #11083 (unreleased)" */
+function caseName(id: string, cases: Case[]): string {
+  const c = cases.find((x) => x.id === id);
+  if (!c) return id;
+  const parts = [LABEL[c.runner], c.suite];
+  if (!c.isolate) parts.push("isolate: false");
+  if (c.experiment) parts.push(EXPERIMENTS[c.experiment].label);
+  return parts.join(", ");
+}
 
 function renderSummary(result: {
   environment: typeof environment;
@@ -615,52 +541,111 @@ function renderSummary(result: {
   const fx = env.fixture;
   const rounds = Math.max(...result.runs.map((r) => r.round));
 
-  const lines: string[] = [
-    ...(result.complete ? [] : ["_Partial results: the benchmark did not finish._", ""]),
-    `Each suite: ${fx.testFilesPerSuite} test files / ${fx.testCasesPerSuite.toLocaleString("en-US")} tests over ${fx.sourceModules} source modules; ` +
-      `the mock suite adds ${fx.mockCallsInMockSuite.toLocaleString("en-US")} \`host.mock()\` calls (${fmt(fx.mockCallsInMockSuite / fx.testFilesPerSuite)} per file). ` +
-      `Every runner gets ${env.workers} parallel workers. Times are the wall clock of the whole CLI run, median of ${rounds} round${rounds > 1 ? "s" : ""}; ` +
-      `CPU is the user + system time of all of the run's processes.`,
+  const lines: string[] = result.complete
+    ? []
+    : ["_Partial results: the benchmark did not finish._"];
+  // A profiling run (--profile / --cpu-prof) reports only what it profiled.
+  const profileOnly = result.runs.some((r) => r.profile || r.cpuProfile);
+  const meta = [
+    `${fx.testCasesPerSuite.toLocaleString("en-US")} tests in ${fx.testFilesPerSuite} files per suite`,
+    `${fx.mockCallsInMockSuite.toLocaleString("en-US")} mocks in the mock suite`,
+    `${env.workers} workers per runner`,
+    `median of ${rounds} round${rounds > 1 ? "s" : ""}`,
   ];
-  const base = result.cases.filter((c) => !c.experiment);
-  for (const e of ["browser", "happy-dom"] as const) {
-    const keys = [
-      ...new Set(base.filter((c) => c.env === e).map((c) => `${c.runner}|${c.isolate}`)),
-    ];
-    if (!keys.length) continue;
+  const base = profileOnly ? [] : result.cases.filter((c) => !c.experiment);
+
+  if (!profileOnly) {
+    // At a glance: each runner with its default isolation, the fastest of every column in bold.
+    const defaultIsolation = (runner: Runner) => SUPPORT[runner].isolate[0];
+    const glanceRunners = [...new Set(base.map((c) => c.runner))];
+    const columns = (profileOnly ? [] : (["browser", "happy-dom"] as const))
+      .flatMap((e) => (["nomock", "mock"] as const).map((suite) => ({ e, suite })))
+      .filter(({ e }) => base.some((c) => c.env === e));
+    const glanceId = (runner: Runner, e: Env, suite: Suite) =>
+      caseId({ runner, env: e, suite, isolate: defaultIsolation(runner) });
+    const best = columns.map(({ e, suite }) =>
+      Math.min(...glanceRunners.map((r) => wall(glanceId(r, e, suite))).filter(Number.isFinite)),
+    );
     lines.push(
       "",
-      e === "browser"
-        ? "**In a real browser** (Playwright's headless Chromium):"
-        : "**In happy-dom** (no browser; every runner uses the same happy-dom):",
+      "Wall-clock time of the whole run, each runner with its default isolation.",
+      "**Bold**: the fastest in its column. **(×N)**: what the mocks cost that runner.",
       "",
-      `| Runner | isolate | no mocks | with mocks | mocks cost | CPU, no mocks → mocks${e === "browser" ? " (of which Chromium)" : ""} |`,
-      "| --- | --- | ---: | ---: | ---: | ---: |",
+      `| Runner | ${columns.map(({ e, suite }) => `${e === "browser" ? "Browser" : "happy-dom"}, ${suite === "mock" ? "with mocks" : "no mocks"}`).join(" | ")} |`,
+      `| --- | ${columns.map(() => "---:").join(" | ")} |`,
     );
-    for (const key of keys) {
-      const [runner, isolate] = key.split("|") as [Runner, string];
-      const a = caseId({ runner, env: e, suite: "nomock", isolate: isolate === "true" });
-      const b = caseId({ runner, env: e, suite: "mock", isolate: isolate === "true" });
-      const ratio = wall(b) / wall(a);
-      const cpuCell =
-        e === "browser"
-          ? `${fmt(total(a))} → ${fmt(total(b))} s (${fmt(cpu(a, "browser"))} → ${fmt(cpu(b, "browser"))} s)`
-          : `${fmt(total(a))} → ${fmt(total(b))} s`;
-      const cost = Number.isFinite(ratio) ? `**×${ratio.toFixed(2)}**` : "–";
-      const noMocks = SUPPORT[runner].noMocks?.(isolate === "true");
-      lines.push(
-        `| ${LABEL[runner]} | ${isolate} | ${cell(a)} | ${noMocks ? `n/a (${noMocks})` : cell(b)} | ${cost} | ${cpuCell} |`,
-      );
+    for (const runner of glanceRunners) {
+      const cells = columns.map(({ e, suite }, i) => {
+        if (!SUPPORT[runner].envs.includes(e)) return "–";
+        const reason =
+          suite === "mock" ? SUPPORT[runner].noMocks?.(defaultIsolation(runner), e) : undefined;
+        if (reason) return `n/a`;
+        const id = glanceId(runner, e, suite);
+        if (runsOf(id).length === 0) return "–";
+        if (good(id).length < runsOf(id).length) return "failed";
+        const time = `${fmt(wall(id))} s`;
+        const shown = wall(id) === best[i] ? `**${time}**` : time;
+        const ratio = wall(id) / wall(glanceId(runner, e, "nomock"));
+        return suite === "mock" && Number.isFinite(ratio)
+          ? `${shown} (×${ratio.toFixed(2)})`
+          : shown;
+      });
+      lines.push(`| ${LABEL[runner]} | ${cells.join(" | ")} |`);
     }
+    const notes = glanceRunners.flatMap((runner) =>
+      SUPPORT[runner].envs.flatMap((e) => {
+        const reason = SUPPORT[runner].noMocks?.(defaultIsolation(runner), e);
+        return reason ? [`${LABEL[runner]} (${e}): ${reason}`] : [];
+      }),
+    );
+    lines.push(
+      "",
+      `<sub>${meta.join(" · ")}${notes.length ? `<br>n/a: ${notes.join("; ")}` : ""}</sub>`,
+    );
+
+    lines.push("", "<details>", "<summary>Every run: isolation on and off, CPU time</summary>");
+    for (const e of ["browser", "happy-dom"] as const) {
+      const keys = [
+        ...new Set(base.filter((c) => c.env === e).map((c) => `${c.runner}|${c.isolate}`)),
+      ];
+      if (!keys.length) continue;
+      lines.push(
+        "",
+        e === "browser"
+          ? "**In a real browser** (Playwright's headless Chromium):"
+          : "**In happy-dom** (no browser; every runner uses the same happy-dom):",
+        "",
+        `| Runner | isolate | no mocks | with mocks | mocks cost | CPU, no mocks → mocks${e === "browser" ? " (of which Chromium)" : ""} |`,
+        "| --- | --- | ---: | ---: | ---: | ---: |",
+      );
+      for (const key of keys) {
+        const [runner, isolate] = key.split("|") as [Runner, string];
+        const a = caseId({ runner, env: e, suite: "nomock", isolate: isolate === "true" });
+        const b = caseId({ runner, env: e, suite: "mock", isolate: isolate === "true" });
+        const ratio = wall(b) / wall(a);
+        const cpuCell =
+          e === "browser"
+            ? `${fmt(total(a))} → ${fmt(total(b))} s (${fmt(cpu(a, "browser"))} → ${fmt(cpu(b, "browser"))} s)`
+            : `${fmt(total(a))} → ${fmt(total(b))} s`;
+        const cost = Number.isFinite(ratio) ? `**×${ratio.toFixed(2)}**` : "–";
+        const noMocks = SUPPORT[runner].noMocks?.(isolate === "true", e);
+        lines.push(
+          `| ${LABEL[runner]} | ${isolate} | ${cell(a)} | ${noMocks ? `n/a (${noMocks})` : cell(b)} | ${cost} | ${cpuCell} |`,
+        );
+      }
+    }
+
+    lines.push("", "</details>");
   }
 
-  const extra = result.cases.filter((c) => c.experiment || c.suite === "mixed");
+  const extra = profileOnly ? [] : result.cases.filter((c) => c.experiment || c.suite === "mixed");
   if (extra.length) {
     const vitest = (suite: Suite, experiment?: string) =>
       caseId({ runner: "vitest", env: "browser", suite, isolate: true, experiment });
     lines.push(
       "",
-      "**Vitest in a real browser, `isolate: true`: the mixed suite (every other file mocks) and the patches from [`patches/`](patches):**",
+      "<details>",
+      "<summary>Vitest in a browser: the mixed suite, and the experimental patches</summary>",
       "",
       "| Suite | Variant | time | vs. unpatched | CPU (of which Chromium) |",
       "| --- | --- | ---: | ---: | ---: |",
@@ -690,11 +675,13 @@ function renderSummary(result: {
     }
   }
 
+  if (extra.length) lines.push("", "</details>");
+
   const profiled = result.runs.filter((r) => r.profile && r.round === 1);
   if (profiled.length) {
     lines.push(
       "",
-      "**Profile** (per test file unless noted):",
+      "Per test file, unless noted:",
       "",
       "| Run | test file import, p50 | requests per file | answered with 304 | `context.route()` registrations | route predicate calls | Node event loop busy |",
       "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
@@ -702,7 +689,7 @@ function renderSummary(result: {
     for (const r of profiled) {
       const p = r.profile!;
       lines.push(
-        `| ${r.case} | ${fmt(p.importMsP50, 0)} ms | ${fmt(p.requestsPerFile, 0)} | ${fmt(p.http.share304 * 100, 0)}% | ` +
+        `| ${caseName(r.case, result.cases)} | ${fmt(p.importMsP50, 0)} ms | ${fmt(p.requestsPerFile, 0)} | ${fmt(p.http.share304 * 100, 0)}% | ` +
           `${p.routes.registers.toLocaleString("en-US")} | ${p.routes.predicateCalls.toLocaleString("en-US")} | ${fmt(p.node.meanElu * 100, 0)}% |`,
       );
     }
@@ -711,7 +698,7 @@ function renderSummary(result: {
   if (cpuProfiled.length) {
     lines.push(
       "",
-      "**Where the runner's busiest Node process spends its CPU time** (self time by package):",
+      "Where the runner's busiest Node process spends its CPU time (self time, by package):",
       "",
     );
     for (const r of cpuProfiled) {
@@ -719,7 +706,9 @@ function renderSummary(result: {
         .cpuProfile!.byPackage.slice(0, 8)
         .map((p) => `${p.name} ${fmt(p.share * 100, 0)}%`)
         .join(", ");
-      lines.push(`- \`${r.case}\` (${fmt(r.cpuProfile!.busySec)} s busy): ${top}`);
+      lines.push(
+        `- ${caseName(r.case, result.cases)} (${fmt(r.cpuProfile!.busySec)} s busy): ${top}`,
+      );
     }
   }
 
@@ -730,13 +719,11 @@ function renderSummary(result: {
       executables.set(exe, (executables.get(exe) ?? new Set()).add(LABEL[runner as Runner]));
     }
   }
-  if (executables.size === 1) {
-    const [exe] = executables.keys();
-    lines.push(
-      "",
-      `Every browser run launched the same Chromium: \`${exe.replace(/^.*\/(chromium[^/]*)\//, "$1/")}\`.`,
-    );
-  } else if (executables.size > 1) {
+  const chromium =
+    executables.size === 1
+      ? `every browser run launched the same Chromium (\`${[...executables.keys()][0].replace(/^.*\/(chromium[^/]*)\/.*$/, "$1")}\`)`
+      : undefined;
+  if (executables.size > 1) {
     lines.push("", "**Warning: browser runs launched different Chromium executables:**", "");
     for (const [exe, runners] of executables)
       lines.push(`- \`${exe}\`: ${[...runners].join(", ")}`);
@@ -744,24 +731,29 @@ function renderSummary(result: {
 
   lines.push(
     "",
-    `<sub>${env.machine}; ${env.os}; ${env.pinned ? "toolchain from flake.nix; " : ""}Node ${env.node}; ` +
-      Object.entries(env.versions)
-        .map(([k, v]) => `${k} ${v}`)
-        .join(", ") +
-      `; ${env.date.slice(0, 10)}</sub>`,
+    "<details>",
+    "<summary>Machine and versions</summary>",
+    "",
+    `- ${env.machine}, ${env.os}${env.pinned ? ", toolchain from flake.nix" : ""}, ${env.date.slice(0, 10)}`,
+    ...(chromium ? [`- ${chromium}`] : []),
+    `- Node ${env.node}, ${Object.entries(env.versions)
+      .map(([k, v]) => `${k} ${v}`)
+      .join(", ")}`,
+    "",
+    "</details>",
     "",
   );
   return lines.join("\n");
 }
 
 function updateReadme(section: string, md: string): void {
-  const path = join(ROOT, "README.md");
+  const path = join(ROOT, args["readme-file"]);
   const readme = readFileSync(path, "utf8");
   const start = `<!-- ${section}:start -->`;
   const end = `<!-- ${section}:end -->`;
   const i = readme.indexOf(start);
   const j = readme.indexOf(end);
-  if (i < 0 || j < 0) throw new Error(`README.md has no ${section} markers`);
+  if (i < 0 || j < 0) throw new Error(`${args["readme-file"]} has no ${section} markers`);
   writeFileSync(path, `${readme.slice(0, i + start.length)}\n\n${md.trim()}\n\n${readme.slice(j)}`);
 }
 

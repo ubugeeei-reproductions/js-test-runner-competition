@@ -5,7 +5,8 @@
 //
 //   node scripts/uf.ts test fixture/tests/mock/
 //
-// Like the benchmark, it runs uf's Node workers with host/uf/setup.ts (see that file for why).
+// Inside `nix develop` it runs the uf from flake.nix (REPRO_UF) instead. Without `--browser`, uf's
+// Node workers get the "#host" condition and host/uf/setup.ts (see that file for why).
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
@@ -56,13 +57,12 @@ export async function ensureUf(): Promise<string> {
 }
 
 if (import.meta.main) {
-  const bin = await ensureUf();
-  const result = spawnSync(bin, process.argv.slice(2), {
+  const bin = process.env.REPRO_UF ?? (await ensureUf());
+  const args = process.argv.slice(2);
+  const nodeOptions = [process.env.NODE_OPTIONS, args.includes("--browser") ? "" : ufNodeOptions()];
+  const result = spawnSync(bin, args, {
     stdio: "inherit",
-    env: {
-      ...process.env,
-      NODE_OPTIONS: [process.env.NODE_OPTIONS, ufNodeOptions()].filter(Boolean).join(" "),
-    },
+    env: { ...process.env, NODE_OPTIONS: nodeOptions.filter(Boolean).join(" ") },
   });
   process.exit(result.status ?? 1);
 }

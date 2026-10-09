@@ -208,6 +208,9 @@ importers:
       '@types/node':
         specifier: ^26.6.4
         version: 26.6.4
+      '@uniflowed/host':
+        specifier: 0.36.0
+        version: 0.36.0
       '@uniflowed/test':
         specifier: 0.36.0
         version: 0.36.0
