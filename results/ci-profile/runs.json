@@ -1,2202 +1,2194 @@
 {
- "environment": {
-  "date": "2026-10-09T11:05:17.723Z",
-  "machine": "AMD EPYC 9V45 96-Core Processor, 2 logical CPUs, 8 GiB RAM",
-  "os": "Linux 6.17.0-1022-azure (x64)",
-  "pinned": true,
-  "node": "v26.10.0",
-  "workers": 1,
-  "versions": {
-   "vitest": "5.0.3",
-   "vite": "8.3.4",
-   "vite-plus": "1.1.0",
-   "vite-plus's vitest": "5.0.3",
-   "vite-plus's core": "1.1.0 (Vite 8.3.3)",
-   "@rstest/core": "0.12.3",
-   "jest": "30.5.2",
-   "bun": "1.4.2",
-   "deno": "2.9.7",
-   "uf": "0.36.0",
-   "playwright": "1.63.0",
-   "chromium (headless shell)": "153.0.8010.12",
-   "happy-dom": "20.14.6"
+  "environment": {
+    "date": "2026-10-09T11:05:17.723Z",
+    "machine": "AMD EPYC 9V45 96-Core Processor, 2 logical CPUs, 8 GiB RAM",
+    "os": "Linux 6.17.0-1022-azure (x64)",
+    "pinned": true,
+    "node": "v26.10.0",
+    "workers": 1,
+    "versions": {
+      "vitest": "5.0.3",
+      "vite": "8.3.4",
+      "vite-plus": "1.1.0",
+      "vite-plus's vitest": "5.0.3",
+      "vite-plus's core": "1.1.0 (Vite 8.3.3)",
+      "@rstest/core": "0.12.3",
+      "jest": "30.5.2",
+      "bun": "1.4.2",
+      "deno": "2.9.7",
+      "uf": "0.36.0",
+      "playwright": "1.63.0",
+      "chromium (headless shell)": "153.0.8010.12",
+      "happy-dom": "20.14.6"
+    },
+    "fixture": {
+      "sourceModules": 962,
+      "testFilesPerSuite": 500,
+      "testCasesPerSuite": 5000,
+      "mockCallsInMockSuite": 1883,
+      "mockedFilesInMixedSuite": 250,
+      "args": {
+        "FEATURES": 50,
+        "FILES_PER_FEATURE": 10,
+        "TESTS_PER_FILE": 10
+      }
+    },
+    "loadAvgAtStart": [5.49, 5.1, 4.41]
   },
-  "fixture": {
-   "sourceModules": 962,
-   "testFilesPerSuite": 500,
-   "testCasesPerSuite": 5000,
-   "mockCallsInMockSuite": 1883,
-   "mockedFilesInMixedSuite": 250,
-   "args": {
-    "FEATURES": 50,
-    "FILES_PER_FEATURE": 10,
-    "TESTS_PER_FILE": 10
-   }
-  },
-  "loadAvgAtStart": [
-   5.49,
-   5.1,
-   4.41
+  "complete": true,
+  "loadAvgAtEnd": [5.14, 4.73, 4.66],
+  "cases": [
+    {
+      "runner": "vitest",
+      "env": "browser",
+      "suite": "nomock",
+      "isolate": true,
+      "id": "browser/vitest/nomock/isolate=true",
+      "vars": {}
+    },
+    {
+      "runner": "vitest",
+      "env": "browser",
+      "suite": "mock",
+      "isolate": true,
+      "id": "browser/vitest/mock/isolate=true",
+      "vars": {}
+    },
+    {
+      "runner": "vp",
+      "env": "browser",
+      "suite": "nomock",
+      "isolate": true,
+      "id": "browser/vp/nomock/isolate=true",
+      "vars": {}
+    },
+    {
+      "runner": "vp",
+      "env": "browser",
+      "suite": "mock",
+      "isolate": true,
+      "id": "browser/vp/mock/isolate=true",
+      "vars": {}
+    },
+    {
+      "runner": "rstest",
+      "env": "browser",
+      "suite": "nomock",
+      "isolate": true,
+      "id": "browser/rstest/nomock/isolate=true",
+      "vars": {}
+    },
+    {
+      "runner": "rstest",
+      "env": "browser",
+      "suite": "mock",
+      "isolate": true,
+      "id": "browser/rstest/mock/isolate=true",
+      "vars": {}
+    },
+    {
+      "runner": "uf",
+      "env": "browser",
+      "suite": "nomock",
+      "isolate": true,
+      "id": "browser/uf/nomock/isolate=true",
+      "vars": {}
+    },
+    {
+      "runner": "vitest",
+      "env": "browser",
+      "suite": "mock",
+      "isolate": true,
+      "experiment": "parallel-imports",
+      "id": "browser/vitest/mock/isolate=true/parallel-imports",
+      "vars": {
+        "REPRO_EXP_PARALLEL_IMPORTS": "1"
+      }
+    },
+    {
+      "runner": "vitest",
+      "env": "browser",
+      "suite": "mock",
+      "isolate": true,
+      "experiment": "keep-cache",
+      "id": "browser/vitest/mock/isolate=true/keep-cache",
+      "vars": {
+        "REPRO_EXP_KEEP_CACHE": "1"
+      }
+    },
+    {
+      "runner": "vitest",
+      "env": "browser",
+      "suite": "mock",
+      "isolate": true,
+      "experiment": "parallel-imports+keep-cache",
+      "id": "browser/vitest/mock/isolate=true/parallel-imports+keep-cache",
+      "vars": {
+        "REPRO_EXP_PARALLEL_IMPORTS": "1",
+        "REPRO_EXP_KEEP_CACHE": "1"
+      }
+    },
+    {
+      "runner": "vitest",
+      "env": "browser",
+      "suite": "mock",
+      "isolate": true,
+      "experiment": "pr11083",
+      "id": "browser/vitest/mock/isolate=true/pr11083",
+      "vars": {
+        "REPRO_EXP_PR11083": "1"
+      }
+    },
+    {
+      "runner": "vitest",
+      "env": "browser",
+      "suite": "mixed",
+      "isolate": true,
+      "id": "browser/vitest/mixed/isolate=true",
+      "vars": {}
+    },
+    {
+      "runner": "vitest",
+      "env": "browser",
+      "suite": "mixed",
+      "isolate": true,
+      "experiment": "pr11083",
+      "id": "browser/vitest/mixed/isolate=true/pr11083",
+      "vars": {
+        "REPRO_EXP_PR11083": "1"
+      }
+    }
+  ],
+  "runs": [
+    {
+      "case": "browser/vitest/nomock/isolate=true",
+      "round": 1,
+      "wallSec": 142.09,
+      "exitCode": 0,
+      "passed": 5000,
+      "failed": 0,
+      "cpuSec": {
+        "total": 228,
+        "browser": 185
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "profile": {
+        "files": 500,
+        "importMsP50": 207.19999999925494,
+        "importMsP90": 268.40000000037253,
+        "requestsPerFile": 222.166,
+        "memoryCacheShare": 0,
+        "networkBusyMsP50": 202.69999999925494,
+        "requestsPerFileByClass": {
+          "test-file": 1,
+          "src:features": 5.4,
+          "src:other": 19.8,
+          "src:ui": 196
+        },
+        "http": {
+          "requests": 121094,
+          "conditional": 119107,
+          "status": {
+            "200": 1987,
+            "304": 119107
+          },
+          "share304": 0.9835912596825607
+        },
+        "routes": {
+          "registers": 0,
+          "registersByType": {},
+          "predicateCalls": 0,
+          "predicateMatched": 0,
+          "predicateMs": 0,
+          "handlerCalls": 0,
+          "ops": {}
+        },
+        "node": {
+          "seconds": 141,
+          "meanElu": 0.517,
+          "secondsAbove90PercentBusy": 2
+        }
+      },
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_nomock_isolate_true-r1/cpu/CPU.20261009.110538.244601.0.001.cpuprofile",
+        "busySec": 31.628183,
+        "byPackage": [
+          {
+            "name": "playwright-core",
+            "sec": 9.3,
+            "share": 0.29305199100435203
+          },
+          {
+            "name": "node: internals",
+            "sec": 6.9,
+            "share": 0.2191760114705293
+          },
+          {
+            "name": "(native)",
+            "sec": 4.2,
+            "share": 0.13125752434150265
+          },
+          {
+            "name": "(gc)",
+            "sec": 3,
+            "share": 0.0935447034690548
+          },
+          {
+            "name": "vite",
+            "sec": 2.8,
+            "share": 0.08706462840435696
+          },
+          {
+            "name": "(program)",
+            "sec": 2.8,
+            "share": 0.08725164515457622
+          },
+          {
+            "name": "rolldown",
+            "sec": 1.3,
+            "share": 0.04196965725157212
+          },
+          {
+            "name": "@vitest/browser",
+            "sec": 0.6,
+            "share": 0.019238790922640102
+          },
+          {
+            "name": "vitest",
+            "sec": 0.4,
+            "share": 0.014214474476766497
+          },
+          {
+            "name": "picomatch",
+            "sec": 0.2,
+            "share": 0.006227483886760109
+          },
+          {
+            "name": "ws",
+            "sec": 0.1,
+            "share": 0.00214672464744497
+          },
+          {
+            "name": "@vitest/mocker",
+            "sec": 0,
+            "share": 0.001513491938503075
+          },
+          {
+            "name": "tinyrainbow",
+            "sec": 0,
+            "share": 0.000033862204477569895
+          },
+          {
+            "name": "pngjs",
+            "sec": 0,
+            "share": 0.00003269236174585179
+          },
+          {
+            "name": "@vitest/browser-playwright",
+            "sec": 0,
+            "share": 0.00003383058710644238
+          },
+          {
+            "name": "tinyglobby",
+            "sec": 0,
+            "share": 0.0007726336982431144
+          },
+          {
+            "name": "fdir",
+            "sec": 0,
+            "share": 0.00018616308119881562
+          },
+          {
+            "name": "(project)",
+            "sec": 0,
+            "share": 0.000408812608678785
+          },
+          {
+            "name": "magic-string",
+            "sec": 0,
+            "share": 0.0007485096440728195
+          },
+          {
+            "name": "estree-walker",
+            "sec": 0,
+            "share": 0.0006821131647050353
+          },
+          {
+            "name": "@vitest/utils",
+            "sec": 0,
+            "share": 0.00003411514344659002
+          },
+          {
+            "name": ".vite-temp",
+            "sec": 0,
+            "share": 0.00041014053826614067
+          }
+        ]
+      }
+    },
+    {
+      "case": "browser/vitest/mock/isolate=true",
+      "round": 1,
+      "wallSec": 219.56,
+      "exitCode": 1,
+      "passed": 4999,
+      "failed": 1,
+      "cpuSec": {
+        "total": 396,
+        "browser": 301
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "profile": {
+        "files": 500,
+        "importMsP50": 410.59999999962747,
+        "importMsP90": 447.5,
+        "requestsPerFile": 213.714,
+        "memoryCacheShare": 0,
+        "networkBusyMsP50": 388.8000000026077,
+        "requestsPerFileByClass": {
+          "test-file": 1,
+          "src:other": 11.3,
+          "src:features": 5.4,
+          "src:ui": 196
+        },
+        "http": {
+          "requests": 115369,
+          "conditional": 9486,
+          "status": {
+            "200": 105883,
+            "304": 9486
+          },
+          "share304": 0.08222312752992572
+        },
+        "routes": {
+          "registers": 1883,
+          "registersByType": {
+            "manual": 1500,
+            "autospy": 383
+          },
+          "predicateCalls": 401623,
+          "predicateMatched": 1812,
+          "predicateMs": 335,
+          "handlerCalls": 1812,
+          "ops": {
+            "route": {
+              "n": 1883,
+              "totalMs": 1788,
+              "maxMs": 21
+            },
+            "clear": {
+              "n": 500,
+              "totalMs": 842,
+              "maxMs": 13
+            }
+          }
+        },
+        "node": {
+          "seconds": 218,
+          "meanElu": 0.638,
+          "secondsAbove90PercentBusy": 1
+        }
+      },
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mock_isolate_true-r1/cpu/CPU.20261009.110800.244995.0.001.cpuprofile",
+        "busySec": 90.45692,
+        "byPackage": [
+          {
+            "name": "playwright-core",
+            "sec": 40.3,
+            "share": 0.4457148109840574
+          },
+          {
+            "name": "vite",
+            "sec": 11.2,
+            "share": 0.124238963696752
+          },
+          {
+            "name": "(native)",
+            "sec": 11,
+            "share": 0.12143763020009968
+          },
+          {
+            "name": "(gc)",
+            "sec": 10.3,
+            "share": 0.11407183662676111
+          },
+          {
+            "name": "node: internals",
+            "sec": 10.1,
+            "share": 0.11206632947484836
+          },
+          {
+            "name": "(program)",
+            "sec": 3.2,
+            "share": 0.03521678606788734
+          },
+          {
+            "name": "rolldown",
+            "sec": 1.9,
+            "share": 0.020487387808472805
+          },
+          {
+            "name": "@vitest/browser",
+            "sec": 0.8,
+            "share": 0.009277609717421288
+          },
+          {
+            "name": "vitest",
+            "sec": 0.5,
+            "share": 0.005354681543435262
+          },
+          {
+            "name": "@vitest/mocker",
+            "sec": 0.4,
+            "share": 0.00432801603238315
+          },
+          {
+            "name": "magic-string",
+            "sec": 0.2,
+            "share": 0.002254343835717599
+          },
+          {
+            "name": "estree-walker",
+            "sec": 0.2,
+            "share": 0.0018725598881766039
+          },
+          {
+            "name": "@vitest/browser-playwright",
+            "sec": 0.1,
+            "share": 0.001544027809038822
+          },
+          {
+            "name": "ws",
+            "sec": 0.1,
+            "share": 0.0012825331660640225
+          },
+          {
+            "name": "mrmime",
+            "sec": 0,
+            "share": 0.000011773560275985519
+          },
+          {
+            "name": "picomatch",
+            "sec": 0,
+            "share": 0.0002733013682093089
+          },
+          {
+            "name": "tinyglobby",
+            "sec": 0,
+            "share": 0.000029981122505608193
+          },
+          {
+            "name": "fdir",
+            "sec": 0,
+            "share": 0.000014570471778167994
+          },
+          {
+            "name": "sirv",
+            "sec": 0,
+            "share": 0.000011983605013303571
+          },
+          {
+            "name": ".vite-temp",
+            "sec": 0,
+            "share": 0.00004687314138044939
+          },
+          {
+            "name": "(project)",
+            "sec": 0,
+            "share": 0.0004218251074655206
+          },
+          {
+            "name": "@vitest/utils",
+            "sec": 0,
+            "share": 0.000042174772256229816
+          }
+        ]
+      }
+    },
+    {
+      "case": "browser/vp/nomock/isolate=true",
+      "round": 1,
+      "wallSec": 138.14,
+      "exitCode": 0,
+      "passed": 5000,
+      "failed": 0,
+      "cpuSec": {
+        "total": 219,
+        "browser": 176
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "profile": {
+        "files": 500,
+        "importMsP50": 201.19999999925494,
+        "importMsP90": 259.40000000037253,
+        "requestsPerFile": 222.166,
+        "memoryCacheShare": 0,
+        "networkBusyMsP50": 196.89999999850988,
+        "requestsPerFileByClass": {
+          "test-file": 1,
+          "src:other": 19.8,
+          "src:features": 5.4,
+          "src:ui": 196
+        },
+        "http": {
+          "requests": 121594,
+          "conditional": 119606,
+          "status": {
+            "200": 1988,
+            "304": 119606
+          },
+          "share304": 0.9836505090711712
+        },
+        "routes": {
+          "registers": 0,
+          "registersByType": {},
+          "predicateCalls": 0,
+          "predicateMatched": 0,
+          "predicateMs": 0,
+          "handlerCalls": 0,
+          "ops": {}
+        },
+        "node": {
+          "seconds": 137,
+          "meanElu": 0.517,
+          "secondsAbove90PercentBusy": 2
+        }
+      },
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vp_nomock_isolate_true-r1/cpu/CPU.20261009.111140.245638.0.001.cpuprofile",
+        "busySec": 31.678661,
+        "byPackage": [
+          {
+            "name": "playwright-core",
+            "sec": 9.1,
+            "share": 0.28847033654610593
+          },
+          {
+            "name": "node: internals",
+            "sec": 7.1,
+            "share": 0.22347990023947034
+          },
+          {
+            "name": "@voidzero-dev/vite-plus-core",
+            "sec": 4.3,
+            "share": 0.13435189069386488
+          },
+          {
+            "name": "(native)",
+            "sec": 4.1,
+            "share": 0.13071281642869945
+          },
+          {
+            "name": "(gc)",
+            "sec": 2.9,
+            "share": 0.09242884350446504
+          },
+          {
+            "name": "(program)",
+            "sec": 2.8,
+            "share": 0.08920200257201527
+          },
+          {
+            "name": "@vitest/browser",
+            "sec": 0.6,
+            "share": 0.020319293167094403
+          },
+          {
+            "name": "vitest",
+            "sec": 0.4,
+            "share": 0.012480009808495379
+          },
+          {
+            "name": "ws",
+            "sec": 0.1,
+            "share": 0.0028828870008110507
+          },
+          {
+            "name": "@vitest/mocker",
+            "sec": 0.1,
+            "share": 0.0020243911193089884
+          },
+          {
+            "name": "rolldown",
+            "sec": 0,
+            "share": 0.0001405046760025621
+          },
+          {
+            "name": "vite",
+            "sec": 0,
+            "share": 0.00010237175112925385
+          },
+          {
+            "name": "tinyrainbow",
+            "sec": 0,
+            "share": 0.000033681979172036345
+          },
+          {
+            "name": "pathe",
+            "sec": 0,
+            "share": 0.00003431331898781959
+          },
+          {
+            "name": "pngjs",
+            "sec": 0,
+            "share": 0.00003949030547724223
+          },
+          {
+            "name": ".vite-temp",
+            "sec": 0,
+            "share": 0.00008257924790444899
+          },
+          {
+            "name": "vite-plus",
+            "sec": 0,
+            "share": 0.0007360790912216902
+          },
+          {
+            "name": "picomatch",
+            "sec": 0,
+            "share": 0.00011790271059752178
+          },
+          {
+            "name": "fdir",
+            "sec": 0,
+            "share": 0.00027182335768547795
+          },
+          {
+            "name": "tinyglobby",
+            "sec": 0,
+            "share": 0.0000807167954478884
+          },
+          {
+            "name": "(project)",
+            "sec": 0,
+            "share": 0.0007724126976200162
+          },
+          {
+            "name": "@vitest/browser-playwright",
+            "sec": 0,
+            "share": 0.00003415548403387378
+          },
+          {
+            "name": "estree-walker",
+            "sec": 0,
+            "share": 0.000642956468393661
+          },
+          {
+            "name": "magic-string",
+            "sec": 0,
+            "share": 0.000558641035995808
+          }
+        ]
+      }
+    },
+    {
+      "case": "browser/vp/mock/isolate=true",
+      "round": 1,
+      "wallSec": 229.93,
+      "exitCode": 1,
+      "passed": 4999,
+      "failed": 1,
+      "cpuSec": {
+        "total": 409,
+        "browser": 303
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "profile": {
+        "files": 500,
+        "importMsP50": 427.7000000011176,
+        "importMsP90": 480,
+        "requestsPerFile": 213.714,
+        "memoryCacheShare": 0,
+        "networkBusyMsP50": 406.19999999552965,
+        "requestsPerFileByClass": {
+          "test-file": 1,
+          "src:other": 11.3,
+          "src:features": 5.4,
+          "src:ui": 196
+        },
+        "http": {
+          "requests": 115869,
+          "conditional": 9985,
+          "status": {
+            "200": 105884,
+            "304": 9985
+          },
+          "share304": 0.08617490441792024
+        },
+        "routes": {
+          "registers": 1883,
+          "registersByType": {
+            "manual": 1500,
+            "autospy": 383
+          },
+          "predicateCalls": 401622,
+          "predicateMatched": 1812,
+          "predicateMs": 365,
+          "handlerCalls": 1812,
+          "ops": {
+            "route": {
+              "n": 1883,
+              "totalMs": 1914,
+              "maxMs": 13
+            },
+            "clear": {
+              "n": 500,
+              "totalMs": 930,
+              "maxMs": 11
+            }
+          }
+        },
+        "node": {
+          "seconds": 228,
+          "meanElu": 0.66,
+          "secondsAbove90PercentBusy": 1
+        }
+      },
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vp_mock_isolate_true-r1/cpu/CPU.20261009.111358.246034.0.001.cpuprofile",
+        "busySec": 102.461701,
+        "byPackage": [
+          {
+            "name": "playwright-core",
+            "sec": 40.8,
+            "share": 0.39816704780257356
+          },
+          {
+            "name": "@voidzero-dev/vite-plus-core",
+            "sec": 22.3,
+            "share": 0.21789048768573538
+          },
+          {
+            "name": "(gc)",
+            "sec": 12.1,
+            "share": 0.11825928011872455
+          },
+          {
+            "name": "(native)",
+            "sec": 11.3,
+            "share": 0.11023961040818558
+          },
+          {
+            "name": "node: internals",
+            "sec": 10.3,
+            "share": 0.10024758421685777
+          },
+          {
+            "name": "(program)",
+            "sec": 3.1,
+            "share": 0.03058987865134115
+          },
+          {
+            "name": "@vitest/browser",
+            "sec": 0.9,
+            "share": 0.008379345566398513
+          },
+          {
+            "name": "vitest",
+            "sec": 0.5,
+            "share": 0.004599933393649204
+          },
+          {
+            "name": "@vitest/mocker",
+            "sec": 0.4,
+            "share": 0.0037932807693676685
+          },
+          {
+            "name": "@vitest/browser-playwright",
+            "sec": 0.2,
+            "share": 0.001473057723295068
+          },
+          {
+            "name": "estree-walker",
+            "sec": 0.2,
+            "share": 0.0017082187616619794
+          },
+          {
+            "name": "magic-string",
+            "sec": 0.2,
+            "share": 0.0022877914158383923
+          },
+          {
+            "name": "ws",
+            "sec": 0.1,
+            "share": 0.0012384139513748654
+          },
+          {
+            "name": "fdir",
+            "sec": 0,
+            "share": 0.000049111033204494626
+          },
+          {
+            "name": "obug",
+            "sec": 0,
+            "share": 0.000020915131986731317
+          },
+          {
+            "name": "rolldown",
+            "sec": 0,
+            "share": 0.000041791224996352536
+          },
+          {
+            "name": "vite",
+            "sec": 0,
+            "share": 0.00007160724376418463
+          },
+          {
+            "name": "@vitest/ui",
+            "sec": 0,
+            "share": 0.00001046244586550442
+          },
+          {
+            "name": "pngjs",
+            "sec": 0,
+            "share": 0.000010472205609781942
+          },
+          {
+            "name": ".vite-temp",
+            "sec": 0,
+            "share": 0.00006628818313293472
+          },
+          {
+            "name": "vite-plus",
+            "sec": 0,
+            "share": 0.0003139124149422427
+          },
+          {
+            "name": "tinyglobby",
+            "sec": 0,
+            "share": 0.000010481965354059465
+          },
+          {
+            "name": "picomatch",
+            "sec": 0,
+            "share": 0.00007250514023771673
+          },
+          {
+            "name": "sirv",
+            "sec": 0,
+            "share": 0.000010481965354059465
+          },
+          {
+            "name": "(project)",
+            "sec": 0,
+            "share": 0.00041187096825573877
+          },
+          {
+            "name": "@vitest/utils",
+            "sec": 0,
+            "share": 0.000036169612292499416
+          }
+        ]
+      }
+    },
+    {
+      "case": "browser/rstest/nomock/isolate=true",
+      "round": 1,
+      "wallSec": 99.96,
+      "exitCode": 0,
+      "passed": 5000,
+      "failed": 0,
+      "cpuSec": {
+        "total": 63,
+        "browser": 32
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_rstest_nomock_isolate_true-r1/cpu/CPU.20261009.111748.246650.0.001.cpuprofile",
+        "busySec": 20.558941,
+        "byPackage": [
+          {
+            "name": "playwright-core",
+            "sec": 9.1,
+            "share": 0.44176735562400804
+          },
+          {
+            "name": "node: internals",
+            "sec": 3.8,
+            "share": 0.18674921047732954
+          },
+          {
+            "name": "(native)",
+            "sec": 3.6,
+            "share": 0.17620105043348294
+          },
+          {
+            "name": "(gc)",
+            "sec": 1.6,
+            "share": 0.07627143830025097
+          },
+          {
+            "name": "(program)",
+            "sec": 0.8,
+            "share": 0.04069124961251652
+          },
+          {
+            "name": "@rsbuild/core",
+            "sec": 0.7,
+            "share": 0.033863757865738316
+          },
+          {
+            "name": "@rstest/core",
+            "sec": 0.6,
+            "share": 0.027494363644508732
+          },
+          {
+            "name": "@rstest/browser",
+            "sec": 0.2,
+            "share": 0.008120262614694016
+          },
+          {
+            "name": "@rspack/core",
+            "sec": 0.1,
+            "share": 0.005478297739168569
+          },
+          {
+            "name": "pathe",
+            "sec": 0.1,
+            "share": 0.0025424461308585886
+          },
+          {
+            "name": "(project)",
+            "sec": 0,
+            "share": 0.0006106832059102655
+          },
+          {
+            "name": "human-signals",
+            "sec": 0,
+            "share": 0.000052337326129784606
+          },
+          {
+            "name": "execa",
+            "sec": 0,
+            "share": 0.00005248324804278586
+          },
+          {
+            "name": "ws",
+            "sec": 0,
+            "share": 0.00010506377736090589
+          }
+        ]
+      }
+    },
+    {
+      "case": "browser/rstest/mock/isolate=true",
+      "round": 1,
+      "wallSec": 98.16,
+      "exitCode": 0,
+      "passed": 5000,
+      "failed": 0,
+      "cpuSec": {
+        "total": 60.2,
+        "browser": 30
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_rstest_mock_isolate_true-r1/cpu/CPU.20261009.111928.251968.0.001.cpuprofile",
+        "busySec": 19.628744,
+        "byPackage": [
+          {
+            "name": "playwright-core",
+            "sec": 8.8,
+            "share": 0.44809571106536417
+          },
+          {
+            "name": "node: internals",
+            "sec": 3.8,
+            "share": 0.19145921919405542
+          },
+          {
+            "name": "(native)",
+            "sec": 3.4,
+            "share": 0.1734111973746257
+          },
+          {
+            "name": "(gc)",
+            "sec": 1.4,
+            "share": 0.0711008304963374
+          },
+          {
+            "name": "(program)",
+            "sec": 0.8,
+            "share": 0.041060039297471096
+          },
+          {
+            "name": "@rsbuild/core",
+            "sec": 0.6,
+            "share": 0.031370830451505204
+          },
+          {
+            "name": "@rstest/core",
+            "sec": 0.5,
+            "share": 0.026982623034871717
+          },
+          {
+            "name": "@rstest/browser",
+            "sec": 0.2,
+            "share": 0.007760557680104239
+          },
+          {
+            "name": "@rspack/core",
+            "sec": 0.1,
+            "share": 0.00557514021274107
+          },
+          {
+            "name": "(project)",
+            "sec": 0,
+            "share": 0.0012545886787254446
+          },
+          {
+            "name": "human-signals",
+            "sec": 0,
+            "share": 0.000054817567542783176
+          },
+          {
+            "name": "execa",
+            "sec": 0,
+            "share": 0.00005502135032175263
+          },
+          {
+            "name": "@jridgewell/sourcemap-codec",
+            "sec": 0,
+            "share": 0.00006775777400734351
+          },
+          {
+            "name": "pathe",
+            "sec": 0,
+            "share": 0.0017516658223266858
+          }
+        ]
+      }
+    },
+    {
+      "case": "browser/uf/nomock/isolate=true",
+      "round": 1,
+      "wallSec": 178.25,
+      "exitCode": 1,
+      "passed": 0,
+      "failed": 0,
+      "cpuSec": {
+        "total": 111.9,
+        "browser": 0
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_uf_nomock_isolate_true-r1/cpu/CPU.20261009.112106.257275.0.001.cpuprofile",
+        "busySec": 178.18021,
+        "byPackage": [
+          {
+            "name": "node: internals",
+            "sec": 178.2,
+            "share": 0.9998475476036311
+          },
+          {
+            "name": "(native)",
+            "sec": 0,
+            "share": 0.000041822826451938745
+          },
+          {
+            "name": "(project)",
+            "sec": 0,
+            "share": 0.0000712368674388699
+          },
+          {
+            "name": "(gc)",
+            "sec": 0,
+            "share": 0.00003939270247801369
+          }
+        ]
+      }
+    },
+    {
+      "case": "browser/vitest/mock/isolate=true/parallel-imports",
+      "round": 1,
+      "wallSec": 227.81,
+      "exitCode": 1,
+      "passed": 4999,
+      "failed": 1,
+      "cpuSec": {
+        "total": 412,
+        "browser": 310
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "profile": {
+        "files": 500,
+        "importMsP50": 418.20000000298023,
+        "importMsP90": 468.1000000014901,
+        "requestsPerFile": 213.714,
+        "memoryCacheShare": 0,
+        "networkBusyMsP50": 403.5999999977648,
+        "requestsPerFileByClass": {
+          "test-file": 1,
+          "src:other": 11.3,
+          "src:features": 5.4,
+          "src:ui": 196
+        },
+        "http": {
+          "requests": 115369,
+          "conditional": 9486,
+          "status": {
+            "200": 105883,
+            "304": 9486
+          },
+          "share304": 0.08222312752992572
+        },
+        "routes": {
+          "registers": 1883,
+          "registersByType": {
+            "manual": 1500,
+            "autospy": 383
+          },
+          "predicateCalls": 401615,
+          "predicateMatched": 1812,
+          "predicateMs": 370,
+          "handlerCalls": 1812,
+          "ops": {
+            "route": {
+              "n": 1883,
+              "totalMs": 1984,
+              "maxMs": 12
+            },
+            "clear": {
+              "n": 500,
+              "totalMs": 1052,
+              "maxMs": 16
+            }
+          }
+        },
+        "node": {
+          "seconds": 226,
+          "meanElu": 0.655,
+          "secondsAbove90PercentBusy": 3
+        }
+      },
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mock_isolate_true_parallel-imports-r1/cpu/CPU.20261009.112404.271156.0.001.cpuprofile",
+        "busySec": 98.45793,
+        "byPackage": [
+          {
+            "name": "playwright-core",
+            "sec": 42.7,
+            "share": 0.4336393523609525
+          },
+          {
+            "name": "vite",
+            "sec": 12.4,
+            "share": 0.12641538370753885
+          },
+          {
+            "name": "(native)",
+            "sec": 12,
+            "share": 0.12137354502577903
+          },
+          {
+            "name": "node: internals",
+            "sec": 11.8,
+            "share": 0.1194231587034178
+          },
+          {
+            "name": "(gc)",
+            "sec": 11.1,
+            "share": 0.11250112611548913
+          },
+          {
+            "name": "(program)",
+            "sec": 3.7,
+            "share": 0.03713664303119109
+          },
+          {
+            "name": "rolldown",
+            "sec": 2,
+            "share": 0.020820486475797328
+          },
+          {
+            "name": "@vitest/browser",
+            "sec": 1,
+            "share": 0.010426321170879787
+          },
+          {
+            "name": "vitest",
+            "sec": 0.5,
+            "share": 0.0047818494660612915
+          },
+          {
+            "name": "@vitest/mocker",
+            "sec": 0.4,
+            "share": 0.0038134561634598657
+          },
+          {
+            "name": "picomatch",
+            "sec": 0.2,
+            "share": 0.0019018782946178129
+          },
+          {
+            "name": "estree-walker",
+            "sec": 0.2,
+            "share": 0.0016666204540355459
+          },
+          {
+            "name": "magic-string",
+            "sec": 0.2,
+            "share": 0.002337059087063886
+          },
+          {
+            "name": "@vitest/browser-playwright",
+            "sec": 0.1,
+            "share": 0.001461487154970656
+          },
+          {
+            "name": "(project)",
+            "sec": 0.1,
+            "share": 0.00051256409717328
+          },
+          {
+            "name": "ws",
+            "sec": 0.1,
+            "share": 0.0012622853232847776
+          },
+          {
+            "name": "mrmime",
+            "sec": 0,
+            "share": 0.000010999621868954588
+          },
+          {
+            "name": "fdir",
+            "sec": 0,
+            "share": 0.00006626180339156024
+          },
+          {
+            "name": "sirv",
+            "sec": 0,
+            "share": 0.000010908212268935574
+          },
+          {
+            "name": "tinyglobby",
+            "sec": 0,
+            "share": 0.00025196548414129773
+          },
+          {
+            "name": ".vite-temp",
+            "sec": 0,
+            "share": 0.00014439669816336783
+          },
+          {
+            "name": "@vitest/utils",
+            "sec": 0,
+            "share": 0.000042251548453232766
+          }
+        ]
+      }
+    },
+    {
+      "case": "browser/vitest/mock/isolate=true/keep-cache",
+      "round": 1,
+      "wallSec": 217.33,
+      "exitCode": 1,
+      "passed": 4995,
+      "failed": 5,
+      "cpuSec": {
+        "total": 362,
+        "browser": 265
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "profile": {
+        "files": 500,
+        "importMsP50": 355.5999999977648,
+        "importMsP90": 484.80000000074506,
+        "requestsPerFile": 213.754,
+        "memoryCacheShare": 0,
+        "networkBusyMsP50": 334.9999999962747,
+        "requestsPerFileByClass": {
+          "test-file": 1,
+          "src:other": 11.4,
+          "src:features": 5.4,
+          "src:ui": 196
+        },
+        "http": {
+          "requests": 115393,
+          "conditional": 113476,
+          "status": {
+            "200": 2060,
+            "304": 113333
+          },
+          "share304": 0.9821479639146222
+        },
+        "routes": {
+          "registers": 1883,
+          "registersByType": {
+            "manual": 1500,
+            "autospy": 383
+          },
+          "predicateCalls": 401683,
+          "predicateMatched": 1808,
+          "predicateMs": 385,
+          "handlerCalls": 1808,
+          "ops": {
+            "route": {
+              "n": 1883,
+              "totalMs": 1711,
+              "maxMs": 21
+            },
+            "clear": {
+              "n": 500,
+              "totalMs": 964,
+              "maxMs": 14
+            }
+          }
+        },
+        "node": {
+          "seconds": 216,
+          "meanElu": 0.654,
+          "secondsAbove90PercentBusy": 1
+        }
+      },
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mock_isolate_true_keep-cache-r1/cpu/CPU.20261009.112752.271776.0.001.cpuprofile",
+        "busySec": 92.138617,
+        "byPackage": [
+          {
+            "name": "playwright-core",
+            "sec": 42.7,
+            "share": 0.4639522861516361
+          },
+          {
+            "name": "(native)",
+            "sec": 10.8,
+            "share": 0.117267811823136
+          },
+          {
+            "name": "node: internals",
+            "sec": 10.7,
+            "share": 0.11661986417703665
+          },
+          {
+            "name": "vite",
+            "sec": 10.2,
+            "share": 0.11070834718519815
+          },
+          {
+            "name": "(gc)",
+            "sec": 9.8,
+            "share": 0.10676756739250819
+          },
+          {
+            "name": "(program)",
+            "sec": 3.2,
+            "share": 0.03445853761837992
+          },
+          {
+            "name": "rolldown",
+            "sec": 1.9,
+            "share": 0.02114547692852824
+          },
+          {
+            "name": "@vitest/browser",
+            "sec": 0.9,
+            "share": 0.01025374626580297
+          },
+          {
+            "name": "vitest",
+            "sec": 0.5,
+            "share": 0.005314785656051251
+          },
+          {
+            "name": "@vitest/mocker",
+            "sec": 0.4,
+            "share": 0.004307205956868226
+          },
+          {
+            "name": "magic-string",
+            "sec": 0.3,
+            "share": 0.0027731911799804853
+          },
+          {
+            "name": "@vitest/browser-playwright",
+            "sec": 0.2,
+            "share": 0.0019665912719310733
+          },
+          {
+            "name": "estree-walker",
+            "sec": 0.2,
+            "share": 0.001785755043403788
+          },
+          {
+            "name": "(project)",
+            "sec": 0.1,
+            "share": 0.0007093442698407335
+          },
+          {
+            "name": "ws",
+            "sec": 0.1,
+            "share": 0.0015327123913744006
+          },
+          {
+            "name": "std-env",
+            "sec": 0,
+            "share": 0.000011830001746173376
+          },
+          {
+            "name": "picomatch",
+            "sec": 0,
+            "share": 0.0001631889048215256
+          },
+          {
+            "name": "tinyglobby",
+            "sec": 0,
+            "share": 0.00003150687621022139
+          },
+          {
+            "name": "fdir",
+            "sec": 0,
+            "share": 0.000011395873241726647
+          },
+          {
+            "name": ".vite-temp",
+            "sec": 0,
+            "share": 0.00016401374897997438
+          },
+          {
+            "name": "@vitest/utils",
+            "sec": 0,
+            "share": 0.00005484128332423309
+          }
+        ]
+      }
+    },
+    {
+      "case": "browser/vitest/mock/isolate=true/parallel-imports+keep-cache",
+      "round": 1,
+      "wallSec": 197.57,
+      "exitCode": 1,
+      "passed": 4991,
+      "failed": 9,
+      "cpuSec": {
+        "total": 332,
+        "browser": 243
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "profile": {
+        "files": 500,
+        "importMsP50": 334.69999999925494,
+        "importMsP90": 406.8999999985099,
+        "requestsPerFile": 213.794,
+        "memoryCacheShare": 0,
+        "networkBusyMsP50": 322.29999999701977,
+        "requestsPerFileByClass": {
+          "test-file": 1,
+          "src:other": 11.4,
+          "src:features": 5.4,
+          "src:ui": 196
+        },
+        "http": {
+          "requests": 115417,
+          "conditional": 113500,
+          "status": {
+            "200": 2069,
+            "304": 113348
+          },
+          "share304": 0.9820736979820996
+        },
+        "routes": {
+          "registers": 1883,
+          "registersByType": {
+            "manual": 1500,
+            "autospy": 383
+          },
+          "predicateCalls": 401644,
+          "predicateMatched": 1804,
+          "predicateMs": 366,
+          "handlerCalls": 1804,
+          "ops": {
+            "route": {
+              "n": 1883,
+              "totalMs": 1864,
+              "maxMs": 32
+            },
+            "clear": {
+              "n": 500,
+              "totalMs": 973,
+              "maxMs": 17
+            }
+          }
+        },
+        "node": {
+          "seconds": 196,
+          "meanElu": 0.663,
+          "secondsAbove90PercentBusy": 1
+        }
+      },
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mock_isolate_true_parallel-imports_keep-cache-r1/cpu/CPU.20261009.113129.272356.0.001.cpuprofile",
+        "busySec": 87.639545,
+        "byPackage": [
+          {
+            "name": "playwright-core",
+            "sec": 40.3,
+            "share": 0.45965026404461595
+          },
+          {
+            "name": "(native)",
+            "sec": 10.6,
+            "share": 0.12068339697564609
+          },
+          {
+            "name": "(gc)",
+            "sec": 10,
+            "share": 0.11421587138545733
+          },
+          {
+            "name": "vite",
+            "sec": 9.9,
+            "share": 0.11320075885834414
+          },
+          {
+            "name": "node: internals",
+            "sec": 9.6,
+            "share": 0.10966728547027486
+          },
+          {
+            "name": "(program)",
+            "sec": 2.8,
+            "share": 0.03164492695620453
+          },
+          {
+            "name": "rolldown",
+            "sec": 2,
+            "share": 0.022888126587147388
+          },
+          {
+            "name": "@vitest/browser",
+            "sec": 0.9,
+            "share": 0.009903953745994459
+          },
+          {
+            "name": "vitest",
+            "sec": 0.5,
+            "share": 0.005273555448057153
+          },
+          {
+            "name": "@vitest/mocker",
+            "sec": 0.4,
+            "share": 0.004317560069486897
+          },
+          {
+            "name": "magic-string",
+            "sec": 0.2,
+            "share": 0.002403698010983512
+          },
+          {
+            "name": "@vitest/browser-playwright",
+            "sec": 0.2,
+            "share": 0.0018143750061687335
+          },
+          {
+            "name": "estree-walker",
+            "sec": 0.2,
+            "share": 0.0020492689687058507
+          },
+          {
+            "name": "ws",
+            "sec": 0.1,
+            "share": 0.001377768449162989
+          },
+          {
+            "name": "pathe",
+            "sec": 0,
+            "share": 0.000012083586239522353
+          },
+          {
+            "name": "picomatch",
+            "sec": 0,
+            "share": 0.00020156425960449702
+          },
+          {
+            "name": "tinyglobby",
+            "sec": 0,
+            "share": 0.00003674140480761282
+          },
+          {
+            "name": "fdir",
+            "sec": 0,
+            "share": 0.0000530696502360892
+          },
+          {
+            "name": "(project)",
+            "sec": 0,
+            "share": 0.0004977091106531874
+          },
+          {
+            "name": "@vitest/utils",
+            "sec": 0,
+            "share": 0.00007344857849273407
+          },
+          {
+            "name": ".vite-temp",
+            "sec": 0,
+            "share": 0.00003457343371648038
+          }
+        ]
+      }
+    },
+    {
+      "case": "browser/vitest/mock/isolate=true/pr11083",
+      "round": 1,
+      "wallSec": 201.72,
+      "exitCode": 0,
+      "passed": 5000,
+      "failed": 0,
+      "cpuSec": {
+        "total": 335,
+        "browser": 245
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "profile": {
+        "files": 500,
+        "importMsP50": 334.6000000014901,
+        "importMsP90": 427,
+        "requestsPerFile": 213.704,
+        "memoryCacheShare": 0,
+        "networkBusyMsP50": 318.19999999925494,
+        "requestsPerFileByClass": {
+          "test-file": 1,
+          "src:other": 11.3,
+          "src:features": 5.4,
+          "src:ui": 196
+        },
+        "http": {
+          "requests": 115367,
+          "conditional": 85080,
+          "status": {
+            "200": 30415,
+            "304": 84952
+          },
+          "share304": 0.736363084764274
+        },
+        "routes": {
+          "registers": 1883,
+          "registersByType": {
+            "manual": 1500,
+            "autospy": 383
+          },
+          "predicateCalls": 401601,
+          "predicateMatched": 1813,
+          "predicateMs": 327,
+          "handlerCalls": 1813,
+          "ops": {
+            "route": {
+              "n": 1883,
+              "totalMs": 501,
+              "maxMs": 6
+            },
+            "clear": {
+              "n": 500,
+              "totalMs": 161,
+              "maxMs": 6
+            }
+          }
+        },
+        "node": {
+          "seconds": 200,
+          "meanElu": 0.646,
+          "secondsAbove90PercentBusy": 1
+        }
+      },
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mock_isolate_true_pr11083-r1/cpu/CPU.20261009.113447.272863.0.001.cpuprofile",
+        "busySec": 85.155326,
+        "byPackage": [
+          {
+            "name": "playwright-core",
+            "sec": 38.7,
+            "share": 0.4550283090924929
+          },
+          {
+            "name": "(native)",
+            "sec": 10.6,
+            "share": 0.12471649747427424
+          },
+          {
+            "name": "vite",
+            "sec": 10.1,
+            "share": 0.11821699795970483
+          },
+          {
+            "name": "node: internals",
+            "sec": 9.4,
+            "share": 0.11063771865543677
+          },
+          {
+            "name": "(gc)",
+            "sec": 9.3,
+            "share": 0.10945581959254082
+          },
+          {
+            "name": "(program)",
+            "sec": 2.9,
+            "share": 0.03450918618995129
+          },
+          {
+            "name": "rolldown",
+            "sec": 1.7,
+            "share": 0.02028765646437664
+          },
+          {
+            "name": "@vitest/browser",
+            "sec": 0.9,
+            "share": 0.010189239367130131
+          },
+          {
+            "name": "vitest",
+            "sec": 0.4,
+            "share": 0.005081467247274703
+          },
+          {
+            "name": "@vitest/mocker",
+            "sec": 0.3,
+            "share": 0.0037603167651545366
+          },
+          {
+            "name": "magic-string",
+            "sec": 0.2,
+            "share": 0.002292199550736263
+          },
+          {
+            "name": "estree-walker",
+            "sec": 0.2,
+            "share": 0.0019427440158000218
+          },
+          {
+            "name": "@vitest/browser-playwright",
+            "sec": 0.1,
+            "share": 0.0016219185162886934
+          },
+          {
+            "name": "ws",
+            "sec": 0.1,
+            "share": 0.001388615434341711
+          },
+          {
+            "name": "std-env",
+            "sec": 0,
+            "share": 0.000012635733436097702
+          },
+          {
+            "name": "picomatch",
+            "sec": 0,
+            "share": 0.00030833068503548444
+          },
+          {
+            "name": "obug",
+            "sec": 0,
+            "share": 0.00002548284531257622
+          },
+          {
+            "name": "mrmime",
+            "sec": 0,
+            "share": 0.000012635733436097702
+          },
+          {
+            "name": "tinyglobby",
+            "sec": 0,
+            "share": 0.000022828871561128192
+          },
+          {
+            "name": "fdir",
+            "sec": 0,
+            "share": 0.000029933535807261193
+          },
+          {
+            "name": "(project)",
+            "sec": 0,
+            "share": 0.0003544581580252538
+          },
+          {
+            "name": ".vite-temp",
+            "sec": 0,
+            "share": 0.00010500811188251455
+          }
+        ]
+      }
+    },
+    {
+      "case": "browser/vitest/mixed/isolate=true",
+      "round": 1,
+      "wallSec": 181.49,
+      "exitCode": 1,
+      "passed": 4999,
+      "failed": 1,
+      "cpuSec": {
+        "total": 308,
+        "browser": 240
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "profile": {
+        "files": 500,
+        "importMsP50": 225.80000000074506,
+        "importMsP90": 466.6000000014901,
+        "requestsPerFile": 217.972,
+        "memoryCacheShare": 0,
+        "networkBusyMsP50": 218.19999999552965,
+        "requestsPerFileByClass": {
+          "test-file": 1,
+          "src:other": 15.6,
+          "src:features": 5.4,
+          "src:ui": 196
+        },
+        "http": {
+          "requests": 118248,
+          "conditional": 64477,
+          "status": {
+            "200": 53771,
+            "304": 64477
+          },
+          "share304": 0.5452692645964414
+        },
+        "routes": {
+          "registers": 936,
+          "registersByType": {
+            "manual": 750,
+            "autospy": 186
+          },
+          "predicateCalls": 201806,
+          "predicateMatched": 906,
+          "predicateMs": 198,
+          "handlerCalls": 906,
+          "ops": {
+            "route": {
+              "n": 936,
+              "totalMs": 912,
+              "maxMs": 29
+            },
+            "clear": {
+              "n": 250,
+              "totalMs": 483,
+              "maxMs": 14
+            }
+          }
+        },
+        "node": {
+          "seconds": 180,
+          "meanElu": 0.589,
+          "secondsAbove90PercentBusy": 1
+        }
+      },
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mixed_isolate_true-r1/cpu/CPU.20261009.113809.273383.0.001.cpuprofile",
+        "busySec": 60.455779,
+        "byPackage": [
+          {
+            "name": "playwright-core",
+            "sec": 24.8,
+            "share": 0.40996663031998976
+          },
+          {
+            "name": "node: internals",
+            "sec": 8.2,
+            "share": 0.13589450232706454
+          },
+          {
+            "name": "(native)",
+            "sec": 7.4,
+            "share": 0.12290805151977283
+          },
+          {
+            "name": "vite",
+            "sec": 7.1,
+            "share": 0.11748139081956085
+          },
+          {
+            "name": "(gc)",
+            "sec": 6.6,
+            "share": 0.10933599912756066
+          },
+          {
+            "name": "(program)",
+            "sec": 2.7,
+            "share": 0.04474202540670264
+          },
+          {
+            "name": "rolldown",
+            "sec": 1.8,
+            "share": 0.02922615553427903
+          },
+          {
+            "name": "@vitest/browser",
+            "sec": 0.7,
+            "share": 0.011728093024820672
+          },
+          {
+            "name": "vitest",
+            "sec": 0.4,
+            "share": 0.007235123047541907
+          },
+          {
+            "name": "@vitest/mocker",
+            "sec": 0.2,
+            "share": 0.0031699699047794917
+          },
+          {
+            "name": "@vitest/browser-playwright",
+            "sec": 0.1,
+            "share": 0.001539621216360474
+          },
+          {
+            "name": "estree-walker",
+            "sec": 0.1,
+            "share": 0.0015497443180742076
+          },
+          {
+            "name": "magic-string",
+            "sec": 0.1,
+            "share": 0.0021455847918194883
+          },
+          {
+            "name": "ws",
+            "sec": 0.1,
+            "share": 0.0014404743672230243
+          },
+          {
+            "name": "@jridgewell/sourcemap-codec",
+            "sec": 0,
+            "share": 0.00003306549072835535
+          },
+          {
+            "name": "pngjs",
+            "sec": 0,
+            "share": 0.00001778159206252226
+          },
+          {
+            "name": ".vite-temp",
+            "sec": 0,
+            "share": 0.0002689900001123135
+          },
+          {
+            "name": "picomatch",
+            "sec": 0,
+            "share": 0.0003486846145841575
+          },
+          {
+            "name": "tinyglobby",
+            "sec": 0,
+            "share": 0.000018310904570429902
+          },
+          {
+            "name": "fdir",
+            "sec": 0,
+            "share": 0.00009428379047104827
+          },
+          {
+            "name": "sirv",
+            "sec": 0,
+            "share": 0.000016689885014962756
+          },
+          {
+            "name": "(project)",
+            "sec": 0,
+            "share": 0.0007880801602109867
+          },
+          {
+            "name": "@vitest/utils",
+            "sec": 0,
+            "share": 0.000050747836695644924
+          }
+        ]
+      }
+    },
+    {
+      "case": "browser/vitest/mixed/isolate=true/pr11083",
+      "round": 1,
+      "wallSec": 197.77,
+      "exitCode": 0,
+      "passed": 5000,
+      "failed": 0,
+      "cpuSec": {
+        "total": 330,
+        "browser": 256
+      },
+      "browserExecutables": [
+        "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+      ],
+      "profile": {
+        "files": 500,
+        "importMsP50": 321,
+        "importMsP90": 412.30000000074506,
+        "requestsPerFile": 217.962,
+        "memoryCacheShare": 0,
+        "networkBusyMsP50": 310.1000000014901,
+        "requestsPerFileByClass": {
+          "test-file": 1,
+          "src:other": 15.6,
+          "src:features": 5.4,
+          "src:ui": 196
+        },
+        "http": {
+          "requests": 118246,
+          "conditional": 86392,
+          "status": {
+            "200": 31933,
+            "304": 86313
+          },
+          "share304": 0.7299443532973631
+        },
+        "routes": {
+          "registers": 936,
+          "registersByType": {
+            "manual": 750,
+            "autospy": 186
+          },
+          "predicateCalls": 201794,
+          "predicateMatched": 907,
+          "predicateMs": 206,
+          "handlerCalls": 907,
+          "ops": {
+            "route": {
+              "n": 936,
+              "totalMs": 303,
+              "maxMs": 7
+            },
+            "clear": {
+              "n": 250,
+              "totalMs": 161,
+              "maxMs": 7
+            }
+          }
+        },
+        "node": {
+          "seconds": 196,
+          "meanElu": 0.584,
+          "secondsAbove90PercentBusy": 1
+        }
+      },
+      "cpuProfile": {
+        "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mixed_isolate_true_pr11083-r1/cpu/CPU.20261009.114110.273965.0.001.cpuprofile",
+        "busySec": 65.939324,
+        "byPackage": [
+          {
+            "name": "playwright-core",
+            "sec": 26.4,
+            "share": 0.4003316746165005
+          },
+          {
+            "name": "(native)",
+            "sec": 9.7,
+            "share": 0.146405231573196
+          },
+          {
+            "name": "node: internals",
+            "sec": 9,
+            "share": 0.13688409969140722
+          },
+          {
+            "name": "vite",
+            "sec": 7.4,
+            "share": 0.1114957138474759
+          },
+          {
+            "name": "(gc)",
+            "sec": 6.9,
+            "share": 0.1050904768147153
+          },
+          {
+            "name": "(program)",
+            "sec": 3.1,
+            "share": 0.046958594843950784
+          },
+          {
+            "name": "rolldown",
+            "sec": 1.6,
+            "share": 0.024854804395628927
+          },
+          {
+            "name": "@vitest/browser",
+            "sec": 0.7,
+            "share": 0.01065377922285039
+          },
+          {
+            "name": "vitest",
+            "sec": 0.5,
+            "share": 0.007110097155378785
+          },
+          {
+            "name": "@vitest/mocker",
+            "sec": 0.2,
+            "share": 0.002721016672843052
+          },
+          {
+            "name": "estree-walker",
+            "sec": 0.1,
+            "share": 0.001309719220051452
+          },
+          {
+            "name": "magic-string",
+            "sec": 0.1,
+            "share": 0.0018786058528595167
+          },
+          {
+            "name": "ws",
+            "sec": 0.1,
+            "share": 0.0014637092730886959
+          },
+          {
+            "name": "@vitest/browser-playwright",
+            "sec": 0.1,
+            "share": 0.0017800910424862712
+          },
+          {
+            "name": "pathe",
+            "sec": 0,
+            "share": 0.00001624220472748553
+          },
+          {
+            "name": ".vite-temp",
+            "sec": 0,
+            "share": 0.00004936356338745602
+          },
+          {
+            "name": "picomatch",
+            "sec": 0,
+            "share": 0.0002596022974090544
+          },
+          {
+            "name": "fdir",
+            "sec": 0,
+            "share": 0.00008289438939349757
+          },
+          {
+            "name": "tinyglobby",
+            "sec": 0,
+            "share": 0.00004573901910186401
+          },
+          {
+            "name": "(project)",
+            "sec": 0,
+            "share": 0.0006085443035479101
+          }
+        ]
+      }
+    }
   ]
- },
- "complete": true,
- "loadAvgAtEnd": [
-  5.14,
-  4.73,
-  4.66
- ],
- "cases": [
-  {
-   "runner": "vitest",
-   "env": "browser",
-   "suite": "nomock",
-   "isolate": true,
-   "id": "browser/vitest/nomock/isolate=true",
-   "vars": {}
-  },
-  {
-   "runner": "vitest",
-   "env": "browser",
-   "suite": "mock",
-   "isolate": true,
-   "id": "browser/vitest/mock/isolate=true",
-   "vars": {}
-  },
-  {
-   "runner": "vp",
-   "env": "browser",
-   "suite": "nomock",
-   "isolate": true,
-   "id": "browser/vp/nomock/isolate=true",
-   "vars": {}
-  },
-  {
-   "runner": "vp",
-   "env": "browser",
-   "suite": "mock",
-   "isolate": true,
-   "id": "browser/vp/mock/isolate=true",
-   "vars": {}
-  },
-  {
-   "runner": "rstest",
-   "env": "browser",
-   "suite": "nomock",
-   "isolate": true,
-   "id": "browser/rstest/nomock/isolate=true",
-   "vars": {}
-  },
-  {
-   "runner": "rstest",
-   "env": "browser",
-   "suite": "mock",
-   "isolate": true,
-   "id": "browser/rstest/mock/isolate=true",
-   "vars": {}
-  },
-  {
-   "runner": "uf",
-   "env": "browser",
-   "suite": "nomock",
-   "isolate": true,
-   "id": "browser/uf/nomock/isolate=true",
-   "vars": {}
-  },
-  {
-   "runner": "vitest",
-   "env": "browser",
-   "suite": "mock",
-   "isolate": true,
-   "experiment": "parallel-imports",
-   "id": "browser/vitest/mock/isolate=true/parallel-imports",
-   "vars": {
-    "REPRO_EXP_PARALLEL_IMPORTS": "1"
-   }
-  },
-  {
-   "runner": "vitest",
-   "env": "browser",
-   "suite": "mock",
-   "isolate": true,
-   "experiment": "keep-cache",
-   "id": "browser/vitest/mock/isolate=true/keep-cache",
-   "vars": {
-    "REPRO_EXP_KEEP_CACHE": "1"
-   }
-  },
-  {
-   "runner": "vitest",
-   "env": "browser",
-   "suite": "mock",
-   "isolate": true,
-   "experiment": "parallel-imports+keep-cache",
-   "id": "browser/vitest/mock/isolate=true/parallel-imports+keep-cache",
-   "vars": {
-    "REPRO_EXP_PARALLEL_IMPORTS": "1",
-    "REPRO_EXP_KEEP_CACHE": "1"
-   }
-  },
-  {
-   "runner": "vitest",
-   "env": "browser",
-   "suite": "mock",
-   "isolate": true,
-   "experiment": "pr11083",
-   "id": "browser/vitest/mock/isolate=true/pr11083",
-   "vars": {
-    "REPRO_EXP_PR11083": "1"
-   }
-  },
-  {
-   "runner": "vitest",
-   "env": "browser",
-   "suite": "mixed",
-   "isolate": true,
-   "id": "browser/vitest/mixed/isolate=true",
-   "vars": {}
-  },
-  {
-   "runner": "vitest",
-   "env": "browser",
-   "suite": "mixed",
-   "isolate": true,
-   "experiment": "pr11083",
-   "id": "browser/vitest/mixed/isolate=true/pr11083",
-   "vars": {
-    "REPRO_EXP_PR11083": "1"
-   }
-  }
- ],
- "runs": [
-  {
-   "case": "browser/vitest/nomock/isolate=true",
-   "round": 1,
-   "wallSec": 142.09,
-   "exitCode": 0,
-   "passed": 5000,
-   "failed": 0,
-   "cpuSec": {
-    "total": 228,
-    "browser": 185
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "profile": {
-    "files": 500,
-    "importMsP50": 207.19999999925494,
-    "importMsP90": 268.40000000037253,
-    "requestsPerFile": 222.166,
-    "memoryCacheShare": 0,
-    "networkBusyMsP50": 202.69999999925494,
-    "requestsPerFileByClass": {
-     "test-file": 1,
-     "src:features": 5.4,
-     "src:other": 19.8,
-     "src:ui": 196
-    },
-    "http": {
-     "requests": 121094,
-     "conditional": 119107,
-     "status": {
-      "200": 1987,
-      "304": 119107
-     },
-     "share304": 0.9835912596825607
-    },
-    "routes": {
-     "registers": 0,
-     "registersByType": {},
-     "predicateCalls": 0,
-     "predicateMatched": 0,
-     "predicateMs": 0,
-     "handlerCalls": 0,
-     "ops": {}
-    },
-    "node": {
-     "seconds": 141,
-     "meanElu": 0.517,
-     "secondsAbove90PercentBusy": 2
-    }
-   },
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_nomock_isolate_true-r1/cpu/CPU.20261009.110538.244601.0.001.cpuprofile",
-    "busySec": 31.628183,
-    "byPackage": [
-     {
-      "name": "playwright-core",
-      "sec": 9.3,
-      "share": 0.29305199100435203
-     },
-     {
-      "name": "node: internals",
-      "sec": 6.9,
-      "share": 0.2191760114705293
-     },
-     {
-      "name": "(native)",
-      "sec": 4.2,
-      "share": 0.13125752434150265
-     },
-     {
-      "name": "(gc)",
-      "sec": 3,
-      "share": 0.0935447034690548
-     },
-     {
-      "name": "vite",
-      "sec": 2.8,
-      "share": 0.08706462840435696
-     },
-     {
-      "name": "(program)",
-      "sec": 2.8,
-      "share": 0.08725164515457622
-     },
-     {
-      "name": "rolldown",
-      "sec": 1.3,
-      "share": 0.04196965725157212
-     },
-     {
-      "name": "@vitest/browser",
-      "sec": 0.6,
-      "share": 0.019238790922640102
-     },
-     {
-      "name": "vitest",
-      "sec": 0.4,
-      "share": 0.014214474476766497
-     },
-     {
-      "name": "picomatch",
-      "sec": 0.2,
-      "share": 0.006227483886760109
-     },
-     {
-      "name": "ws",
-      "sec": 0.1,
-      "share": 0.00214672464744497
-     },
-     {
-      "name": "@vitest/mocker",
-      "sec": 0,
-      "share": 0.001513491938503075
-     },
-     {
-      "name": "tinyrainbow",
-      "sec": 0,
-      "share": 0.000033862204477569895
-     },
-     {
-      "name": "pngjs",
-      "sec": 0,
-      "share": 0.00003269236174585179
-     },
-     {
-      "name": "@vitest/browser-playwright",
-      "sec": 0,
-      "share": 0.00003383058710644238
-     },
-     {
-      "name": "tinyglobby",
-      "sec": 0,
-      "share": 0.0007726336982431144
-     },
-     {
-      "name": "fdir",
-      "sec": 0,
-      "share": 0.00018616308119881562
-     },
-     {
-      "name": "(project)",
-      "sec": 0,
-      "share": 0.000408812608678785
-     },
-     {
-      "name": "magic-string",
-      "sec": 0,
-      "share": 0.0007485096440728195
-     },
-     {
-      "name": "estree-walker",
-      "sec": 0,
-      "share": 0.0006821131647050353
-     },
-     {
-      "name": "@vitest/utils",
-      "sec": 0,
-      "share": 0.00003411514344659002
-     },
-     {
-      "name": ".vite-temp",
-      "sec": 0,
-      "share": 0.00041014053826614067
-     }
-    ]
-   }
-  },
-  {
-   "case": "browser/vitest/mock/isolate=true",
-   "round": 1,
-   "wallSec": 219.56,
-   "exitCode": 1,
-   "passed": 4999,
-   "failed": 1,
-   "cpuSec": {
-    "total": 396,
-    "browser": 301
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "profile": {
-    "files": 500,
-    "importMsP50": 410.59999999962747,
-    "importMsP90": 447.5,
-    "requestsPerFile": 213.714,
-    "memoryCacheShare": 0,
-    "networkBusyMsP50": 388.8000000026077,
-    "requestsPerFileByClass": {
-     "test-file": 1,
-     "src:other": 11.3,
-     "src:features": 5.4,
-     "src:ui": 196
-    },
-    "http": {
-     "requests": 115369,
-     "conditional": 9486,
-     "status": {
-      "200": 105883,
-      "304": 9486
-     },
-     "share304": 0.08222312752992572
-    },
-    "routes": {
-     "registers": 1883,
-     "registersByType": {
-      "manual": 1500,
-      "autospy": 383
-     },
-     "predicateCalls": 401623,
-     "predicateMatched": 1812,
-     "predicateMs": 335,
-     "handlerCalls": 1812,
-     "ops": {
-      "route": {
-       "n": 1883,
-       "totalMs": 1788,
-       "maxMs": 21
-      },
-      "clear": {
-       "n": 500,
-       "totalMs": 842,
-       "maxMs": 13
-      }
-     }
-    },
-    "node": {
-     "seconds": 218,
-     "meanElu": 0.638,
-     "secondsAbove90PercentBusy": 1
-    }
-   },
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mock_isolate_true-r1/cpu/CPU.20261009.110800.244995.0.001.cpuprofile",
-    "busySec": 90.45692,
-    "byPackage": [
-     {
-      "name": "playwright-core",
-      "sec": 40.3,
-      "share": 0.4457148109840574
-     },
-     {
-      "name": "vite",
-      "sec": 11.2,
-      "share": 0.124238963696752
-     },
-     {
-      "name": "(native)",
-      "sec": 11,
-      "share": 0.12143763020009968
-     },
-     {
-      "name": "(gc)",
-      "sec": 10.3,
-      "share": 0.11407183662676111
-     },
-     {
-      "name": "node: internals",
-      "sec": 10.1,
-      "share": 0.11206632947484836
-     },
-     {
-      "name": "(program)",
-      "sec": 3.2,
-      "share": 0.03521678606788734
-     },
-     {
-      "name": "rolldown",
-      "sec": 1.9,
-      "share": 0.020487387808472805
-     },
-     {
-      "name": "@vitest/browser",
-      "sec": 0.8,
-      "share": 0.009277609717421288
-     },
-     {
-      "name": "vitest",
-      "sec": 0.5,
-      "share": 0.005354681543435262
-     },
-     {
-      "name": "@vitest/mocker",
-      "sec": 0.4,
-      "share": 0.00432801603238315
-     },
-     {
-      "name": "magic-string",
-      "sec": 0.2,
-      "share": 0.002254343835717599
-     },
-     {
-      "name": "estree-walker",
-      "sec": 0.2,
-      "share": 0.0018725598881766039
-     },
-     {
-      "name": "@vitest/browser-playwright",
-      "sec": 0.1,
-      "share": 0.001544027809038822
-     },
-     {
-      "name": "ws",
-      "sec": 0.1,
-      "share": 0.0012825331660640225
-     },
-     {
-      "name": "mrmime",
-      "sec": 0,
-      "share": 0.000011773560275985519
-     },
-     {
-      "name": "picomatch",
-      "sec": 0,
-      "share": 0.0002733013682093089
-     },
-     {
-      "name": "tinyglobby",
-      "sec": 0,
-      "share": 0.000029981122505608193
-     },
-     {
-      "name": "fdir",
-      "sec": 0,
-      "share": 0.000014570471778167994
-     },
-     {
-      "name": "sirv",
-      "sec": 0,
-      "share": 0.000011983605013303571
-     },
-     {
-      "name": ".vite-temp",
-      "sec": 0,
-      "share": 0.00004687314138044939
-     },
-     {
-      "name": "(project)",
-      "sec": 0,
-      "share": 0.0004218251074655206
-     },
-     {
-      "name": "@vitest/utils",
-      "sec": 0,
-      "share": 0.000042174772256229816
-     }
-    ]
-   }
-  },
-  {
-   "case": "browser/vp/nomock/isolate=true",
-   "round": 1,
-   "wallSec": 138.14,
-   "exitCode": 0,
-   "passed": 5000,
-   "failed": 0,
-   "cpuSec": {
-    "total": 219,
-    "browser": 176
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "profile": {
-    "files": 500,
-    "importMsP50": 201.19999999925494,
-    "importMsP90": 259.40000000037253,
-    "requestsPerFile": 222.166,
-    "memoryCacheShare": 0,
-    "networkBusyMsP50": 196.89999999850988,
-    "requestsPerFileByClass": {
-     "test-file": 1,
-     "src:other": 19.8,
-     "src:features": 5.4,
-     "src:ui": 196
-    },
-    "http": {
-     "requests": 121594,
-     "conditional": 119606,
-     "status": {
-      "200": 1988,
-      "304": 119606
-     },
-     "share304": 0.9836505090711712
-    },
-    "routes": {
-     "registers": 0,
-     "registersByType": {},
-     "predicateCalls": 0,
-     "predicateMatched": 0,
-     "predicateMs": 0,
-     "handlerCalls": 0,
-     "ops": {}
-    },
-    "node": {
-     "seconds": 137,
-     "meanElu": 0.517,
-     "secondsAbove90PercentBusy": 2
-    }
-   },
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vp_nomock_isolate_true-r1/cpu/CPU.20261009.111140.245638.0.001.cpuprofile",
-    "busySec": 31.678661,
-    "byPackage": [
-     {
-      "name": "playwright-core",
-      "sec": 9.1,
-      "share": 0.28847033654610593
-     },
-     {
-      "name": "node: internals",
-      "sec": 7.1,
-      "share": 0.22347990023947034
-     },
-     {
-      "name": "@voidzero-dev/vite-plus-core",
-      "sec": 4.3,
-      "share": 0.13435189069386488
-     },
-     {
-      "name": "(native)",
-      "sec": 4.1,
-      "share": 0.13071281642869945
-     },
-     {
-      "name": "(gc)",
-      "sec": 2.9,
-      "share": 0.09242884350446504
-     },
-     {
-      "name": "(program)",
-      "sec": 2.8,
-      "share": 0.08920200257201527
-     },
-     {
-      "name": "@vitest/browser",
-      "sec": 0.6,
-      "share": 0.020319293167094403
-     },
-     {
-      "name": "vitest",
-      "sec": 0.4,
-      "share": 0.012480009808495379
-     },
-     {
-      "name": "ws",
-      "sec": 0.1,
-      "share": 0.0028828870008110507
-     },
-     {
-      "name": "@vitest/mocker",
-      "sec": 0.1,
-      "share": 0.0020243911193089884
-     },
-     {
-      "name": "rolldown",
-      "sec": 0,
-      "share": 0.0001405046760025621
-     },
-     {
-      "name": "vite",
-      "sec": 0,
-      "share": 0.00010237175112925385
-     },
-     {
-      "name": "tinyrainbow",
-      "sec": 0,
-      "share": 0.000033681979172036345
-     },
-     {
-      "name": "pathe",
-      "sec": 0,
-      "share": 0.00003431331898781959
-     },
-     {
-      "name": "pngjs",
-      "sec": 0,
-      "share": 0.00003949030547724223
-     },
-     {
-      "name": ".vite-temp",
-      "sec": 0,
-      "share": 0.00008257924790444899
-     },
-     {
-      "name": "vite-plus",
-      "sec": 0,
-      "share": 0.0007360790912216902
-     },
-     {
-      "name": "picomatch",
-      "sec": 0,
-      "share": 0.00011790271059752178
-     },
-     {
-      "name": "fdir",
-      "sec": 0,
-      "share": 0.00027182335768547795
-     },
-     {
-      "name": "tinyglobby",
-      "sec": 0,
-      "share": 0.0000807167954478884
-     },
-     {
-      "name": "(project)",
-      "sec": 0,
-      "share": 0.0007724126976200162
-     },
-     {
-      "name": "@vitest/browser-playwright",
-      "sec": 0,
-      "share": 0.00003415548403387378
-     },
-     {
-      "name": "estree-walker",
-      "sec": 0,
-      "share": 0.000642956468393661
-     },
-     {
-      "name": "magic-string",
-      "sec": 0,
-      "share": 0.000558641035995808
-     }
-    ]
-   }
-  },
-  {
-   "case": "browser/vp/mock/isolate=true",
-   "round": 1,
-   "wallSec": 229.93,
-   "exitCode": 1,
-   "passed": 4999,
-   "failed": 1,
-   "cpuSec": {
-    "total": 409,
-    "browser": 303
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "profile": {
-    "files": 500,
-    "importMsP50": 427.7000000011176,
-    "importMsP90": 480,
-    "requestsPerFile": 213.714,
-    "memoryCacheShare": 0,
-    "networkBusyMsP50": 406.19999999552965,
-    "requestsPerFileByClass": {
-     "test-file": 1,
-     "src:other": 11.3,
-     "src:features": 5.4,
-     "src:ui": 196
-    },
-    "http": {
-     "requests": 115869,
-     "conditional": 9985,
-     "status": {
-      "200": 105884,
-      "304": 9985
-     },
-     "share304": 0.08617490441792024
-    },
-    "routes": {
-     "registers": 1883,
-     "registersByType": {
-      "manual": 1500,
-      "autospy": 383
-     },
-     "predicateCalls": 401622,
-     "predicateMatched": 1812,
-     "predicateMs": 365,
-     "handlerCalls": 1812,
-     "ops": {
-      "route": {
-       "n": 1883,
-       "totalMs": 1914,
-       "maxMs": 13
-      },
-      "clear": {
-       "n": 500,
-       "totalMs": 930,
-       "maxMs": 11
-      }
-     }
-    },
-    "node": {
-     "seconds": 228,
-     "meanElu": 0.66,
-     "secondsAbove90PercentBusy": 1
-    }
-   },
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vp_mock_isolate_true-r1/cpu/CPU.20261009.111358.246034.0.001.cpuprofile",
-    "busySec": 102.461701,
-    "byPackage": [
-     {
-      "name": "playwright-core",
-      "sec": 40.8,
-      "share": 0.39816704780257356
-     },
-     {
-      "name": "@voidzero-dev/vite-plus-core",
-      "sec": 22.3,
-      "share": 0.21789048768573538
-     },
-     {
-      "name": "(gc)",
-      "sec": 12.1,
-      "share": 0.11825928011872455
-     },
-     {
-      "name": "(native)",
-      "sec": 11.3,
-      "share": 0.11023961040818558
-     },
-     {
-      "name": "node: internals",
-      "sec": 10.3,
-      "share": 0.10024758421685777
-     },
-     {
-      "name": "(program)",
-      "sec": 3.1,
-      "share": 0.03058987865134115
-     },
-     {
-      "name": "@vitest/browser",
-      "sec": 0.9,
-      "share": 0.008379345566398513
-     },
-     {
-      "name": "vitest",
-      "sec": 0.5,
-      "share": 0.004599933393649204
-     },
-     {
-      "name": "@vitest/mocker",
-      "sec": 0.4,
-      "share": 0.0037932807693676685
-     },
-     {
-      "name": "@vitest/browser-playwright",
-      "sec": 0.2,
-      "share": 0.001473057723295068
-     },
-     {
-      "name": "estree-walker",
-      "sec": 0.2,
-      "share": 0.0017082187616619794
-     },
-     {
-      "name": "magic-string",
-      "sec": 0.2,
-      "share": 0.0022877914158383923
-     },
-     {
-      "name": "ws",
-      "sec": 0.1,
-      "share": 0.0012384139513748654
-     },
-     {
-      "name": "fdir",
-      "sec": 0,
-      "share": 0.000049111033204494626
-     },
-     {
-      "name": "obug",
-      "sec": 0,
-      "share": 0.000020915131986731317
-     },
-     {
-      "name": "rolldown",
-      "sec": 0,
-      "share": 0.000041791224996352536
-     },
-     {
-      "name": "vite",
-      "sec": 0,
-      "share": 0.00007160724376418463
-     },
-     {
-      "name": "@vitest/ui",
-      "sec": 0,
-      "share": 0.00001046244586550442
-     },
-     {
-      "name": "pngjs",
-      "sec": 0,
-      "share": 0.000010472205609781942
-     },
-     {
-      "name": ".vite-temp",
-      "sec": 0,
-      "share": 0.00006628818313293472
-     },
-     {
-      "name": "vite-plus",
-      "sec": 0,
-      "share": 0.0003139124149422427
-     },
-     {
-      "name": "tinyglobby",
-      "sec": 0,
-      "share": 0.000010481965354059465
-     },
-     {
-      "name": "picomatch",
-      "sec": 0,
-      "share": 0.00007250514023771673
-     },
-     {
-      "name": "sirv",
-      "sec": 0,
-      "share": 0.000010481965354059465
-     },
-     {
-      "name": "(project)",
-      "sec": 0,
-      "share": 0.00041187096825573877
-     },
-     {
-      "name": "@vitest/utils",
-      "sec": 0,
-      "share": 0.000036169612292499416
-     }
-    ]
-   }
-  },
-  {
-   "case": "browser/rstest/nomock/isolate=true",
-   "round": 1,
-   "wallSec": 99.96,
-   "exitCode": 0,
-   "passed": 5000,
-   "failed": 0,
-   "cpuSec": {
-    "total": 63,
-    "browser": 32
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_rstest_nomock_isolate_true-r1/cpu/CPU.20261009.111748.246650.0.001.cpuprofile",
-    "busySec": 20.558941,
-    "byPackage": [
-     {
-      "name": "playwright-core",
-      "sec": 9.1,
-      "share": 0.44176735562400804
-     },
-     {
-      "name": "node: internals",
-      "sec": 3.8,
-      "share": 0.18674921047732954
-     },
-     {
-      "name": "(native)",
-      "sec": 3.6,
-      "share": 0.17620105043348294
-     },
-     {
-      "name": "(gc)",
-      "sec": 1.6,
-      "share": 0.07627143830025097
-     },
-     {
-      "name": "(program)",
-      "sec": 0.8,
-      "share": 0.04069124961251652
-     },
-     {
-      "name": "@rsbuild/core",
-      "sec": 0.7,
-      "share": 0.033863757865738316
-     },
-     {
-      "name": "@rstest/core",
-      "sec": 0.6,
-      "share": 0.027494363644508732
-     },
-     {
-      "name": "@rstest/browser",
-      "sec": 0.2,
-      "share": 0.008120262614694016
-     },
-     {
-      "name": "@rspack/core",
-      "sec": 0.1,
-      "share": 0.005478297739168569
-     },
-     {
-      "name": "pathe",
-      "sec": 0.1,
-      "share": 0.0025424461308585886
-     },
-     {
-      "name": "(project)",
-      "sec": 0,
-      "share": 0.0006106832059102655
-     },
-     {
-      "name": "human-signals",
-      "sec": 0,
-      "share": 0.000052337326129784606
-     },
-     {
-      "name": "execa",
-      "sec": 0,
-      "share": 0.00005248324804278586
-     },
-     {
-      "name": "ws",
-      "sec": 0,
-      "share": 0.00010506377736090589
-     }
-    ]
-   }
-  },
-  {
-   "case": "browser/rstest/mock/isolate=true",
-   "round": 1,
-   "wallSec": 98.16,
-   "exitCode": 0,
-   "passed": 5000,
-   "failed": 0,
-   "cpuSec": {
-    "total": 60.2,
-    "browser": 30
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_rstest_mock_isolate_true-r1/cpu/CPU.20261009.111928.251968.0.001.cpuprofile",
-    "busySec": 19.628744,
-    "byPackage": [
-     {
-      "name": "playwright-core",
-      "sec": 8.8,
-      "share": 0.44809571106536417
-     },
-     {
-      "name": "node: internals",
-      "sec": 3.8,
-      "share": 0.19145921919405542
-     },
-     {
-      "name": "(native)",
-      "sec": 3.4,
-      "share": 0.1734111973746257
-     },
-     {
-      "name": "(gc)",
-      "sec": 1.4,
-      "share": 0.0711008304963374
-     },
-     {
-      "name": "(program)",
-      "sec": 0.8,
-      "share": 0.041060039297471096
-     },
-     {
-      "name": "@rsbuild/core",
-      "sec": 0.6,
-      "share": 0.031370830451505204
-     },
-     {
-      "name": "@rstest/core",
-      "sec": 0.5,
-      "share": 0.026982623034871717
-     },
-     {
-      "name": "@rstest/browser",
-      "sec": 0.2,
-      "share": 0.007760557680104239
-     },
-     {
-      "name": "@rspack/core",
-      "sec": 0.1,
-      "share": 0.00557514021274107
-     },
-     {
-      "name": "(project)",
-      "sec": 0,
-      "share": 0.0012545886787254446
-     },
-     {
-      "name": "human-signals",
-      "sec": 0,
-      "share": 0.000054817567542783176
-     },
-     {
-      "name": "execa",
-      "sec": 0,
-      "share": 0.00005502135032175263
-     },
-     {
-      "name": "@jridgewell/sourcemap-codec",
-      "sec": 0,
-      "share": 0.00006775777400734351
-     },
-     {
-      "name": "pathe",
-      "sec": 0,
-      "share": 0.0017516658223266858
-     }
-    ]
-   }
-  },
-  {
-   "case": "browser/uf/nomock/isolate=true",
-   "round": 1,
-   "wallSec": 178.25,
-   "exitCode": 1,
-   "passed": 0,
-   "failed": 0,
-   "cpuSec": {
-    "total": 111.9,
-    "browser": 0
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_uf_nomock_isolate_true-r1/cpu/CPU.20261009.112106.257275.0.001.cpuprofile",
-    "busySec": 178.18021,
-    "byPackage": [
-     {
-      "name": "node: internals",
-      "sec": 178.2,
-      "share": 0.9998475476036311
-     },
-     {
-      "name": "(native)",
-      "sec": 0,
-      "share": 0.000041822826451938745
-     },
-     {
-      "name": "(project)",
-      "sec": 0,
-      "share": 0.0000712368674388699
-     },
-     {
-      "name": "(gc)",
-      "sec": 0,
-      "share": 0.00003939270247801369
-     }
-    ]
-   }
-  },
-  {
-   "case": "browser/vitest/mock/isolate=true/parallel-imports",
-   "round": 1,
-   "wallSec": 227.81,
-   "exitCode": 1,
-   "passed": 4999,
-   "failed": 1,
-   "cpuSec": {
-    "total": 412,
-    "browser": 310
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "profile": {
-    "files": 500,
-    "importMsP50": 418.20000000298023,
-    "importMsP90": 468.1000000014901,
-    "requestsPerFile": 213.714,
-    "memoryCacheShare": 0,
-    "networkBusyMsP50": 403.5999999977648,
-    "requestsPerFileByClass": {
-     "test-file": 1,
-     "src:other": 11.3,
-     "src:features": 5.4,
-     "src:ui": 196
-    },
-    "http": {
-     "requests": 115369,
-     "conditional": 9486,
-     "status": {
-      "200": 105883,
-      "304": 9486
-     },
-     "share304": 0.08222312752992572
-    },
-    "routes": {
-     "registers": 1883,
-     "registersByType": {
-      "manual": 1500,
-      "autospy": 383
-     },
-     "predicateCalls": 401615,
-     "predicateMatched": 1812,
-     "predicateMs": 370,
-     "handlerCalls": 1812,
-     "ops": {
-      "route": {
-       "n": 1883,
-       "totalMs": 1984,
-       "maxMs": 12
-      },
-      "clear": {
-       "n": 500,
-       "totalMs": 1052,
-       "maxMs": 16
-      }
-     }
-    },
-    "node": {
-     "seconds": 226,
-     "meanElu": 0.655,
-     "secondsAbove90PercentBusy": 3
-    }
-   },
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mock_isolate_true_parallel-imports-r1/cpu/CPU.20261009.112404.271156.0.001.cpuprofile",
-    "busySec": 98.45793,
-    "byPackage": [
-     {
-      "name": "playwright-core",
-      "sec": 42.7,
-      "share": 0.4336393523609525
-     },
-     {
-      "name": "vite",
-      "sec": 12.4,
-      "share": 0.12641538370753885
-     },
-     {
-      "name": "(native)",
-      "sec": 12,
-      "share": 0.12137354502577903
-     },
-     {
-      "name": "node: internals",
-      "sec": 11.8,
-      "share": 0.1194231587034178
-     },
-     {
-      "name": "(gc)",
-      "sec": 11.1,
-      "share": 0.11250112611548913
-     },
-     {
-      "name": "(program)",
-      "sec": 3.7,
-      "share": 0.03713664303119109
-     },
-     {
-      "name": "rolldown",
-      "sec": 2,
-      "share": 0.020820486475797328
-     },
-     {
-      "name": "@vitest/browser",
-      "sec": 1,
-      "share": 0.010426321170879787
-     },
-     {
-      "name": "vitest",
-      "sec": 0.5,
-      "share": 0.0047818494660612915
-     },
-     {
-      "name": "@vitest/mocker",
-      "sec": 0.4,
-      "share": 0.0038134561634598657
-     },
-     {
-      "name": "picomatch",
-      "sec": 0.2,
-      "share": 0.0019018782946178129
-     },
-     {
-      "name": "estree-walker",
-      "sec": 0.2,
-      "share": 0.0016666204540355459
-     },
-     {
-      "name": "magic-string",
-      "sec": 0.2,
-      "share": 0.002337059087063886
-     },
-     {
-      "name": "@vitest/browser-playwright",
-      "sec": 0.1,
-      "share": 0.001461487154970656
-     },
-     {
-      "name": "(project)",
-      "sec": 0.1,
-      "share": 0.00051256409717328
-     },
-     {
-      "name": "ws",
-      "sec": 0.1,
-      "share": 0.0012622853232847776
-     },
-     {
-      "name": "mrmime",
-      "sec": 0,
-      "share": 0.000010999621868954588
-     },
-     {
-      "name": "fdir",
-      "sec": 0,
-      "share": 0.00006626180339156024
-     },
-     {
-      "name": "sirv",
-      "sec": 0,
-      "share": 0.000010908212268935574
-     },
-     {
-      "name": "tinyglobby",
-      "sec": 0,
-      "share": 0.00025196548414129773
-     },
-     {
-      "name": ".vite-temp",
-      "sec": 0,
-      "share": 0.00014439669816336783
-     },
-     {
-      "name": "@vitest/utils",
-      "sec": 0,
-      "share": 0.000042251548453232766
-     }
-    ]
-   }
-  },
-  {
-   "case": "browser/vitest/mock/isolate=true/keep-cache",
-   "round": 1,
-   "wallSec": 217.33,
-   "exitCode": 1,
-   "passed": 4995,
-   "failed": 5,
-   "cpuSec": {
-    "total": 362,
-    "browser": 265
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "profile": {
-    "files": 500,
-    "importMsP50": 355.5999999977648,
-    "importMsP90": 484.80000000074506,
-    "requestsPerFile": 213.754,
-    "memoryCacheShare": 0,
-    "networkBusyMsP50": 334.9999999962747,
-    "requestsPerFileByClass": {
-     "test-file": 1,
-     "src:other": 11.4,
-     "src:features": 5.4,
-     "src:ui": 196
-    },
-    "http": {
-     "requests": 115393,
-     "conditional": 113476,
-     "status": {
-      "200": 2060,
-      "304": 113333
-     },
-     "share304": 0.9821479639146222
-    },
-    "routes": {
-     "registers": 1883,
-     "registersByType": {
-      "manual": 1500,
-      "autospy": 383
-     },
-     "predicateCalls": 401683,
-     "predicateMatched": 1808,
-     "predicateMs": 385,
-     "handlerCalls": 1808,
-     "ops": {
-      "route": {
-       "n": 1883,
-       "totalMs": 1711,
-       "maxMs": 21
-      },
-      "clear": {
-       "n": 500,
-       "totalMs": 964,
-       "maxMs": 14
-      }
-     }
-    },
-    "node": {
-     "seconds": 216,
-     "meanElu": 0.654,
-     "secondsAbove90PercentBusy": 1
-    }
-   },
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mock_isolate_true_keep-cache-r1/cpu/CPU.20261009.112752.271776.0.001.cpuprofile",
-    "busySec": 92.138617,
-    "byPackage": [
-     {
-      "name": "playwright-core",
-      "sec": 42.7,
-      "share": 0.4639522861516361
-     },
-     {
-      "name": "(native)",
-      "sec": 10.8,
-      "share": 0.117267811823136
-     },
-     {
-      "name": "node: internals",
-      "sec": 10.7,
-      "share": 0.11661986417703665
-     },
-     {
-      "name": "vite",
-      "sec": 10.2,
-      "share": 0.11070834718519815
-     },
-     {
-      "name": "(gc)",
-      "sec": 9.8,
-      "share": 0.10676756739250819
-     },
-     {
-      "name": "(program)",
-      "sec": 3.2,
-      "share": 0.03445853761837992
-     },
-     {
-      "name": "rolldown",
-      "sec": 1.9,
-      "share": 0.02114547692852824
-     },
-     {
-      "name": "@vitest/browser",
-      "sec": 0.9,
-      "share": 0.01025374626580297
-     },
-     {
-      "name": "vitest",
-      "sec": 0.5,
-      "share": 0.005314785656051251
-     },
-     {
-      "name": "@vitest/mocker",
-      "sec": 0.4,
-      "share": 0.004307205956868226
-     },
-     {
-      "name": "magic-string",
-      "sec": 0.3,
-      "share": 0.0027731911799804853
-     },
-     {
-      "name": "@vitest/browser-playwright",
-      "sec": 0.2,
-      "share": 0.0019665912719310733
-     },
-     {
-      "name": "estree-walker",
-      "sec": 0.2,
-      "share": 0.001785755043403788
-     },
-     {
-      "name": "(project)",
-      "sec": 0.1,
-      "share": 0.0007093442698407335
-     },
-     {
-      "name": "ws",
-      "sec": 0.1,
-      "share": 0.0015327123913744006
-     },
-     {
-      "name": "std-env",
-      "sec": 0,
-      "share": 0.000011830001746173376
-     },
-     {
-      "name": "picomatch",
-      "sec": 0,
-      "share": 0.0001631889048215256
-     },
-     {
-      "name": "tinyglobby",
-      "sec": 0,
-      "share": 0.00003150687621022139
-     },
-     {
-      "name": "fdir",
-      "sec": 0,
-      "share": 0.000011395873241726647
-     },
-     {
-      "name": ".vite-temp",
-      "sec": 0,
-      "share": 0.00016401374897997438
-     },
-     {
-      "name": "@vitest/utils",
-      "sec": 0,
-      "share": 0.00005484128332423309
-     }
-    ]
-   }
-  },
-  {
-   "case": "browser/vitest/mock/isolate=true/parallel-imports+keep-cache",
-   "round": 1,
-   "wallSec": 197.57,
-   "exitCode": 1,
-   "passed": 4991,
-   "failed": 9,
-   "cpuSec": {
-    "total": 332,
-    "browser": 243
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "profile": {
-    "files": 500,
-    "importMsP50": 334.69999999925494,
-    "importMsP90": 406.8999999985099,
-    "requestsPerFile": 213.794,
-    "memoryCacheShare": 0,
-    "networkBusyMsP50": 322.29999999701977,
-    "requestsPerFileByClass": {
-     "test-file": 1,
-     "src:other": 11.4,
-     "src:features": 5.4,
-     "src:ui": 196
-    },
-    "http": {
-     "requests": 115417,
-     "conditional": 113500,
-     "status": {
-      "200": 2069,
-      "304": 113348
-     },
-     "share304": 0.9820736979820996
-    },
-    "routes": {
-     "registers": 1883,
-     "registersByType": {
-      "manual": 1500,
-      "autospy": 383
-     },
-     "predicateCalls": 401644,
-     "predicateMatched": 1804,
-     "predicateMs": 366,
-     "handlerCalls": 1804,
-     "ops": {
-      "route": {
-       "n": 1883,
-       "totalMs": 1864,
-       "maxMs": 32
-      },
-      "clear": {
-       "n": 500,
-       "totalMs": 973,
-       "maxMs": 17
-      }
-     }
-    },
-    "node": {
-     "seconds": 196,
-     "meanElu": 0.663,
-     "secondsAbove90PercentBusy": 1
-    }
-   },
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mock_isolate_true_parallel-imports_keep-cache-r1/cpu/CPU.20261009.113129.272356.0.001.cpuprofile",
-    "busySec": 87.639545,
-    "byPackage": [
-     {
-      "name": "playwright-core",
-      "sec": 40.3,
-      "share": 0.45965026404461595
-     },
-     {
-      "name": "(native)",
-      "sec": 10.6,
-      "share": 0.12068339697564609
-     },
-     {
-      "name": "(gc)",
-      "sec": 10,
-      "share": 0.11421587138545733
-     },
-     {
-      "name": "vite",
-      "sec": 9.9,
-      "share": 0.11320075885834414
-     },
-     {
-      "name": "node: internals",
-      "sec": 9.6,
-      "share": 0.10966728547027486
-     },
-     {
-      "name": "(program)",
-      "sec": 2.8,
-      "share": 0.03164492695620453
-     },
-     {
-      "name": "rolldown",
-      "sec": 2,
-      "share": 0.022888126587147388
-     },
-     {
-      "name": "@vitest/browser",
-      "sec": 0.9,
-      "share": 0.009903953745994459
-     },
-     {
-      "name": "vitest",
-      "sec": 0.5,
-      "share": 0.005273555448057153
-     },
-     {
-      "name": "@vitest/mocker",
-      "sec": 0.4,
-      "share": 0.004317560069486897
-     },
-     {
-      "name": "magic-string",
-      "sec": 0.2,
-      "share": 0.002403698010983512
-     },
-     {
-      "name": "@vitest/browser-playwright",
-      "sec": 0.2,
-      "share": 0.0018143750061687335
-     },
-     {
-      "name": "estree-walker",
-      "sec": 0.2,
-      "share": 0.0020492689687058507
-     },
-     {
-      "name": "ws",
-      "sec": 0.1,
-      "share": 0.001377768449162989
-     },
-     {
-      "name": "pathe",
-      "sec": 0,
-      "share": 0.000012083586239522353
-     },
-     {
-      "name": "picomatch",
-      "sec": 0,
-      "share": 0.00020156425960449702
-     },
-     {
-      "name": "tinyglobby",
-      "sec": 0,
-      "share": 0.00003674140480761282
-     },
-     {
-      "name": "fdir",
-      "sec": 0,
-      "share": 0.0000530696502360892
-     },
-     {
-      "name": "(project)",
-      "sec": 0,
-      "share": 0.0004977091106531874
-     },
-     {
-      "name": "@vitest/utils",
-      "sec": 0,
-      "share": 0.00007344857849273407
-     },
-     {
-      "name": ".vite-temp",
-      "sec": 0,
-      "share": 0.00003457343371648038
-     }
-    ]
-   }
-  },
-  {
-   "case": "browser/vitest/mock/isolate=true/pr11083",
-   "round": 1,
-   "wallSec": 201.72,
-   "exitCode": 0,
-   "passed": 5000,
-   "failed": 0,
-   "cpuSec": {
-    "total": 335,
-    "browser": 245
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "profile": {
-    "files": 500,
-    "importMsP50": 334.6000000014901,
-    "importMsP90": 427,
-    "requestsPerFile": 213.704,
-    "memoryCacheShare": 0,
-    "networkBusyMsP50": 318.19999999925494,
-    "requestsPerFileByClass": {
-     "test-file": 1,
-     "src:other": 11.3,
-     "src:features": 5.4,
-     "src:ui": 196
-    },
-    "http": {
-     "requests": 115367,
-     "conditional": 85080,
-     "status": {
-      "200": 30415,
-      "304": 84952
-     },
-     "share304": 0.736363084764274
-    },
-    "routes": {
-     "registers": 1883,
-     "registersByType": {
-      "manual": 1500,
-      "autospy": 383
-     },
-     "predicateCalls": 401601,
-     "predicateMatched": 1813,
-     "predicateMs": 327,
-     "handlerCalls": 1813,
-     "ops": {
-      "route": {
-       "n": 1883,
-       "totalMs": 501,
-       "maxMs": 6
-      },
-      "clear": {
-       "n": 500,
-       "totalMs": 161,
-       "maxMs": 6
-      }
-     }
-    },
-    "node": {
-     "seconds": 200,
-     "meanElu": 0.646,
-     "secondsAbove90PercentBusy": 1
-    }
-   },
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mock_isolate_true_pr11083-r1/cpu/CPU.20261009.113447.272863.0.001.cpuprofile",
-    "busySec": 85.155326,
-    "byPackage": [
-     {
-      "name": "playwright-core",
-      "sec": 38.7,
-      "share": 0.4550283090924929
-     },
-     {
-      "name": "(native)",
-      "sec": 10.6,
-      "share": 0.12471649747427424
-     },
-     {
-      "name": "vite",
-      "sec": 10.1,
-      "share": 0.11821699795970483
-     },
-     {
-      "name": "node: internals",
-      "sec": 9.4,
-      "share": 0.11063771865543677
-     },
-     {
-      "name": "(gc)",
-      "sec": 9.3,
-      "share": 0.10945581959254082
-     },
-     {
-      "name": "(program)",
-      "sec": 2.9,
-      "share": 0.03450918618995129
-     },
-     {
-      "name": "rolldown",
-      "sec": 1.7,
-      "share": 0.02028765646437664
-     },
-     {
-      "name": "@vitest/browser",
-      "sec": 0.9,
-      "share": 0.010189239367130131
-     },
-     {
-      "name": "vitest",
-      "sec": 0.4,
-      "share": 0.005081467247274703
-     },
-     {
-      "name": "@vitest/mocker",
-      "sec": 0.3,
-      "share": 0.0037603167651545366
-     },
-     {
-      "name": "magic-string",
-      "sec": 0.2,
-      "share": 0.002292199550736263
-     },
-     {
-      "name": "estree-walker",
-      "sec": 0.2,
-      "share": 0.0019427440158000218
-     },
-     {
-      "name": "@vitest/browser-playwright",
-      "sec": 0.1,
-      "share": 0.0016219185162886934
-     },
-     {
-      "name": "ws",
-      "sec": 0.1,
-      "share": 0.001388615434341711
-     },
-     {
-      "name": "std-env",
-      "sec": 0,
-      "share": 0.000012635733436097702
-     },
-     {
-      "name": "picomatch",
-      "sec": 0,
-      "share": 0.00030833068503548444
-     },
-     {
-      "name": "obug",
-      "sec": 0,
-      "share": 0.00002548284531257622
-     },
-     {
-      "name": "mrmime",
-      "sec": 0,
-      "share": 0.000012635733436097702
-     },
-     {
-      "name": "tinyglobby",
-      "sec": 0,
-      "share": 0.000022828871561128192
-     },
-     {
-      "name": "fdir",
-      "sec": 0,
-      "share": 0.000029933535807261193
-     },
-     {
-      "name": "(project)",
-      "sec": 0,
-      "share": 0.0003544581580252538
-     },
-     {
-      "name": ".vite-temp",
-      "sec": 0,
-      "share": 0.00010500811188251455
-     }
-    ]
-   }
-  },
-  {
-   "case": "browser/vitest/mixed/isolate=true",
-   "round": 1,
-   "wallSec": 181.49,
-   "exitCode": 1,
-   "passed": 4999,
-   "failed": 1,
-   "cpuSec": {
-    "total": 308,
-    "browser": 240
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "profile": {
-    "files": 500,
-    "importMsP50": 225.80000000074506,
-    "importMsP90": 466.6000000014901,
-    "requestsPerFile": 217.972,
-    "memoryCacheShare": 0,
-    "networkBusyMsP50": 218.19999999552965,
-    "requestsPerFileByClass": {
-     "test-file": 1,
-     "src:other": 15.6,
-     "src:features": 5.4,
-     "src:ui": 196
-    },
-    "http": {
-     "requests": 118248,
-     "conditional": 64477,
-     "status": {
-      "200": 53771,
-      "304": 64477
-     },
-     "share304": 0.5452692645964414
-    },
-    "routes": {
-     "registers": 936,
-     "registersByType": {
-      "manual": 750,
-      "autospy": 186
-     },
-     "predicateCalls": 201806,
-     "predicateMatched": 906,
-     "predicateMs": 198,
-     "handlerCalls": 906,
-     "ops": {
-      "route": {
-       "n": 936,
-       "totalMs": 912,
-       "maxMs": 29
-      },
-      "clear": {
-       "n": 250,
-       "totalMs": 483,
-       "maxMs": 14
-      }
-     }
-    },
-    "node": {
-     "seconds": 180,
-     "meanElu": 0.589,
-     "secondsAbove90PercentBusy": 1
-    }
-   },
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mixed_isolate_true-r1/cpu/CPU.20261009.113809.273383.0.001.cpuprofile",
-    "busySec": 60.455779,
-    "byPackage": [
-     {
-      "name": "playwright-core",
-      "sec": 24.8,
-      "share": 0.40996663031998976
-     },
-     {
-      "name": "node: internals",
-      "sec": 8.2,
-      "share": 0.13589450232706454
-     },
-     {
-      "name": "(native)",
-      "sec": 7.4,
-      "share": 0.12290805151977283
-     },
-     {
-      "name": "vite",
-      "sec": 7.1,
-      "share": 0.11748139081956085
-     },
-     {
-      "name": "(gc)",
-      "sec": 6.6,
-      "share": 0.10933599912756066
-     },
-     {
-      "name": "(program)",
-      "sec": 2.7,
-      "share": 0.04474202540670264
-     },
-     {
-      "name": "rolldown",
-      "sec": 1.8,
-      "share": 0.02922615553427903
-     },
-     {
-      "name": "@vitest/browser",
-      "sec": 0.7,
-      "share": 0.011728093024820672
-     },
-     {
-      "name": "vitest",
-      "sec": 0.4,
-      "share": 0.007235123047541907
-     },
-     {
-      "name": "@vitest/mocker",
-      "sec": 0.2,
-      "share": 0.0031699699047794917
-     },
-     {
-      "name": "@vitest/browser-playwright",
-      "sec": 0.1,
-      "share": 0.001539621216360474
-     },
-     {
-      "name": "estree-walker",
-      "sec": 0.1,
-      "share": 0.0015497443180742076
-     },
-     {
-      "name": "magic-string",
-      "sec": 0.1,
-      "share": 0.0021455847918194883
-     },
-     {
-      "name": "ws",
-      "sec": 0.1,
-      "share": 0.0014404743672230243
-     },
-     {
-      "name": "@jridgewell/sourcemap-codec",
-      "sec": 0,
-      "share": 0.00003306549072835535
-     },
-     {
-      "name": "pngjs",
-      "sec": 0,
-      "share": 0.00001778159206252226
-     },
-     {
-      "name": ".vite-temp",
-      "sec": 0,
-      "share": 0.0002689900001123135
-     },
-     {
-      "name": "picomatch",
-      "sec": 0,
-      "share": 0.0003486846145841575
-     },
-     {
-      "name": "tinyglobby",
-      "sec": 0,
-      "share": 0.000018310904570429902
-     },
-     {
-      "name": "fdir",
-      "sec": 0,
-      "share": 0.00009428379047104827
-     },
-     {
-      "name": "sirv",
-      "sec": 0,
-      "share": 0.000016689885014962756
-     },
-     {
-      "name": "(project)",
-      "sec": 0,
-      "share": 0.0007880801602109867
-     },
-     {
-      "name": "@vitest/utils",
-      "sec": 0,
-      "share": 0.000050747836695644924
-     }
-    ]
-   }
-  },
-  {
-   "case": "browser/vitest/mixed/isolate=true/pr11083",
-   "round": 1,
-   "wallSec": 197.77,
-   "exitCode": 0,
-   "passed": 5000,
-   "failed": 0,
-   "cpuSec": {
-    "total": 330,
-    "browser": 256
-   },
-   "browserExecutables": [
-    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
-   ],
-   "profile": {
-    "files": 500,
-    "importMsP50": 321,
-    "importMsP90": 412.30000000074506,
-    "requestsPerFile": 217.962,
-    "memoryCacheShare": 0,
-    "networkBusyMsP50": 310.1000000014901,
-    "requestsPerFileByClass": {
-     "test-file": 1,
-     "src:other": 15.6,
-     "src:features": 5.4,
-     "src:ui": 196
-    },
-    "http": {
-     "requests": 118246,
-     "conditional": 86392,
-     "status": {
-      "200": 31933,
-      "304": 86313
-     },
-     "share304": 0.7299443532973631
-    },
-    "routes": {
-     "registers": 936,
-     "registersByType": {
-      "manual": 750,
-      "autospy": 186
-     },
-     "predicateCalls": 201794,
-     "predicateMatched": 907,
-     "predicateMs": 206,
-     "handlerCalls": 907,
-     "ops": {
-      "route": {
-       "n": 936,
-       "totalMs": 303,
-       "maxMs": 7
-      },
-      "clear": {
-       "n": 250,
-       "totalMs": 161,
-       "maxMs": 7
-      }
-     }
-    },
-    "node": {
-     "seconds": 196,
-     "meanElu": 0.584,
-     "secondsAbove90PercentBusy": 1
-    }
-   },
-   "cpuProfile": {
-    "file": "/home/runner/work/js-test-runner-competition/js-test-runner-competition/results/ci-profile/profile/browser_vitest_mixed_isolate_true_pr11083-r1/cpu/CPU.20261009.114110.273965.0.001.cpuprofile",
-    "busySec": 65.939324,
-    "byPackage": [
-     {
-      "name": "playwright-core",
-      "sec": 26.4,
-      "share": 0.4003316746165005
-     },
-     {
-      "name": "(native)",
-      "sec": 9.7,
-      "share": 0.146405231573196
-     },
-     {
-      "name": "node: internals",
-      "sec": 9,
-      "share": 0.13688409969140722
-     },
-     {
-      "name": "vite",
-      "sec": 7.4,
-      "share": 0.1114957138474759
-     },
-     {
-      "name": "(gc)",
-      "sec": 6.9,
-      "share": 0.1050904768147153
-     },
-     {
-      "name": "(program)",
-      "sec": 3.1,
-      "share": 0.046958594843950784
-     },
-     {
-      "name": "rolldown",
-      "sec": 1.6,
-      "share": 0.024854804395628927
-     },
-     {
-      "name": "@vitest/browser",
-      "sec": 0.7,
-      "share": 0.01065377922285039
-     },
-     {
-      "name": "vitest",
-      "sec": 0.5,
-      "share": 0.007110097155378785
-     },
-     {
-      "name": "@vitest/mocker",
-      "sec": 0.2,
-      "share": 0.002721016672843052
-     },
-     {
-      "name": "estree-walker",
-      "sec": 0.1,
-      "share": 0.001309719220051452
-     },
-     {
-      "name": "magic-string",
-      "sec": 0.1,
-      "share": 0.0018786058528595167
-     },
-     {
-      "name": "ws",
-      "sec": 0.1,
-      "share": 0.0014637092730886959
-     },
-     {
-      "name": "@vitest/browser-playwright",
-      "sec": 0.1,
-      "share": 0.0017800910424862712
-     },
-     {
-      "name": "pathe",
-      "sec": 0,
-      "share": 0.00001624220472748553
-     },
-     {
-      "name": ".vite-temp",
-      "sec": 0,
-      "share": 0.00004936356338745602
-     },
-     {
-      "name": "picomatch",
-      "sec": 0,
-      "share": 0.0002596022974090544
-     },
-     {
-      "name": "fdir",
-      "sec": 0,
-      "share": 0.00008289438939349757
-     },
-     {
-      "name": "tinyglobby",
-      "sec": 0,
-      "share": 0.00004573901910186401
-     },
-     {
-      "name": "(project)",
-      "sec": 0,
-      "share": 0.0006085443035479101
-     }
-    ]
-   }
-  }
- ]
 }

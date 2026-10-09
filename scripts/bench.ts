@@ -46,6 +46,8 @@ const { values: args } = parseArgs({
     "cpu-prof": { type: "boolean", default: false },
     readme: { type: "string" },
     "readme-file": { type: "string", default: "README.md" },
+    /** Re-render an existing results/<out>/runs.json (and its logs) instead of running anything. */
+    render: { type: "string" },
     out: { type: "string", default: "local" },
     "timeout-min": { type: "string", default: "30" },
   },
@@ -72,6 +74,8 @@ interface Run {
   exitCode: number | null;
   passed?: number;
   failed?: number;
+  /** Failed tests that got the real app context although it was mocked ("Guest", not "Test User"). */
+  mockMisses?: number;
   /**
    * CPU time (user + sys) of the whole run and the part of it Chromium used. The total is the
    * larger of `time -p` (exact, but it only counts child processes that were waited for) and the
@@ -372,6 +376,7 @@ function runOnce(
             /\| (\d+) failed/,
           ) ?? 0,
         cpuSec: { total: +total.toFixed(1), browser: +Math.min(browser, total).toFixed(1) },
+        mockMisses: countMockMisses(output),
         browserExecutables:
           c.env === "browser"
             ? [
@@ -386,7 +391,24 @@ function runOnce(
   });
 }
 
-const ok = (r: Run) => r.exitCode === 0 && r.passed === environment.fixture.testCasesPerSuite;
+/**
+ * Failed tests that got the real app context although it was mocked: the last test of every file
+ * expects "Test User" (the mock) and sees "Guest" (the real module). Counted from the failure
+ * report lines only; CI annotations repeat them on lines of their own.
+ */
+function countMockMisses(output: string): number {
+  return Math.max(
+    output.match(/^\s*AssertionError: expected 'Guest' to be 'Test User'/gm)?.length ?? 0,
+    output.match(/^\s*Expected:\s*"Test User"\s*\n\s*Received:\s*"Guest"/gm)?.length ?? 0,
+  );
+}
+
+let expectedTests = environment.fixture.testCasesPerSuite;
+/** Every test passed. */
+const ok = (r: Run) => r.exitCode === 0 && r.passed === expectedTests;
+/** Every test ran (some may have failed): the time counts, the failures are reported. */
+const completed = (r: Run) =>
+  r.passed !== undefined && r.passed + (r.failed ?? 0) === expectedTests;
 
 async function main(): Promise<void> {
   if (!existsSync(join(ROOT, "fixture/summary.json"))) {
@@ -483,7 +505,8 @@ async function main(): Promise<void> {
   }
 
   console.log("\n" + save(runs, true));
-  if (!runs.every(ok)) process.exitCode = 1;
+  // Failing tests are a result (reported in the tables); a run that did not finish is an error.
+  if (!runs.every(completed)) process.exitCode = 1;
 }
 
 /** Writes runs.json and summary.md (and the README section with `--readme`); returns the summary. */
@@ -516,7 +539,7 @@ const fmt = (x: number, digits = 1) => (Number.isFinite(x) ? x.toFixed(digits) :
 function caseName(id: string, cases: Case[]): string {
   const c = cases.find((x) => x.id === id);
   if (!c) return id;
-  const parts = [LABEL[c.runner], c.suite];
+  const parts = [LABEL[c.runner], c.env, c.suite];
   if (!c.isolate) parts.push("isolate: false");
   if (c.experiment) parts.push(EXPERIMENTS[c.experiment].label);
   return parts.join(", ");
@@ -529,14 +552,30 @@ function renderSummary(result: {
   runs: Run[];
 }): string {
   const runsOf = (id: string) => result.runs.filter((r) => r.case === id);
-  const good = (id: string) => runsOf(id).filter(ok);
+  // Runs that ran every test count for the time; failing tests are flagged with ⚠ and listed.
+  const good = (id: string) => runsOf(id).filter(completed);
   const wall = (id: string) => median(good(id).map((r) => r.wallSec));
   const cpu = (id: string, k: "total" | "browser") => median(good(id).map((r) => r.cpuSec[k]));
   const total = (id: string) => cpu(id, "total");
+  const flagged = (id: string) => runsOf(id).some((r) => !ok(r));
   const cell = (id: string) => {
     if (runsOf(id).length === 0) return "–";
-    return good(id).length < runsOf(id).length ? "failed" : `${fmt(wall(id))} s`;
+    if (good(id).length === 0) return "did not finish";
+    return `${fmt(wall(id))} s${flagged(id) ? " ⚠" : ""}`;
   };
+  const warnings = [...new Set(result.runs.map((r) => r.case))].filter(flagged).map((id) => {
+    const rs = runsOf(id);
+    const failing = rs.map((r) => (completed(r) ? String(r.failed ?? 0) : "did not finish"));
+    const misses = rs.reduce((n, r) => n + (r.mockMisses ?? 0), 0);
+    const failed = rs.reduce((n, r) => n + (completed(r) ? (r.failed ?? 0) : 0), 0);
+    const why =
+      misses && misses === failed
+        ? ", every one of them a mock that was not applied"
+        : misses
+          ? `, ${misses} of them a mock that was not applied`
+          : "";
+    return `${caseName(id, result.cases)}: failing tests per round ${failing.join(" / ")}${why}`;
+  });
   const env = result.environment;
   const fx = env.fixture;
   const rounds = Math.max(...result.runs.map((r) => r.round));
@@ -582,8 +621,8 @@ function renderSummary(result: {
         if (reason) return `n/a`;
         const id = glanceId(runner, e, suite);
         if (runsOf(id).length === 0) return "–";
-        if (good(id).length < runsOf(id).length) return "failed";
-        const time = `${fmt(wall(id))} s`;
+        if (good(id).length === 0) return "did not finish";
+        const time = `${fmt(wall(id))} s${flagged(id) ? " ⚠" : ""}`;
         const shown = wall(id) === best[i] ? `**${time}**` : time;
         const ratio = wall(id) / wall(glanceId(runner, e, "nomock"));
         return suite === "mock" && Number.isFinite(ratio)
@@ -601,6 +640,9 @@ function renderSummary(result: {
     lines.push(
       "",
       `<sub>${meta.join(" · ")}${notes.length ? `<br>n/a: ${notes.join("; ")}` : ""}</sub>`,
+      ...(warnings.length
+        ? ["", "⚠ Some tests failed:", "", ...warnings.map((w) => `- ${w}`)]
+        : []),
     );
 
     lines.push("", "<details>", "<summary>Every run: isolation on and off, CPU time</summary>");
@@ -757,4 +799,24 @@ function updateReadme(section: string, md: string): void {
   writeFileSync(path, `${readme.slice(0, i + start.length)}\n\n${md.trim()}\n\n${readme.slice(j)}`);
 }
 
-await main();
+if (args.render) {
+  const result = JSON.parse(readFileSync(args.render, "utf8"));
+  expectedTests = result.environment.fixture.testCasesPerSuite;
+  // Older runs.json files have no mock-miss counts; take them from the logs next to it.
+  for (const r of result.runs as Run[]) {
+    const log = join(
+      dirname(args.render),
+      "logs",
+      `${r.case.replace(/[/:=+]/g, "_")}-r${r.round}.log`,
+    );
+    if (r.mockMisses === undefined && existsSync(log)) {
+      const output = readFileSync(log, "utf8");
+      r.mockMisses = countMockMisses(output);
+    }
+  }
+  const md = renderSummary(result);
+  console.log(md);
+  if (args.readme) updateReadme(args.readme, md);
+} else {
+  await main();
+}

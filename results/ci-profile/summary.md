@@ -1,18 +1,17 @@
-
 Per test file, unless noted:
 
-| Run | test file import, p50 | requests per file | answered with 304 | `context.route()` registrations | route predicate calls | Node event loop busy |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Vitest, nomock | 207 ms | 222 | 98% | 0 | 0 | 52% |
-| Vitest, mock | 411 ms | 214 | 8% | 1,883 | 401,623 | 64% |
-| Vite+ (`vp test`), nomock | 201 ms | 222 | 98% | 0 | 0 | 52% |
-| Vite+ (`vp test`), mock | 428 ms | 214 | 9% | 1,883 | 401,622 | 66% |
-| Vitest, mock, parallel hoisted imports | 418 ms | 214 | 8% | 1,883 | 401,615 | 66% |
-| Vitest, mock, HTTP cache kept while routed | 356 ms | 214 | 98% | 1,883 | 401,683 | 65% |
-| Vitest, mock, both | 335 ms | 214 | 98% | 1,883 | 401,644 | 66% |
-| Vitest, mock, with #11083 (unreleased) | 335 ms | 214 | 74% | 1,883 | 401,601 | 65% |
-| Vitest, mixed | 226 ms | 218 | 55% | 936 | 201,806 | 59% |
-| Vitest, mixed, with #11083 (unreleased) | 321 ms | 218 | 73% | 936 | 201,794 | 58% |
+| Run                                        | test file import, p50 | requests per file | answered with 304 | `context.route()` registrations | route predicate calls | Node event loop busy |
+| ------------------------------------------ | --------------------: | ----------------: | ----------------: | ------------------------------: | --------------------: | -------------------: |
+| Vitest, nomock                             |                207 ms |               222 |               98% |                               0 |                     0 |                  52% |
+| Vitest, mock                               |                411 ms |               214 |                8% |                           1,883 |               401,623 |                  64% |
+| Vite+ (`vp test`), nomock                  |                201 ms |               222 |               98% |                               0 |                     0 |                  52% |
+| Vite+ (`vp test`), mock                    |                428 ms |               214 |                9% |                           1,883 |               401,622 |                  66% |
+| Vitest, mock, parallel hoisted imports     |                418 ms |               214 |                8% |                           1,883 |               401,615 |                  66% |
+| Vitest, mock, HTTP cache kept while routed |                356 ms |               214 |               98% |                           1,883 |               401,683 |                  65% |
+| Vitest, mock, both                         |                335 ms |               214 |               98% |                           1,883 |               401,644 |                  66% |
+| Vitest, mock, with #11083 (unreleased)     |                335 ms |               214 |               74% |                           1,883 |               401,601 |                  65% |
+| Vitest, mixed                              |                226 ms |               218 |               55% |                             936 |               201,806 |                  59% |
+| Vitest, mixed, with #11083 (unreleased)    |                321 ms |               218 |               73% |                             936 |               201,794 |                  58% |
 
 Where the runner's busiest Node process spends its CPU time (self time, by package):
 

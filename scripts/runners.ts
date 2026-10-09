@@ -170,7 +170,12 @@ export function invocation(inv: Invocation): { argv: string[]; env: Record<strin
         ],
         env:
           env === "browser"
-            ? { ...vars, UF_BROWSER: process.env.UF_BROWSER ?? chromiumHeadlessShell() }
+            ? {
+                ...vars,
+                // the same Chromium as Playwright's, with Playwright's --no-sandbox (host/uf/chromium.sh)
+                UF_BROWSER: join(ROOT, "host/uf/chromium.sh"),
+                REPRO_CHROMIUM: process.env.REPRO_CHROMIUM ?? chromiumHeadlessShell(),
+              }
             : vars,
       };
   }
