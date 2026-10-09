@@ -1,0 +1,2128 @@
+{
+ "environment": {
+  "date": "2026-10-09T06:46:34.970Z",
+  "machine": "AMD EPYC 9V45 96-Core Processor, 2 logical CPUs, 8 GiB RAM",
+  "os": "Linux 6.17.0-1022-azure (x64)",
+  "pinned": true,
+  "node": "v26.10.0",
+  "workers": 1,
+  "versions": {
+   "vitest": "5.0.3",
+   "vite": "8.3.4",
+   "vite-plus": "1.1.0",
+   "vite-plus's vitest": "5.0.3",
+   "vite-plus's core": "1.1.0 (Vite 8.3.3)",
+   "@rstest/core": "0.12.3",
+   "jest": "30.5.2",
+   "bun": "1.4.2",
+   "deno": "2.9.7",
+   "uf": "0.36.0",
+   "playwright": "1.63.0",
+   "chromium (headless shell)": "153.0.8010.12",
+   "happy-dom": "20.14.6"
+  },
+  "fixture": {
+   "sourceModules": 962,
+   "testFilesPerSuite": 500,
+   "testCasesPerSuite": 5000,
+   "mockCallsInMockSuite": 1883,
+   "mockedFilesInMixedSuite": 250,
+   "args": {
+    "FEATURES": 50,
+    "FILES_PER_FEATURE": 10,
+    "TESTS_PER_FILE": 10
+   }
+  },
+  "loadAvgAtStart": [
+   1.85,
+   0.67,
+   0.26
+  ]
+ },
+ "complete": true,
+ "loadAvgAtEnd": [
+  5.88,
+  5.17,
+  4.43
+ ],
+ "cases": [
+  {
+   "runner": "vitest",
+   "env": "browser",
+   "suite": "nomock",
+   "isolate": true,
+   "id": "browser/vitest/nomock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "vitest",
+   "env": "browser",
+   "suite": "mock",
+   "isolate": true,
+   "id": "browser/vitest/mock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "vp",
+   "env": "browser",
+   "suite": "nomock",
+   "isolate": true,
+   "id": "browser/vp/nomock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "vp",
+   "env": "browser",
+   "suite": "mock",
+   "isolate": true,
+   "id": "browser/vp/mock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "rstest",
+   "env": "browser",
+   "suite": "nomock",
+   "isolate": true,
+   "id": "browser/rstest/nomock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "rstest",
+   "env": "browser",
+   "suite": "mock",
+   "isolate": true,
+   "id": "browser/rstest/mock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "uf",
+   "env": "browser",
+   "suite": "nomock",
+   "isolate": true,
+   "id": "browser/uf/nomock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "vitest",
+   "env": "browser",
+   "suite": "nomock",
+   "isolate": false,
+   "id": "browser/vitest/nomock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "vitest",
+   "env": "browser",
+   "suite": "mock",
+   "isolate": false,
+   "id": "browser/vitest/mock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "vp",
+   "env": "browser",
+   "suite": "nomock",
+   "isolate": false,
+   "id": "browser/vp/nomock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "vp",
+   "env": "browser",
+   "suite": "mock",
+   "isolate": false,
+   "id": "browser/vp/mock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "rstest",
+   "env": "browser",
+   "suite": "nomock",
+   "isolate": false,
+   "id": "browser/rstest/nomock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "rstest",
+   "env": "browser",
+   "suite": "mock",
+   "isolate": false,
+   "id": "browser/rstest/mock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "vitest",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": true,
+   "id": "happy-dom/vitest/nomock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "vitest",
+   "env": "happy-dom",
+   "suite": "mock",
+   "isolate": true,
+   "id": "happy-dom/vitest/mock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "vp",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": true,
+   "id": "happy-dom/vp/nomock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "vp",
+   "env": "happy-dom",
+   "suite": "mock",
+   "isolate": true,
+   "id": "happy-dom/vp/mock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "rstest",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": true,
+   "id": "happy-dom/rstest/nomock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "rstest",
+   "env": "happy-dom",
+   "suite": "mock",
+   "isolate": true,
+   "id": "happy-dom/rstest/mock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "jest",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": true,
+   "id": "happy-dom/jest/nomock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "jest",
+   "env": "happy-dom",
+   "suite": "mock",
+   "isolate": true,
+   "id": "happy-dom/jest/mock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "bun",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": true,
+   "id": "happy-dom/bun/nomock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "bun",
+   "env": "happy-dom",
+   "suite": "mock",
+   "isolate": true,
+   "id": "happy-dom/bun/mock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "node",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": true,
+   "id": "happy-dom/node/nomock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "node",
+   "env": "happy-dom",
+   "suite": "mock",
+   "isolate": true,
+   "id": "happy-dom/node/mock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "deno",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": true,
+   "id": "happy-dom/deno/nomock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "uf",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": true,
+   "id": "happy-dom/uf/nomock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "uf",
+   "env": "happy-dom",
+   "suite": "mock",
+   "isolate": true,
+   "id": "happy-dom/uf/mock/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "vitest",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": false,
+   "id": "happy-dom/vitest/nomock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "vitest",
+   "env": "happy-dom",
+   "suite": "mock",
+   "isolate": false,
+   "id": "happy-dom/vitest/mock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "vp",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": false,
+   "id": "happy-dom/vp/nomock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "vp",
+   "env": "happy-dom",
+   "suite": "mock",
+   "isolate": false,
+   "id": "happy-dom/vp/mock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "rstest",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": false,
+   "id": "happy-dom/rstest/nomock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "rstest",
+   "env": "happy-dom",
+   "suite": "mock",
+   "isolate": false,
+   "id": "happy-dom/rstest/mock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "bun",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": false,
+   "id": "happy-dom/bun/nomock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "bun",
+   "env": "happy-dom",
+   "suite": "mock",
+   "isolate": false,
+   "id": "happy-dom/bun/mock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "node",
+   "env": "happy-dom",
+   "suite": "nomock",
+   "isolate": false,
+   "id": "happy-dom/node/nomock/isolate=false",
+   "vars": {}
+  },
+  {
+   "runner": "vitest",
+   "env": "browser",
+   "suite": "mock",
+   "isolate": true,
+   "experiment": "parallel-imports",
+   "id": "browser/vitest/mock/isolate=true/parallel-imports",
+   "vars": {
+    "REPRO_EXP_PARALLEL_IMPORTS": "1"
+   }
+  },
+  {
+   "runner": "vitest",
+   "env": "browser",
+   "suite": "mock",
+   "isolate": true,
+   "experiment": "keep-cache",
+   "id": "browser/vitest/mock/isolate=true/keep-cache",
+   "vars": {
+    "REPRO_EXP_KEEP_CACHE": "1"
+   }
+  },
+  {
+   "runner": "vitest",
+   "env": "browser",
+   "suite": "mock",
+   "isolate": true,
+   "experiment": "parallel-imports+keep-cache",
+   "id": "browser/vitest/mock/isolate=true/parallel-imports+keep-cache",
+   "vars": {
+    "REPRO_EXP_PARALLEL_IMPORTS": "1",
+    "REPRO_EXP_KEEP_CACHE": "1"
+   }
+  },
+  {
+   "runner": "vitest",
+   "env": "browser",
+   "suite": "mock",
+   "isolate": true,
+   "experiment": "pr11083",
+   "id": "browser/vitest/mock/isolate=true/pr11083",
+   "vars": {
+    "REPRO_EXP_PR11083": "1"
+   }
+  },
+  {
+   "runner": "vitest",
+   "env": "browser",
+   "suite": "mixed",
+   "isolate": true,
+   "id": "browser/vitest/mixed/isolate=true",
+   "vars": {}
+  },
+  {
+   "runner": "vitest",
+   "env": "browser",
+   "suite": "mixed",
+   "isolate": true,
+   "experiment": "pr11083",
+   "id": "browser/vitest/mixed/isolate=true/pr11083",
+   "vars": {
+    "REPRO_EXP_PR11083": "1"
+   }
+  }
+ ],
+ "runs": [
+  {
+   "case": "browser/vitest/nomock/isolate=true",
+   "round": 1,
+   "wallSec": 137.68,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 218,
+    "browser": 179
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true",
+   "round": 1,
+   "wallSec": 247.74,
+   "exitCode": 1,
+   "passed": 4995,
+   "failed": 5,
+   "cpuSec": {
+    "total": 440,
+    "browser": 340
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vp/nomock/isolate=true",
+   "round": 1,
+   "wallSec": 139.28,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 227,
+    "browser": 186
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vp/mock/isolate=true",
+   "round": 1,
+   "wallSec": 244.76,
+   "exitCode": 1,
+   "passed": 4995,
+   "failed": 5,
+   "cpuSec": {
+    "total": 437,
+    "browser": 332
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/rstest/nomock/isolate=true",
+   "round": 1,
+   "wallSec": 100.92,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 62,
+    "browser": 33
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/rstest/mock/isolate=true",
+   "round": 1,
+   "wallSec": 102.5,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 62,
+    "browser": 33
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/uf/nomock/isolate=true",
+   "round": 1,
+   "wallSec": 159.7,
+   "exitCode": 1,
+   "passed": 0,
+   "failed": 0,
+   "cpuSec": {
+    "total": 90.6,
+    "browser": 0
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/nomock/isolate=false",
+   "round": 1,
+   "wallSec": 10.45,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 13,
+    "browser": 6
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=false",
+   "round": 1,
+   "wallSec": 14.91,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 20,
+    "browser": 11
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vp/nomock/isolate=false",
+   "round": 1,
+   "wallSec": 10.74,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 15,
+    "browser": 7
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vp/mock/isolate=false",
+   "round": 1,
+   "wallSec": 15.8,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 21,
+    "browser": 11
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/rstest/nomock/isolate=false",
+   "round": 1,
+   "wallSec": 13.77,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 21,
+    "browser": 10
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/rstest/mock/isolate=false",
+   "round": 1,
+   "wallSec": 14.7,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 22,
+    "browser": 11
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "happy-dom/vitest/nomock/isolate=true",
+   "round": 1,
+   "wallSec": 174.49,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 224.8,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vitest/mock/isolate=true",
+   "round": 1,
+   "wallSec": 181.76,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 234.6,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vp/nomock/isolate=true",
+   "round": 1,
+   "wallSec": 181.3,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 235.6,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vp/mock/isolate=true",
+   "round": 1,
+   "wallSec": 183.39,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 238.1,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/rstest/nomock/isolate=true",
+   "round": 1,
+   "wallSec": 128.91,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 150.9,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/rstest/mock/isolate=true",
+   "round": 1,
+   "wallSec": 130.37,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 152.8,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/jest/nomock/isolate=true",
+   "round": 1,
+   "wallSec": 21.84,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 28.7,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/jest/mock/isolate=true",
+   "round": 1,
+   "wallSec": 24.87,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 34.4,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/bun/nomock/isolate=true",
+   "round": 1,
+   "wallSec": 36.09,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 50.6,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/bun/mock/isolate=true",
+   "round": 1,
+   "wallSec": 34.47,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 48.6,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/node/nomock/isolate=true",
+   "round": 1,
+   "wallSec": 248.67,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 336.1,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/node/mock/isolate=true",
+   "round": 1,
+   "wallSec": 247.9,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 335.1,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/deno/nomock/isolate=true",
+   "round": 1,
+   "wallSec": 111.93,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 120.7,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/uf/nomock/isolate=true",
+   "round": 1,
+   "wallSec": 27.07,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 32.4,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/uf/mock/isolate=true",
+   "round": 1,
+   "wallSec": 33.58,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 41.1,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vitest/nomock/isolate=false",
+   "round": 1,
+   "wallSec": 9.87,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 13.3,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vitest/mock/isolate=false",
+   "round": 1,
+   "wallSec": 11.28,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 15.1,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vp/nomock/isolate=false",
+   "round": 1,
+   "wallSec": 10.17,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 13.6,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vp/mock/isolate=false",
+   "round": 1,
+   "wallSec": 11.37,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 15.2,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/rstest/nomock/isolate=false",
+   "round": 1,
+   "wallSec": 21.3,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 26.2,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/rstest/mock/isolate=false",
+   "round": 1,
+   "wallSec": 28.02,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 39.2,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/bun/nomock/isolate=false",
+   "round": 1,
+   "wallSec": 2.63,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 3.5,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/bun/mock/isolate=false",
+   "round": 1,
+   "wallSec": 3.33,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 5,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/node/nomock/isolate=false",
+   "round": 1,
+   "wallSec": 79.86,
+   "exitCode": 134,
+   "failed": 0,
+   "cpuSec": {
+    "total": 58.9,
+    "browser": 0
+   }
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true/parallel-imports",
+   "round": 1,
+   "wallSec": 213.59,
+   "exitCode": 1,
+   "passed": 4996,
+   "failed": 4,
+   "cpuSec": {
+    "total": 387,
+    "browser": 298
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true/keep-cache",
+   "round": 1,
+   "wallSec": 187.09,
+   "exitCode": 1,
+   "passed": 4998,
+   "failed": 2,
+   "cpuSec": {
+    "total": 315,
+    "browser": 234
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true/parallel-imports+keep-cache",
+   "round": 1,
+   "wallSec": 181.89,
+   "exitCode": 1,
+   "passed": 4997,
+   "failed": 3,
+   "cpuSec": {
+    "total": 310,
+    "browser": 230
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true/pr11083",
+   "round": 1,
+   "wallSec": 192.15,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 326,
+    "browser": 243
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mixed/isolate=true",
+   "round": 1,
+   "wallSec": 184.12,
+   "exitCode": 1,
+   "passed": 4997,
+   "failed": 3,
+   "cpuSec": {
+    "total": 316,
+    "browser": 250
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mixed/isolate=true/pr11083",
+   "round": 1,
+   "wallSec": 184.38,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 311,
+    "browser": 244
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true",
+   "round": 2,
+   "wallSec": 221.18,
+   "exitCode": 1,
+   "passed": 4998,
+   "failed": 2,
+   "cpuSec": {
+    "total": 392,
+    "browser": 304
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vp/nomock/isolate=true",
+   "round": 2,
+   "wallSec": 131.44,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 210,
+    "browser": 172
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vp/mock/isolate=true",
+   "round": 2,
+   "wallSec": 244.27,
+   "exitCode": 1,
+   "passed": 4997,
+   "failed": 3,
+   "cpuSec": {
+    "total": 433,
+    "browser": 330
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/rstest/nomock/isolate=true",
+   "round": 2,
+   "wallSec": 106.29,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 67,
+    "browser": 36
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/rstest/mock/isolate=true",
+   "round": 2,
+   "wallSec": 105.73,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 67,
+    "browser": 36
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/uf/nomock/isolate=true",
+   "round": 2,
+   "wallSec": 171.76,
+   "exitCode": 1,
+   "passed": 0,
+   "failed": 0,
+   "cpuSec": {
+    "total": 97.5,
+    "browser": 0
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/nomock/isolate=false",
+   "round": 2,
+   "wallSec": 12.45,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 15,
+    "browser": 7
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=false",
+   "round": 2,
+   "wallSec": 17.24,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 23,
+    "browser": 12
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vp/nomock/isolate=false",
+   "round": 2,
+   "wallSec": 12.52,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 15,
+    "browser": 7
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vp/mock/isolate=false",
+   "round": 2,
+   "wallSec": 17.09,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 23,
+    "browser": 12
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/rstest/nomock/isolate=false",
+   "round": 2,
+   "wallSec": 15.59,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 23,
+    "browser": 11
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/rstest/mock/isolate=false",
+   "round": 2,
+   "wallSec": 15.86,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 23,
+    "browser": 11
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "happy-dom/vitest/nomock/isolate=true",
+   "round": 2,
+   "wallSec": 184.92,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 240.7,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vitest/mock/isolate=true",
+   "round": 2,
+   "wallSec": 186.35,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 241.6,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vp/nomock/isolate=true",
+   "round": 2,
+   "wallSec": 181.26,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 236,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vp/mock/isolate=true",
+   "round": 2,
+   "wallSec": 181.57,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 235.6,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/rstest/nomock/isolate=true",
+   "round": 2,
+   "wallSec": 130.85,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 153.2,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/rstest/mock/isolate=true",
+   "round": 2,
+   "wallSec": 128.13,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 150.5,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/jest/nomock/isolate=true",
+   "round": 2,
+   "wallSec": 20.4,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 26.5,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/jest/mock/isolate=true",
+   "round": 2,
+   "wallSec": 21.6,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 28.7,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/bun/nomock/isolate=true",
+   "round": 2,
+   "wallSec": 34.89,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 49,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/bun/mock/isolate=true",
+   "round": 2,
+   "wallSec": 35.1,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 49.5,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/node/nomock/isolate=true",
+   "round": 2,
+   "wallSec": 241.62,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 325.9,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/node/mock/isolate=true",
+   "round": 2,
+   "wallSec": 247.16,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 335.1,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/deno/nomock/isolate=true",
+   "round": 2,
+   "wallSec": 108.52,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 116.8,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/uf/nomock/isolate=true",
+   "round": 2,
+   "wallSec": 27.11,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 32.6,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/uf/mock/isolate=true",
+   "round": 2,
+   "wallSec": 29.77,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 34.1,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vitest/nomock/isolate=false",
+   "round": 2,
+   "wallSec": 9.88,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 13.2,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vitest/mock/isolate=false",
+   "round": 2,
+   "wallSec": 10.89,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 14.7,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vp/nomock/isolate=false",
+   "round": 2,
+   "wallSec": 9.99,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 13.4,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vp/mock/isolate=false",
+   "round": 2,
+   "wallSec": 11.16,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 15,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/rstest/nomock/isolate=false",
+   "round": 2,
+   "wallSec": 18.78,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 22.9,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/rstest/mock/isolate=false",
+   "round": 2,
+   "wallSec": 29.68,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 41.5,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/bun/nomock/isolate=false",
+   "round": 2,
+   "wallSec": 2.93,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 3.9,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/bun/mock/isolate=false",
+   "round": 2,
+   "wallSec": 3.6,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 5.5,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/node/nomock/isolate=false",
+   "round": 2,
+   "wallSec": 67.1,
+   "exitCode": 134,
+   "failed": 0,
+   "cpuSec": {
+    "total": 63.3,
+    "browser": 0
+   }
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true/parallel-imports",
+   "round": 2,
+   "wallSec": 214.36,
+   "exitCode": 1,
+   "passed": 4996,
+   "failed": 4,
+   "cpuSec": {
+    "total": 388,
+    "browser": 299
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true/keep-cache",
+   "round": 2,
+   "wallSec": 181.23,
+   "exitCode": 1,
+   "passed": 4992,
+   "failed": 8,
+   "cpuSec": {
+    "total": 300,
+    "browser": 223
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true/parallel-imports+keep-cache",
+   "round": 2,
+   "wallSec": 175.86,
+   "exitCode": 1,
+   "passed": 4998,
+   "failed": 2,
+   "cpuSec": {
+    "total": 298,
+    "browser": 222
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true/pr11083",
+   "round": 2,
+   "wallSec": 204.85,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 347,
+    "browser": 258
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mixed/isolate=true",
+   "round": 2,
+   "wallSec": 187.32,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 324,
+    "browser": 257
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mixed/isolate=true/pr11083",
+   "round": 2,
+   "wallSec": 181.36,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 308,
+    "browser": 241
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/nomock/isolate=true",
+   "round": 2,
+   "wallSec": 137.36,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 219,
+    "browser": 183
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vp/nomock/isolate=true",
+   "round": 3,
+   "wallSec": 144.02,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 232,
+    "browser": 191
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vp/mock/isolate=true",
+   "round": 3,
+   "wallSec": 235.59,
+   "exitCode": 1,
+   "passed": 4997,
+   "failed": 3,
+   "cpuSec": {
+    "total": 418,
+    "browser": 318
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/rstest/nomock/isolate=true",
+   "round": 3,
+   "wallSec": 102.98,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 64,
+    "browser": 34
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/rstest/mock/isolate=true",
+   "round": 3,
+   "wallSec": 100.77,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 62,
+    "browser": 33
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/uf/nomock/isolate=true",
+   "round": 3,
+   "wallSec": 168.98,
+   "exitCode": 1,
+   "passed": 0,
+   "failed": 0,
+   "cpuSec": {
+    "total": 94.5,
+    "browser": 0
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/nomock/isolate=false",
+   "round": 3,
+   "wallSec": 11.76,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 15,
+    "browser": 7
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=false",
+   "round": 3,
+   "wallSec": 15.94,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 22,
+    "browser": 12
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vp/nomock/isolate=false",
+   "round": 3,
+   "wallSec": 11.34,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 15,
+    "browser": 7
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vp/mock/isolate=false",
+   "round": 3,
+   "wallSec": 17.15,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 23,
+    "browser": 12
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/rstest/nomock/isolate=false",
+   "round": 3,
+   "wallSec": 15.1,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 23,
+    "browser": 11
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/rstest/mock/isolate=false",
+   "round": 3,
+   "wallSec": 16.32,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 23,
+    "browser": 11
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "happy-dom/vitest/nomock/isolate=true",
+   "round": 3,
+   "wallSec": 183.87,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 238.6,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vitest/mock/isolate=true",
+   "round": 3,
+   "wallSec": 184.03,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 238.9,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vp/nomock/isolate=true",
+   "round": 3,
+   "wallSec": 181.25,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 236,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vp/mock/isolate=true",
+   "round": 3,
+   "wallSec": 188.54,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 245.3,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/rstest/nomock/isolate=true",
+   "round": 3,
+   "wallSec": 133.47,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 156.8,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/rstest/mock/isolate=true",
+   "round": 3,
+   "wallSec": 127.6,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 149.6,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/jest/nomock/isolate=true",
+   "round": 3,
+   "wallSec": 20.04,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 26.6,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/jest/mock/isolate=true",
+   "round": 3,
+   "wallSec": 23.07,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 31.9,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/bun/nomock/isolate=true",
+   "round": 3,
+   "wallSec": 34.72,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 48.8,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/bun/mock/isolate=true",
+   "round": 3,
+   "wallSec": 33.83,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 47.7,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/node/nomock/isolate=true",
+   "round": 3,
+   "wallSec": 238.61,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 320.7,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/node/mock/isolate=true",
+   "round": 3,
+   "wallSec": 241.17,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 325.3,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/deno/nomock/isolate=true",
+   "round": 3,
+   "wallSec": 112.63,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 121.5,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/uf/nomock/isolate=true",
+   "round": 3,
+   "wallSec": 28.84,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 35,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/uf/mock/isolate=true",
+   "round": 3,
+   "wallSec": 32.69,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 40.3,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vitest/nomock/isolate=false",
+   "round": 3,
+   "wallSec": 10.3,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 13.8,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vitest/mock/isolate=false",
+   "round": 3,
+   "wallSec": 11.35,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 15.3,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vp/nomock/isolate=false",
+   "round": 3,
+   "wallSec": 10.02,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 13.4,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/vp/mock/isolate=false",
+   "round": 3,
+   "wallSec": 11.15,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 14.9,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/rstest/nomock/isolate=false",
+   "round": 3,
+   "wallSec": 20.84,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 26.3,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/rstest/mock/isolate=false",
+   "round": 3,
+   "wallSec": 21.32,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 26.7,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/bun/nomock/isolate=false",
+   "round": 3,
+   "wallSec": 2.39,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 3.2,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/bun/mock/isolate=false",
+   "round": 3,
+   "wallSec": 3.34,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 5.1,
+    "browser": 0
+   }
+  },
+  {
+   "case": "happy-dom/node/nomock/isolate=false",
+   "round": 3,
+   "wallSec": 66.13,
+   "exitCode": 134,
+   "failed": 0,
+   "cpuSec": {
+    "total": 59.2,
+    "browser": 0
+   }
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true/parallel-imports",
+   "round": 3,
+   "wallSec": 206.6,
+   "exitCode": 1,
+   "passed": 4998,
+   "failed": 2,
+   "cpuSec": {
+    "total": 376,
+    "browser": 290
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true/keep-cache",
+   "round": 3,
+   "wallSec": 187.64,
+   "exitCode": 1,
+   "passed": 4998,
+   "failed": 2,
+   "cpuSec": {
+    "total": 312,
+    "browser": 233
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true/parallel-imports+keep-cache",
+   "round": 3,
+   "wallSec": 185.25,
+   "exitCode": 1,
+   "passed": 4997,
+   "failed": 3,
+   "cpuSec": {
+    "total": 318,
+    "browser": 236
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true/pr11083",
+   "round": 3,
+   "wallSec": 184.58,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 314,
+    "browser": 233
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mixed/isolate=true",
+   "round": 3,
+   "wallSec": 168.84,
+   "exitCode": 1,
+   "passed": 4996,
+   "failed": 4,
+   "cpuSec": {
+    "total": 290,
+    "browser": 230
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mixed/isolate=true/pr11083",
+   "round": 3,
+   "wallSec": 170.76,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 290,
+    "browser": 228
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/nomock/isolate=true",
+   "round": 3,
+   "wallSec": 125.47,
+   "exitCode": 0,
+   "passed": 5000,
+   "failed": 0,
+   "cpuSec": {
+    "total": 199,
+    "browser": 167
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  },
+  {
+   "case": "browser/vitest/mock/isolate=true",
+   "round": 3,
+   "wallSec": 209.01,
+   "exitCode": 1,
+   "passed": 4997,
+   "failed": 3,
+   "cpuSec": {
+    "total": 373,
+    "browser": 290
+   },
+   "browserExecutables": [
+    "/nix/store/2r6jknbva6pv5jhsay64arihz9y06mw2-playwright-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+   ]
+  }
+ ]
+}
