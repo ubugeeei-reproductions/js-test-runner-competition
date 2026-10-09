@@ -78,6 +78,24 @@ which is Vitest's and Rstest's own browser-mode default). The happy-dom table pu
 on equal footing; the browser table compares the three that have a browser mode, on the same
 Chromium.
 
+### Are the conditions equal?
+
+- **The same Chromium.** Vitest, Vite+ and Rstest all start it through Playwright's
+  `chromium.launch({ headless: true })`. Inside `nix develop` the only Chromium there is is the
+  Nix-built headless shell, and every run records the executable Playwright launched (the line
+  under the browser table).
+- **The same parallelism.** Every runner gets `--workers` workers.
+- **The same tests and mocks**, through `#host` (below).
+- **Isolation is not lighter for Rstest.** With `isolate: true`, Vitest keeps one page per worker
+  and gives every test file a fresh iframe; Rstest gives every test file a new browser context and
+  page.
+- **What differs is the architecture.** Vitest serves a test file's module graph unbundled from
+  the Vite dev server, so every isolated test file requests each of its modules again (a few
+  hundred here); Rstest serves one bundle per test file. That is why Vitest's no-mock run already
+  costs more Chromium CPU. The `isolate: false` rows, where modules load once per worker, take that
+  difference out. The "mocks cost" column compares each runner with itself and does not depend on
+  it.
+
 ### One test source for every runner: `#host`
 
 Test files never import a runner. They import `#host` and use `host.mock()` / `host.fn()`:

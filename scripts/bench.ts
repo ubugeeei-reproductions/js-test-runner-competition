@@ -81,6 +81,8 @@ interface Run {
    * from sampling the process tree (`ps`) twice a second.
    */
   cpuSec: { total: number; browser: number };
+  /** The Chromium executable(s) Playwright launched (browser runs). */
+  browserExecutables?: string[];
   profile?: ProfileSummary;
   cpuProfile?: CpuProfileSummary;
 }
@@ -190,6 +192,8 @@ function runnerEnv(c: Case, extraNodeOptions = ""): Record<string, string> {
     FORCE_COLOR: "0",
     NO_COLOR: "1",
   };
+  // Playwright logs the executable it launches; recorded to show every runner used the same Chromium.
+  if (c.env === "browser") vars.DEBUG = [process.env.DEBUG, "pw:browser"].filter(Boolean).join(",");
   const nodeOptions = [process.env.NODE_OPTIONS ?? "", extraNodeOptions];
   // uf's workers get the "#host" condition and a setup file; see host/uf/setup.ts.
   if (c.runner === "uf") nodeOptions.push(ufNodeOptions());
@@ -373,6 +377,10 @@ function runOnce(
         ),
         failed: num(/Tests\s+(\d+) failed/, /^\s*(\d+) fail$/m, /^\s*failed\s+(\d+)$/m) ?? 0,
         cpuSec: { total: +total.toFixed(1), browser: +Math.min(browser, total).toFixed(1) },
+        browserExecutables:
+          c.env === "browser"
+            ? [...new Set([...output.matchAll(/<launching> (\S+)/g)].map((m) => m[1]))]
+            : undefined,
       });
     });
   });
@@ -589,6 +597,25 @@ function renderSummary(result: {
         .join(", ");
       lines.push(`- \`${r.case}\` (${fmt(r.cpuProfile!.busySec)} s busy): ${top}`);
     }
+  }
+
+  const executables = new Map<string, Set<string>>();
+  for (const r of result.runs) {
+    for (const exe of r.browserExecutables ?? []) {
+      const runner = r.case.split("/")[1];
+      executables.set(exe, (executables.get(exe) ?? new Set()).add(LABEL[runner as Runner]));
+    }
+  }
+  if (executables.size === 1) {
+    const [exe] = executables.keys();
+    lines.push(
+      "",
+      `Every browser run launched the same Chromium: \`${exe.replace(/^.*\/(chromium[^/]*)\//, "$1/")}\`.`,
+    );
+  } else if (executables.size > 1) {
+    lines.push("", "**Warning: browser runs launched different Chromium executables:**", "");
+    for (const [exe, runners] of executables)
+      lines.push(`- \`${exe}\`: ${[...runners].join(", ")}`);
   }
 
   lines.push(
