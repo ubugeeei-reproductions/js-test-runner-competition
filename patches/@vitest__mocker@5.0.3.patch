@@ -1,0 +1,30 @@
+diff --git a/dist/chunk-hoistMocks.js b/dist/chunk-hoistMocks.js
+index a5c1d814ebdb0a50a3e4abe7ef7bfec55c0890ad..0c7dfd7fa4435c70a59c818b1fe9ec8ad1b062c8 100644
+--- a/dist/chunk-hoistMocks.js
++++ b/dist/chunk-hoistMocks.js
+@@ -669,15 +669,23 @@ function hoistMocks(code, id, parse, options = {}) {
+ 		}
+ 	}
+ 	// hoist actual dynamic imports last so they are inserted after all hoisted mocks
+-	for (const { node: importNode, id: importId } of imports) {
++	// Experiment (REPRO_EXP_PARALLEL_IMPORTS=1): start every hoisted import first and await them
++	// together. By default each static import becomes its own `await import()`, so a file that uses
++	// vi.mock loads its dependency graph one import at a time (a waterfall).
++	const __reproParallel = !!process.env.REPRO_EXP_PARALLEL_IMPORTS && imports.length > 1;
++	const __reproLast = imports.length - 1;
++	for (const [__reproIndex, { node: importNode, id: importId }] of imports.entries()) {
+ 		const source = importNode.source.value;
+ 		const sourceString = JSON.stringify(source);
+-		let importLine = `const ${importId} = await `;
++		let importLine = __reproParallel ? `const ${importId}__p = ` : `const ${importId} = await `;
+ 		if (options.globalThisAccessor) {
+ 			importLine += `globalThis[${options.globalThisAccessor}].wrapDynamicImport(() => import(${sourceString}));\n`;
+ 		} else {
+ 			importLine += `import(${sourceString});\n`;
+ 		}
++		if (__reproParallel && __reproIndex === __reproLast) {
++			importLine += `const [${imports.map((i) => i.id).join(", ")}] = await Promise.all([${imports.map((i) => `${i.id}__p`).join(", ")}]);\n`;
++		}
+ 		s.update(importNode.start, importNode.end, importLine);
+ 		if (importNode.start === hoistIndex) {
+ 			// no need to hoist, but update hoistIndex to keep the order

@@ -1,0 +1,72 @@
+name: bench
+
+# Everything runs inside `nix develop` (flake.nix + flake.lock pin Node, pnpm, Bun, uf and Chromium),
+# and every runner is measured in the same job, i.e. on the same freshly provisioned runner VM, in
+# interleaved rounds (the order rotates every round). The median is reported.
+on:
+  workflow_dispatch:
+    inputs:
+      repeat:
+        description: Rounds per case
+        default: "3"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/bench.yml"
+      - "flake.nix"
+      - "flake.lock"
+      - "host/**"
+      - "patches/**"
+      - "scripts/**"
+      - "*.config.ts"
+      - "bunfig.toml"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bench
+  cancel-in-progress: true
+
+jobs:
+  bench:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+
+      - name: Toolchain
+        run: nix develop --command bash -c 'node --version; pnpm --version; bun --version; uf --version; ls "$PLAYWRIGHT_BROWSERS_PATH"'
+      - run: nix develop --command pnpm install --frozen-lockfile
+      - run: nix develop --command pnpm typecheck
+
+      - name: Benchmark (every runner × browser / happy-dom × nomock / mock × isolate, + experimental patches)
+        run: nix develop --command node scripts/bench.ts --repeat "${{ inputs.repeat || '3' }}" --experiments --out ci --readme results
+
+      - name: Profile (browser mode, profiling patches + V8 CPU profile, one round)
+        run: nix develop --command node scripts/bench.ts --envs browser --isolate true --profile --cpu-prof --out ci-profile --readme profile
+
+      - name: Job summary
+        if: always()
+        run: cat results/ci/summary.md results/ci-profile/summary.md >> "$GITHUB_STEP_SUMMARY" || true
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: results
+          path: results/
+          retention-days: 30
+
+      - name: Commit results
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md results/ci/summary.md results/ci/runs.json results/ci-profile/summary.md results/ci-profile/runs.json
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "chore: update benchmark results from CI run ${{ github.run_id }}"
+          git push

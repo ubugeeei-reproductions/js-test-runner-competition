@@ -1,0 +1,44 @@
+{
+  "name": "vitest-mock-is-too-slow",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#host": {
+      "types": "./host/types.ts",
+      "bun": "./host/bun/host.ts",
+      "repro-uf": "./host/uf/host.ts",
+      "default": "./host/types.ts"
+    },
+    "#src/*": "./fixture/src/*.ts"
+  },
+  "scripts": {
+    "bench": "node scripts/bench.ts",
+    "generate": "node scripts/generate.ts",
+    "test:vitest": "vitest run --config vitest.config.ts",
+    "test:vp": "vp test run --config vite.config.ts",
+    "test:rstest": "rstest run --config rstest.config.ts",
+    "test:bun": "bun test --parallel ./fixture/tests/",
+    "test:uf": "node scripts/uf.ts test fixture/tests/",
+    "typecheck": "node scripts/generate.ts && tsc -p tsconfig.json",
+    "postinstall": "node scripts/generate.ts"
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "20.14.6",
+    "@rstest/browser": "0.12.3",
+    "@rstest/core": "0.12.3",
+    "@types/bun": "^1.4.2",
+    "@types/node": "^26.6.4",
+    "@uniflowed/test": "0.36.0",
+    "@vitest/browser-playwright": "5.0.3",
+    "happy-dom": "20.14.6",
+    "playwright": "1.63.0",
+    "typescript": "^7.0.2",
+    "vite": "8.3.4",
+    "vite-plus": "1.1.0",
+    "vitest": "5.0.3"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@12.9.0"
+}

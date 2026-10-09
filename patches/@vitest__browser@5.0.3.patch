@@ -1,0 +1,161 @@
+diff --git a/dist/client/__vitest_browser__/tester-C2LTsndn.js b/dist/client/__vitest_browser__/tester-C2LTsndn.js
+index 54aeba9a4b8e65e95bbc2267427a91118eabc197..929ab365a9e0d333689987ecfa56b3ca82d88cbc 100644
+--- a/dist/client/__vitest_browser__/tester-C2LTsndn.js
++++ b/dist/client/__vitest_browser__/tester-C2LTsndn.js
+@@ -1000,13 +1000,18 @@ function createBrowserRunner(mocker, state, coverageModule) {
+ 				const importpath = `${`/${/^\w:/.test(filepath) ? "@fs/" : ""}`}${filepath}?${`browserv=${hash}`}`.replace(/\/+/g, "/");
+ 				const trace = this.config.browser.trace;
+ 				if (mode === "collect" && trace !== "off") await this.commands.triggerCommand("__vitest_startTracing", []);
++				const __reproT0 = performance.now();
++				let __reproErr;
+ 				try {
+ 					await __vitePreload(() => import(
+ 						/* @vite-ignore */
+ 						importpath
+ ), []);
+ 				} catch (err) {
++					__reproErr = err;
+ 					throw new Error(`Failed to import test file ${filepath}`, { cause: err });
++				} finally {
++					__reproReport(filepath, mode, __reproT0, performance.now(), __reproErr);
+ 				}
+ 				if (mode === "collect" && !this.sourceMapPrefetches.has(filepath)) this.sourceMapPrefetches.set(filepath, rpc$2().getBrowserFileSourceMap(filepath).catch(() => void 0));
+ 			});
+@@ -2034,6 +2039,58 @@ channel.addEventListener("message", async (e) => {
+ 		});
+ 	}
+ });
++// --- repro profiling (only when the server sets window.__REPRO_PROF__, i.e. REPRO_PROF_DIR is set) ---
++// After each test file import, summarise the Resource Timing entries recorded while it was
++// loading and post them to the dev server: how many requests, how many were served from the
++// HTTP cache / revalidated (304) / transferred in full, and how long the network waterfall took.
++if (window.__REPRO_PROF__) try {
++	performance.setResourceTimingBufferSize(1e6);
++} catch {}
++function __reproClassify(path) {
++	const u = path.replace(/[?#].*$/, "");
++	if (/[?&]mock=/.test(path)) return "automock";
++	if (u.includes("/node_modules/.vite/") || u.includes("/.vite/deps")) return "dep:optimized";
++	if (u.startsWith("/@vite/") || u.startsWith("/@id/")) return "virtual";
++	if (u.includes("/@vitest/") || u.includes("/vitest/dist/") || u.startsWith("/__vitest") || u.includes("vite-plus")) return "vitest-internal";
++	if (u.includes("/node_modules/")) return "dep:raw";
++	if (/\.test\.[cm]?[jt]sx?$/.test(u)) return "test-file";
++	if (u.includes("/fixture/src/ui")) return "src:ui";
++	if (u.includes("/fixture/src/features/")) return "src:features";
++	if (u.includes("/fixture/src/")) return "src:other";
++	return "other";
++}
++function __reproReport(file, mode, t0, t1, error) {
++	if (!window.__REPRO_PROF__) return;
++	const entries = performance.getEntriesByType("resource").filter((e) => e.startTime >= t0 - 1 && e.startTime <= t1 && !e.name.includes("/__repro_prof"));
++	const rec = { file, mode, importMs: t1 - t0, error: !!error, requests: entries.length, byClass: {}, memoryCache: 0, queuedMs: 0, ttfbMs: 0, bytes: 0, networkBusyMs: 0 };
++	const intervals = [];
++	for (const e of entries) {
++		const path = e.name.startsWith(location.origin) ? e.name.slice(location.origin.length) : e.name;
++		const cls = __reproClassify(path);
++		rec.byClass[cls] = (rec.byClass[cls] || 0) + 1;
++		// served without reaching the server (memory / disk cache); 304s are counted server-side
++		if (e.transferSize === 0) rec.memoryCache++;
++		if (e.requestStart > 0) {
++			rec.queuedMs += e.requestStart - e.startTime;
++			rec.ttfbMs += e.responseStart - e.requestStart;
++		}
++		rec.bytes += e.encodedBodySize;
++		intervals.push([e.startTime, e.responseEnd]);
++	}
++	intervals.sort((a, b) => a[0] - b[0]);
++	let start = -1, end = -1;
++	for (const [s0, e0] of intervals) {
++		if (s0 > end) {
++			if (end > start) rec.networkBusyMs += end - start;
++			start = s0;
++			end = e0;
++		} else if (e0 > end) end = e0;
++	}
++	if (end > start) rec.networkBusyMs += end - start;
++	try {
++		navigator.sendBeacon("/__repro_prof", JSON.stringify(rec));
++	} catch {}
++}
+ var url = new URL(location.href);
+ var iframeId = url.searchParams.get("iframeId");
+ var commands = new CommandsManager();
+diff --git a/dist/index.js b/dist/index.js
+index ffc5e093742eb0381a9e57bcce73da3bb91cf55a..17cfdd305235437ed0d5ac1df2c68a2a3b744cfd 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -18,6 +18,57 @@ import { platform } from 'node:os';
+ import { PNG } from 'pngjs';
+ import { diff } from '@blazediff/core';
+ import { WebSocketServer } from 'ws';
++import { appendFileSync, mkdirSync, writeFileSync } from 'node:fs';
++import { monitorEventLoopDelay } from 'node:perf_hooks';
++import { join as __reproJoin } from 'node:path';
++
++// --- repro profiling (only when REPRO_PROF_DIR is set) ---
++// 1. Collects the per-file import summaries posted by the tester (browser-<pid>.jsonl).
++// 2. Samples how busy the Node main thread is (event loop utilization + delay) once a second,
++//    because Vite, the Vitest RPC and the Playwright client all share that one thread (node-<pid>.json).
++let __reproProfStarted = false;
++function __reproProfServer(server) {
++	const dir = process.env.REPRO_PROF_DIR;
++	mkdirSync(dir, { recursive: true });
++	const out = __reproJoin(dir, `browser-${process.pid}.jsonl`);
++	// What the dev server actually answered: a routed (vi.mock) browser context has its HTTP cache
++	// disabled, so it never sends If-None-Match and never gets a 304.
++	const http = { requests: 0, conditional: 0, status: {} };
++	server.middlewares.use((req, res, next) => {
++		if (!req.url.startsWith("/__repro_prof")) {
++			http.requests++;
++			if (req.headers["if-none-match"]) http.conditional++;
++			res.on("finish", () => http.status[res.statusCode] = (http.status[res.statusCode] || 0) + 1);
++		}
++		next();
++	});
++	server.middlewares.use("/__repro_prof", (req, res) => {
++		let body = "";
++		req.on("data", (c) => body += c);
++		req.on("end", () => {
++			appendFileSync(out, body + "\n");
++			res.statusCode = 204;
++			res.end();
++		});
++	});
++	if (__reproProfStarted) return;
++	__reproProfStarted = true;
++	const delay = monitorEventLoopDelay({ resolution: 10 });
++	delay.enable();
++	const timeline = [];
++	let last = performance.eventLoopUtilization();
++	const timer = setInterval(() => {
++		const now = performance.eventLoopUtilization();
++		timeline.push({ elu: +performance.eventLoopUtilization(now, last).utilization.toFixed(3), delayP50Ms: +(delay.percentile(50) / 1e6).toFixed(1), delayP99Ms: +(delay.percentile(99) / 1e6).toFixed(1) });
++		last = now;
++		delay.reset();
++	}, 1000);
++	timer.unref();
++	process.once("exit", () => {
++		const busy = timeline.filter((t) => t.elu >= 0.9).length;
++		writeFileSync(__reproJoin(dir, `node-${process.pid}.json`), JSON.stringify({ http, seconds: timeline.length, secondsAbove90PercentBusy: busy, meanElu: +(timeline.reduce((a, t) => a + t.elu, 0) / Math.max(1, timeline.length)).toFixed(3), timeline }));
++	});
++}
+ 
+ const _DRIVE_LETTER_START_RE = /^[A-Za-z]:\//;
+ function normalizeWindowsPath(input = "") {
+@@ -821,7 +872,7 @@ async function resolveTester(globalServer, url, res, next) {
+ 		const indexhtml = await browserProject.testerHtmlTransformed;
+ 		const html = replacer(indexhtml, {
+ 			__VITEST_FAVICON__: globalServer.faviconUrl,
+-			__VITEST_INJECTOR__: injector
++			__VITEST_INJECTOR__: process.env.REPRO_PROF_DIR ? `${injector}\nwindow.__REPRO_PROF__ = 1;` : injector
+ 		});
+ 		return html;
+ 	} catch (err) {
+@@ -3331,6 +3382,7 @@ body {
+ 		configureServer(server) {
+ 			const parentServer = contribution.parent;
+ 			parentServer.setServer(server);
++			if (process.env.REPRO_PROF_DIR) __reproProfServer(server);
+ 			// oxlint-disable-next-line prefer-arrow-callback
+ 			server.middlewares.use(function vitestHeaders(_req, res, next) {
+ 				const headers = server.config.server.headers;

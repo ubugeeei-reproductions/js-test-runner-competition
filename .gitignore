@@ -1,0 +1,10 @@
+node_modules/
+fixture/
+results/*
+!results/ci/
+!results/ci-profile/
+results/ci*/logs/
+results/ci*/profile/
+.DS_Store
+.uf/
+fixture.tmp-*/

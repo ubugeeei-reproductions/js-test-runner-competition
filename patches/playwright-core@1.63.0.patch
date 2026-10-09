@@ -1,0 +1,15 @@
+diff --git a/lib/coreBundle.js b/lib/coreBundle.js
+index 8ed8bb5de1b12c7c050191123b22a119298826bb..e2d0e5480e38c8a814275182d9c2440be163a6b2 100644
+--- a/lib/coreBundle.js
++++ b/lib/coreBundle.js
+@@ -36110,7 +36110,9 @@ var init_crNetworkManager = __esm({
+         const enabled = this._protocolRequestInterceptionEnabled;
+         if (initial && !enabled)
+           return;
+-        const cachePromise = info.session.send("Network.setCacheDisabled", { cacheDisabled: enabled });
++        // Experiment (REPRO_EXP_KEEP_CACHE=1): keep the HTTP cache while request interception is on.
++        // By default any route disables the cache, so every request of a routed context is a full 200.
++        const cachePromise = info.session.send("Network.setCacheDisabled", { cacheDisabled: enabled && !process.env.REPRO_EXP_KEEP_CACHE });
+         let fetchPromise = Promise.resolve(void 0);
+         if (!info.workerFrame) {
+           if (enabled)

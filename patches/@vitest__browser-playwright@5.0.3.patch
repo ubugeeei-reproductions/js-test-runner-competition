@@ -1,0 +1,122 @@
+diff --git a/dist/index.js b/dist/index.js
+index d7ab805a2b671f27fa8d91f3684b0e88aa3009ce..6dbe6d45ddbbe5c4268ca470727b3249f004def6 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -5,6 +5,43 @@ import c from 'tinyrainbow';
+ import { createDebugger, BrowserConnectionError, isCSSRequest } from 'vitest/node';
+ import { mkdir, unlink } from 'node:fs/promises';
+ import { fileURLToPath } from 'node:url';
++import { mkdirSync as __reproMkdir, writeFileSync as __reproWrite } from 'node:fs';
++import { join as __reproJoin } from 'node:path';
++
++// --- repro profiling (only when REPRO_PROF_DIR is set) ---
++// vi.mock() in browser mode registers one `context.route(predicate)` per mocked module.
++// Once any route exists, Playwright intercepts *every* request of that browser context and
++// evaluates every registered predicate for it on the Node main thread. This counts that work
++// (playwright-<pid>.json).
++let __reproRouteProf;
++function __reproRoutes() {
++	if (__reproRouteProf) return __reproRouteProf;
++	const st = { registers: 0, registersByType: {}, predicateCalls: 0, predicateMatched: 0, predicateMs: 0, handlerCalls: 0, ops: {} };
++	process.once("exit", () => {
++		__reproMkdir(process.env.REPRO_PROF_DIR, { recursive: true });
++		__reproWrite(__reproJoin(process.env.REPRO_PROF_DIR, `playwright-${process.pid}.json`), JSON.stringify({ ...st, predicateMs: Math.round(st.predicateMs) }, null, 1));
++	});
++	return __reproRouteProf = {
++		predicate(ms, matched) {
++			st.predicateCalls++;
++			st.predicateMs += ms;
++			if (matched) st.predicateMatched++;
++		},
++		register(type) {
++			st.registers++;
++			st.registersByType[type] = (st.registersByType[type] || 0) + 1;
++		},
++		handler() {
++			st.handlerCalls++;
++		},
++		op(name, ms) {
++			const o = st.ops[name] ??= { n: 0, totalMs: 0, maxMs: 0 };
++			o.n++;
++			o.totalMs = Math.round(o.totalMs + ms);
++			if (ms > o.maxMs) o.maxMs = Math.round(ms);
++		}
++	};
++}
+ 
+ const _DRIVE_LETTER_START_RE = /^[A-Za-z]:\//;
+ function normalizeWindowsPath(input = "") {
+@@ -1058,11 +1095,12 @@ class PlaywrightBrowserProvider {
+ 		return this.browserPromise;
+ 	}
+ 	createMocker() {
++		const prof = process.env.REPRO_PROF_DIR ? __reproRoutes() : null;
+ 		const idPredicates = new Map();
+ 		const sessionIds = new Map();
+ 		function createPredicate(url) {
+ 			const moduleUrl = new URL(url, "http://localhost");
+-			const predicate = (url) => {
++			const predicate0 = (url) => {
+ 				if (url.searchParams.has("_vitest_original")) {
+ 					return false;
+ 				}
+@@ -1085,6 +1123,12 @@ class PlaywrightBrowserProvider {
+ 				}
+ 				return true;
+ 			};
++			const predicate = prof ? (url) => {
++				const t = performance.now();
++				const matched = predicate0(url);
++				prof.predicate(performance.now() - t, matched);
++				return matched;
++			} : predicate0;
+ 			return {
+ 				url: moduleUrl.href,
+ 				predicate
+@@ -1100,13 +1144,18 @@ class PlaywrightBrowserProvider {
+ 				const key = predicateKey(sessionId, moduleUrl);
+ 				const existingPredicate = idPredicates.get(key);
+ 				if (existingPredicate) {
++					const t = performance.now();
+ 					await page.context().unroute(existingPredicate);
++					prof?.op("unroute", performance.now() - t);
+ 				}
+ 				const ids = sessionIds.get(sessionId) ?? new Set();
+ 				ids.add(moduleUrl);
+ 				sessionIds.set(sessionId, ids);
+ 				idPredicates.set(key, predicate);
++				prof?.register(module.type);
++				const __reproT = performance.now();
+ 				await page.context().route(predicate, async (route) => {
++					prof?.handler();
+ 					if (module.type === "manual") {
+ 						const exports = Object.keys(await module.resolve());
+ 						const body = createManualModuleSource(module.url, exports);
+@@ -1156,6 +1205,7 @@ class PlaywrightBrowserProvider {
+ 						});
+ 					} else ;
+ 				});
++				prof?.op("route", performance.now() - __reproT);
+ 			},
+ 			delete: async (sessionId, id) => {
+ 				const page = this.getPage(sessionId);
+@@ -1166,6 +1216,7 @@ class PlaywrightBrowserProvider {
+ 				}
+ 			},
+ 			clear: async (sessionId) => {
++				const __reproT = performance.now();
+ 				const page = this.getPage(sessionId);
+ 				const ids = sessionIds.get(sessionId) ?? new Set();
+ 				const promises = Array.from(ids, (id) => {
+@@ -1176,7 +1227,10 @@ class PlaywrightBrowserProvider {
+ 					}
+ 					return null;
+ 				});
+-				await Promise.all(promises).finally(() => sessionIds.delete(sessionId));
++				await Promise.all(promises).finally(() => {
++					sessionIds.delete(sessionId);
++					prof?.op("clear", performance.now() - __reproT);
++				});
+ 			}
+ 		};
+ 	}
