@@ -12,6 +12,8 @@ const browser = process.env.REPRO_ENV !== "happy-dom";
 
 export default defineConfig({
   run: { tasks: tasks() },
+  // results/ is written by the benchmark, fixture/ by the generator
+  fmt: { ignorePatterns: ["results/**", "fixture/**"] },
   plugins: [hostPlugin()],
   test: {
     include: ["fixture/tests/**/*.test.ts"],
