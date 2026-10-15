@@ -483,7 +483,8 @@ async function main(): Promise<void> {
       const profDir = join(OUT, "profile", `${slug}-r${round}`);
       const profile =
         args.profile && c.env === "browser" && (c.runner === "vitest" || c.runner === "vp");
-      const cpuProf = args["cpu-prof"] && c.runner !== "bun" && c.runner !== "deno";
+      // not Bun or Deno (not Node), not uf (only its launcher, scripts/uf.ts, would be profiled)
+      const cpuProf = args["cpu-prof"] && !["bun", "deno", "uf"].includes(c.runner);
       if (profile || cpuProf) rmSync(profDir, { recursive: true, force: true });
       process.stdout.write(`[${round}/${rounds}] ${c.id.padEnd(58)} `);
       const run = await runOnce(c, round, join(OUT, "logs", `${slug}-r${round}.log`), {
@@ -736,7 +737,9 @@ function renderSummary(result: {
       );
     }
   }
-  const cpuProfiled = result.runs.filter((r) => r.cpuProfile && r.round === 1);
+  const cpuProfiled = result.runs.filter(
+    (r) => r.cpuProfile && r.round === 1 && !r.case.includes("/uf/"),
+  );
   if (cpuProfiled.length) {
     lines.push(
       "",
